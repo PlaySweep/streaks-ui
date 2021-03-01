@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Grid,
@@ -12,7 +12,7 @@ import {
   Heading,
   Input,
   InputGroup,
-  InputLeftElement,
+  InputRightElement,
   Box,
   Badge,
   Text,
@@ -25,7 +25,8 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
-import { FaCheckCircle } from "react-icons/fa";
+import { IoIosLock, IoIosUnlock } from "react-icons/io";
+import { FiLock, FiUnlock } from "react-icons/fi";
 
 const primaryButtonStyle = {
   border: "2.5px solid #90D5FB",
@@ -59,6 +60,8 @@ const drawerContentStyle = {
 
 function PicksContainer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [applied, setApplied] = useState(false)
+  const [locked, setLocked] = useState(false)
 
   const events = [
     {
@@ -88,16 +91,18 @@ function PicksContainer() {
         <DrawerContent style={drawerContentStyle}>
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody>
-          <Container>
-          <Container>
-            <Image src="https://streaks-challenge.s3.amazonaws.com/legends_logo.png" alt="Legends Logo" />
-            <Box style={{position: "relative", bottom: "65px"}}>
+          <Container mb={5}>
+          <Grid h="auto" templateColumns="repeat(6, 1fr)" gap={4}>
+            <GridItem colSpan={6} style={{margin: "0 auto"}}>
+              <Image src="https://streaks-challenge.s3.amazonaws.com/legends_logo.png" alt="Legends Logo" height={`175px`} style={{margin: "0 auto"}}/>
+              <Box style={{position: "relative", bottom: "35px"}}>
               <Button size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
                 <Text color="white">1st Round</Text>
               </Button>
               <Text color="#90D5FB" fontSize="md" mt={3} style={{textTransform: "uppercase", textAlign: "center", fontWeight: "700"}}>Time Left <span style={{marginLeft: "5px"}}>04 : 10 : 33 : 45</span></Text>
-            </Box>
-          </Container>
+              </Box>
+            </GridItem>
+          </Grid>
           { events.map((round) => {
             return (
               <Grid
@@ -128,6 +133,33 @@ function PicksContainer() {
               </Grid>
             )
           })}
+          <Grid templateColumns="repeat(6, 1fr)" mt={5} style={{display: "flex", alignItems: "center"}}>
+            <GridItem colSpan={1} p={2}>
+              <Image src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly Logo" height={`25px`}/>
+            </GridItem>
+            <GridItem colSpan={5} >
+              <Heading color="white" size="sm" style={{fontWeight: "800"}}>Redeem Drizly Bonus Point</Heading>
+            </GridItem>
+          </Grid>
+          <InputGroup size="md">
+            <Input
+              pr="4.5rem"
+              variant="filled" 
+              style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}}
+              placeholder="Enter Drizly Order ID"
+            />
+            <InputRightElement width="4.5rem">
+              <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={() => setApplied(true)}>
+                <Text color="white" style={{fontSize: "0.5rem"}}>{applied ? "Applied!" : "Apply"}</Text>
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          <Box mt={10}>
+            <Button size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
+              { locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
+              <Text color="white">Lock In My Picks</Text>
+            </Button>
+          </Box>
           </Container>
           </DrawerBody>
         </DrawerContent>
