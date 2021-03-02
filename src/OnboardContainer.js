@@ -33,7 +33,7 @@ import SignInDrawer from './SignInDrawer';
 import MenuDrawer from './MenuDrawer';
 
 const gridStyle = {
-  backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/bg_legends.png")`,
+  backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/mobile_bg_xl.png")`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "top",
   backgroundSize: "cover"
@@ -56,6 +56,7 @@ const drawerContentStyle = {
 function OnboardContainer({history}) {
   const [signUp, setSignUp] = useState(false)
   const [signIn, setSignIn] = useState(false)
+  console.log(document.referrer)
   
   return (
     <ChakraProvider theme={theme}>
@@ -65,18 +66,18 @@ function OnboardContainer({history}) {
           textAlign="center" 
           fontSize="xl" 
         >
-        <Grid minH="100vh" p={3} style={gridStyle}>
+        <Grid p={3} minH={`100vh`}style={gridStyle}>
           <VStack
             spacing={8} 
             justify={`center`} 
           >
-            
-            <Text m={5} color="white">Place your picks for March Madness, earn points, win prizes</Text>
+            <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
+            <Text color="white" >Place your picks for March Madness, earn points, win prizes</Text>
             <Container>
               <SignUpDrawer />
               <SignInDrawer />
             </Container>
-            <Box style={{textAlign: "center", position: "absolute", bottom: "2.5%"}}>
+            <Box style={{textAlign: "center"}}>
               <Text color="white" fontSize="md">In Partnership With</Text>
               <Image boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly" style={{margin: "1rem auto"}}/>
             </Box>

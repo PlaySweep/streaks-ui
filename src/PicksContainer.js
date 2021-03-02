@@ -24,9 +24,12 @@ import {
   Image
 } from '@chakra-ui/react';
 import { useDisclosure } from "@chakra-ui/react";
+
+import PopupWidget from './PopupWidget'
+
 import { CalendarIcon } from '@chakra-ui/icons';
 import { IoIosLock, IoIosUnlock } from "react-icons/io";
-import { FiLock, FiUnlock } from "react-icons/fi";
+import { FiLock, FiUnlock, FiInfo } from "react-icons/fi";
 
 const primaryButtonStyle = {
   border: "2.5px solid #90D5FB",
@@ -96,10 +99,10 @@ function PicksContainer() {
             <GridItem colSpan={6} style={{margin: "0 auto"}}>
               <Image src="https://streaks-challenge.s3.amazonaws.com/legends_logo.png" alt="Legends Logo" height={`175px`} style={{margin: "0 auto"}}/>
               <Box style={{position: "relative", bottom: "35px"}}>
-              <Button size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
-                <Text color="white">1st Round</Text>
+              <Button size={`md`} variant="outline" style={{ border: "2.5px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", textTransform: "uppercase", borderRadius: "50px"}} isFullWidth>
+                <Text color="white" fontSize={`sm`}>1st Round</Text>
               </Button>
-              <Text color="#90D5FB" fontSize="md" mt={3} style={{textTransform: "uppercase", textAlign: "center", fontWeight: "700"}}>Time Left <span style={{marginLeft: "5px"}}>04 : 10 : 33 : 45</span></Text>
+              <Text color="#90D5FB" fontSize="sm" mt={3} style={{textTransform: "uppercase", textAlign: "center", fontWeight: "700"}}>Time Left <span style={{marginLeft: "5px"}}>04 : 10 : 33 : 45</span></Text>
               </Box>
             </GridItem>
           </Grid>
@@ -109,9 +112,9 @@ function PicksContainer() {
                 key={round.id}
                 h="auto"
                 templateColumns="repeat(6, 1fr)"
-                gap={4}
+                gap={3}
               >
-                <GridItem colSpan={1} >
+                <GridItem colSpan={0.5} >
                   <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", top: "3px", fontWeight: "800"}}>
                     {round.order}
                   </Tag>
@@ -121,7 +124,7 @@ function PicksContainer() {
                   <Wrap>
                     { round.options.map((option) => {
                       return (
-                        <WrapItem style={{flex: "auto"}}>
+                        <WrapItem key={option.id} style={{flex: "auto"}}>
                           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={secondaryButtonStyle} isFullWidth>
                             <Text color="white" fontSize={`xs`}>{option.description}</Text>
                           </Button>
@@ -137,8 +140,11 @@ function PicksContainer() {
             <GridItem colSpan={1} p={2}>
               <Image src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly Logo" height={`25px`}/>
             </GridItem>
-            <GridItem colSpan={5} >
+            <GridItem colSpan={4} >
               <Heading color="white" size="sm" style={{fontWeight: "800"}}>Redeem Drizly Bonus Point</Heading>
+            </GridItem>
+            <GridItem colSpan={1} >
+              <PopupWidget />
             </GridItem>
           </Grid>
           <InputGroup size="md">
