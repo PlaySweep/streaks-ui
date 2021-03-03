@@ -66,7 +66,7 @@ function OnboardContainer({history}) {
           textAlign="center" 
           fontSize="xl" 
         >
-        <Grid p={3} minH={`100vh`}style={gridStyle}>
+        <Grid p={3} minH={`100vh`} style={gridStyle}>
           <VStack
             spacing={8} 
             justify={`center`} 

@@ -53,9 +53,7 @@ function CallToActionWidget() {
         <Box
           m={2}
           fontWeight="semibold"
-          as="h4"
           lineHeight="tight"
-          
         >
         <Heading mt={0} style={{textAlign: "center", fontWeight: "800"}} color="white" size="md">Become a Bud Light Legend</Heading>
         <Text color="white" fontSize="xs" mt={3} mb={3} style={{textAlign: "center"}} >Get exclusive access to merch, experiences, and discounts.</Text>

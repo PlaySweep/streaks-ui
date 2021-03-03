@@ -18,7 +18,6 @@ import {
 import PicksContainer from './PicksContainer'
 import PreviousResultsContainer from './PreviousResultsContainer';
 
-import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -44,11 +43,6 @@ const drawerContentStyle = {
 }
 
 function RoundCard() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  function handleSignIn() {
-    console.log("Signing in...")
-  }
   
   return (
     <>
@@ -60,7 +54,6 @@ function RoundCard() {
         <Box
           mt="1"
           fontWeight="semibold"
-          as="h4"
           lineHeight="tight"
           isTruncated
         >
