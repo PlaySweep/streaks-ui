@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Grid,
@@ -24,6 +24,9 @@ import {
   Th,
   Tbody
 } from '@chakra-ui/react';
+
+import Pagination from "react-js-pagination";
+
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
@@ -54,6 +57,12 @@ const drawerContentStyle = {
 
 function LeaderboardContainer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [active_page, setActivePage] = useState(1)
+
+  function handlePageChange(page_number) {
+    console.log({page_number})
+    setActivePage(page_number)
+  }
   
   return (
     <>
@@ -90,40 +99,37 @@ function LeaderboardContainer() {
               <DrawerContent style={drawerContentStyle}>
                 <DrawerCloseButton color={"#fff"}/>
                 <DrawerBody>
-                  <Box p={5}>
-                  <Heading mt={0} mb={10} style={{textAlign: "center"}} color="white">Sign up</Heading>
-                  <InputGroup mt={5} mb={5}>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<CalendarIcon color="white" />}
+                  <Box>
+                  <Heading mt={5} mb={5} style={{textAlign: "center"}} color="white">Leaderboard</Heading>
+                  <Table variant="unstyled" size={`sm`}>
+                    <Thead>
+                      <Tr>
+                        <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
+                        <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Name</Th>
+                        <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
+                        <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Points</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      { [{id: 1, rank: "1", name: "ryan", streak: "4 rounds", points: "21pts"}, {id: 2, rank: "2", name: "katie", streak: "4 rounds", points: "19pts"}, {id: 3, rank: "3", name: "naval", streak: "3 rounds", points: "17pts"}, {id: 4, rank: "4", name: "kitty", streak: "3 rounds", points: "14pts"}, {id: 5, rank: "5", name: "anon", streak: "2 rounds", points: "12pts"}].map((u) => {
+                        return (
+                          <Tr key={u.id}>
+                            <Td colSpan={1} color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
+                            <Td color="#fff" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.name}</Td>
+                            <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.streak}</Td>
+                            <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td>
+                          </Tr>
+                        )
+                      })}
+                    </Tbody>
+                  </Table>
+                  <Pagination
+                      activePage={active_page}
+                      itemsCountPerPage={5}
+                      totalItemsCount={100}
+                      pageRangeDisplayed={5}
+                      onChange={handlePageChange}
                     />
-                    <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="lg" />
-                  </InputGroup>
-                  <InputGroup mt={5} mb={5}>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<CalendarIcon color="white" />}
-                    />
-                    <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
-                  </InputGroup>
-                  <InputGroup mt={5} mb={5}>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<CalendarIcon color="white" />}
-                    />
-                    <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
-                  </InputGroup>
-                  <InputGroup mt={5} mb={5}>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<CalendarIcon color="white" />}
-                    />
-                    <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
-                  </InputGroup>
-                  
-                  <Button size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={() => console.log('sign up') }>
-                    <Text color="white">Create an account</Text>
-                  </Button>
                   </Box>
                 </DrawerBody>
               </DrawerContent>

@@ -19,6 +19,8 @@ import {
 } from '@chakra-ui/react';
 
 import PrizeContainer from './PrizeContainer'
+import PopupWidget from './PopupWidget'
+
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
@@ -75,9 +77,7 @@ function StatsContainer({history}) {
         <Button mt={5} size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={() => history.push(`/prizing`)}>
           <Text color="white" fontSize={`xs`} >Cash Out For Prizes</Text>
         </Button>
-        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>
-          <Text color="white" fontSize={`xs`} >Bonus Drizly Point</Text>
-        </Button>
+        <PopupWidget type={`order`} buttonText={`Bonus Drizly Point`} />
       </Box>
     </Box>
     </>

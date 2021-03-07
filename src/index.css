@@ -1,0 +1,13 @@
+/* Pagination Leaderboard Styles */
+
+.pagination {
+  display: flex;
+  margin: 2.5rem auto 1rem auto;
+  justify-content: space-around;
+  color: #fff;
+  list-style: none;
+}
+
+li.active {
+  color: #398FD6;
+}

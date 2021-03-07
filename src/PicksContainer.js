@@ -23,13 +23,17 @@ import {
   WrapItem,
   Image
 } from '@chakra-ui/react';
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, createStandaloneToast } from "@chakra-ui/react";
 
 import PopupWidget from './PopupWidget'
 
 import { CalendarIcon } from '@chakra-ui/icons';
+import { FaCheckCircle } from "react-icons/fa";
 import { IoIosLock, IoIosUnlock } from "react-icons/io";
 import { FiLock, FiUnlock, FiInfo } from "react-icons/fi";
+
+import moment from "moment";
+import Countdown from "react-countdown";
 
 const primaryButtonStyle = {
   border: "2.5px solid #90D5FB",
@@ -47,6 +51,13 @@ const secondaryButtonStyle = {
   border: "1px solid #90D5FB",
   textTransform: "uppercase",
   background: "rgb(17, 30, 75)"
+}
+
+const selectedButtonStyle = {
+  border: "2.5px solid #90D5FB",
+  boxShadow: "0 0 5px #90d5fb",
+  textTransform: "uppercase",
+  backgroundColor: "#0D40A0"
 }
 
 const cardStyle = {
@@ -83,6 +94,44 @@ function PicksContainer() {
       id: 5, order: 5, description: "OSU win vs University of Michigan win", options: [{id: 9, order: 1, description: "OSU win"}, {id: 10, order: 2, description: "U. Michigan"}]
     },
   ]
+
+  function handleOrderConfirmation() {
+    const toast = createStandaloneToast()
+    toast({
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+      render: () => (
+        <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're processing your order now.</Text>
+        </Box>
+      ),
+    })
+    setApplied(true)
+  }
+
+  const renderCountdown = ({ days, hours, minutes, seconds, completed }) => {
+    let timesRunningOut = false
+  
+    if (days === 0 && hours === 0) {
+      if (minutes < 30) {
+        timesRunningOut = true
+      }
+    }
+    if (completed) {
+      return <></>;
+    } else {
+      return (
+        <Box color={timesRunningOut ? `#DD6937` : `#90D5FB`} fontSize="sm" style={{ textTransform: "uppercase", textAlign: "center", fontWeight: "700", margin: "1rem auto 0 auto" }}>
+          <p style={{margin: "0 auto", width: "200px"}}>
+          <span style={{marginRight: "5px"}}>Time Left</span> 
+          {days < 10 ? ` 0${days}` : ` ${days}`} : {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds}
+          </p>
+        </Box>
+      )
+    }
+  }
   
   return (
     <>
@@ -100,9 +149,13 @@ function PicksContainer() {
               <Image src="https://streaks-challenge.s3.amazonaws.com/legends_logo.png" alt="Legends Logo" height={`175px`} style={{margin: "0 auto"}}/>
               <Box style={{position: "relative", bottom: "35px"}}>
               <Button size={`md`} variant="outline" style={{ border: "2.5px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", textTransform: "uppercase", borderRadius: "50px"}} isFullWidth>
-                <Text color="white" fontSize={`sm`}>1st Round</Text>
+                <Text color="white" fontSize={`sm`}>5th Round</Text>
               </Button>
-              <Text color="#90D5FB" fontSize="sm" mt={3} style={{textTransform: "uppercase", textAlign: "center", fontWeight: "700"}}>Time Left <span style={{marginLeft: "5px"}}>04 : 10 : 33 : 45</span></Text>
+                <Countdown
+                  date={moment().add(30, 'minutes').add(5, 'seconds')._d}
+                  renderer={renderCountdown}
+                />
+        
               </Box>
             </GridItem>
           </Grid>
@@ -124,7 +177,7 @@ function PicksContainer() {
                   <Wrap>
                     { round.options.map((option) => {
                       return (
-                        <WrapItem key={option.id} style={{flex: "auto"}}>
+                        <WrapItem key={option.id} style={{flex: "1"}}>
                           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={secondaryButtonStyle} isFullWidth>
                             <Text color="white" fontSize={`xs`}>{option.description}</Text>
                           </Button>
@@ -144,7 +197,7 @@ function PicksContainer() {
               <Heading color="white" size="sm" style={{fontWeight: "800"}}>Redeem Drizly Bonus Point</Heading>
             </GridItem>
             <GridItem colSpan={1} >
-              <PopupWidget />
+              <PopupWidget type={`order_info`}/>
             </GridItem>
           </Grid>
           <InputGroup size="md">
@@ -155,13 +208,13 @@ function PicksContainer() {
               placeholder="Enter Drizly Order ID"
             />
             <InputRightElement width="4.5rem">
-              <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={() => setApplied(true)}>
+              <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={handleOrderConfirmation}>
                 <Text color="white" style={{fontSize: "0.5rem"}}>{applied ? "Applied!" : "Apply"}</Text>
               </Button>
             </InputRightElement>
           </InputGroup>
           <Box mt={10}>
-            <Button size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
+            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
               { locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
               <Text color="white">Lock In My Picks</Text>
             </Button>

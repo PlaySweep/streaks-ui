@@ -154,9 +154,9 @@ function PreviousResultsContainer() {
                             <Wrap>
                               { event.options.map((option) => {
                                 return (
-                                  <WrapItem key={option.id} style={{flex: "auto"}}>
+                                  <WrapItem key={option.id} style={{flex: "1"}}>
                                     <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`sm`} variant="outline" mb={5} style={secondaryButtonStyle} isFullWidth>
-                                      <Text color="white" fontSize={`xs`}>{option.description}</Text>
+                                      <Text color="white" style={{fontSize: "0.5rem"}}>{option.description}</Text>
                                     </Button>
                                   </WrapItem>
                                 )
@@ -173,10 +173,7 @@ function PreviousResultsContainer() {
             </Tabs>
           
           <Box mt={10}>
-            <Button size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
-              <FiShare color="white" style={{marginRight: "5px"}}/>
-              <Text color="white">Share my results</Text>
-            </Button>
+            <PopupWidget type={`share`} />
           </Box>
           </Container>
           </DrawerBody>

@@ -14,6 +14,9 @@ import {
   Badge,
   Text
 } from '@chakra-ui/react';
+
+import PopupWidget from './PopupWidget';
+
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
@@ -39,7 +42,7 @@ const drawerContentStyle = {
   borderRadius: "15px 15px 0 0"
 }
 
-function CallToActionWidget() {
+function CallToActionWidget({type, buttonText}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   function handleSignIn() {
@@ -57,9 +60,7 @@ function CallToActionWidget() {
         >
         <Heading mt={0} style={{textAlign: "center", fontWeight: "800"}} color="white" size="md">Become a Bud Light Legend</Heading>
         <Text color="white" fontSize="xs" mt={3} mb={3} style={{textAlign: "center"}} >Get exclusive access to merch, experiences, and discounts.</Text>
-        <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth>
-          <Text color="white" fontSize={`xs`}>Join now</Text>
-        </Button>
+        <PopupWidget type={type} buttonText={buttonText} />
         </Box>
       </Box>
     </Box>

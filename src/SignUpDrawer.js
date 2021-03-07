@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router';
 import {
   Button,
   Checkbox,
@@ -18,6 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
+import { IoMdPerson } from "react-icons/io";
+import { HiOutlineMail } from "react-icons/hi";
+import { FaLock } from "react-icons/fa";
 
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
@@ -33,7 +37,7 @@ const drawerContentStyle = {
   borderRadius: "15px 15px 0 0"
 }
 
-function SignUpDrawer() {
+function SignUpDrawer({history}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [checked, setChecked] = useState(false)
 
@@ -57,36 +61,36 @@ function SignUpDrawer() {
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
-                children={<CalendarIcon color="white" />}
+                children={<IoMdPerson color="white" />}
+              />
+              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Username" size="lg" />
+            </InputGroup>
+            <InputGroup mt={5} mb={5}>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<HiOutlineMail color="white" />}
               />
               <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="lg" />
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
-                children={<CalendarIcon color="white" />}
+                children={<FaLock color="white" />}
               />
               <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
-                children={<CalendarIcon color="white" />}
+                children={<FaLock color="white" />}
               />
-              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
-            </InputGroup>
-            <InputGroup mt={5} mb={5}>
-              <InputLeftElement
-                pointerEvents="none"
-                children={<CalendarIcon color="white" />}
-              />
-              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
+              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Confirm Password" size="lg" />
             </InputGroup>
             <Grid>
               <Text mt={5} mb={5} color="white"><Checkbox isChecked={checked} onChange={handleChecked} style={{position: "relative", top: "2.5px", paddingRight: "5px"}}/> I consent to Bud Light and its affiliates using my Personal Information to provide me with product and marketing information by email and other electronic means, and I have read and agree to the Bud Light Terms of Use and Privacy Policy, which describe how the information I provide may be used.</Text>
             </Grid>
             
-            <Button size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={() => console.log('sign up') }>
+            <Button size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={() => history.push(`/welcome`) }>
               <Text color="white">Create an account</Text>
             </Button>
             </Box>
@@ -98,4 +102,4 @@ function SignUpDrawer() {
   );
 }
 
-export default SignUpDrawer;
+export default withRouter(SignUpDrawer);

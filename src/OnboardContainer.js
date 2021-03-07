@@ -32,6 +32,8 @@ import SignUpDrawer from './SignUpDrawer';
 import SignInDrawer from './SignInDrawer';
 import MenuDrawer from './MenuDrawer';
 
+const store = require('store');
+
 const gridStyle = {
   backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/mobile_bg_xl.png")`,
   backgroundRepeat: "no-repeat",
@@ -54,10 +56,6 @@ const drawerContentStyle = {
 }
 
 function OnboardContainer({history}) {
-  const [signUp, setSignUp] = useState(false)
-  const [signIn, setSignIn] = useState(false)
-  console.log(document.referrer)
-  
   return (
     <ChakraProvider theme={theme}>
       <MenuDrawer type={`onboard`}/>
@@ -84,7 +82,7 @@ function OnboardContainer({history}) {
           </VStack>
         </Grid>
       </Box>
-      <AgeGateDrawer />
+      { store.get("eligible") ? null: <AgeGateDrawer /> }
       
     </ChakraProvider>
   );

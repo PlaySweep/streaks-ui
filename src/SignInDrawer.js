@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { withRouter } from 'react-router';
 import {
   Button,
   Drawer,
@@ -16,6 +17,8 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 
+import auth from './auth'
+
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
@@ -30,11 +33,26 @@ const drawerContentStyle = {
   borderRadius: "15px 15px 0 0"
 }
 
-function SignInDrawer() {
+function SignInDrawer({history}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [state, setState] = useState({email: null, password: null})
 
-  function handleSignIn() {
-    console.log("Signing in...")
+  const isValidEmail = (email) => {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleSignIn = () => {
+    auth.authenticate(state.email, state.password).then(() => {
+      history.push(`/dashboard`)
+    }).catch((error) => {
+      alert('error!')
+    })
+  }
+
+  const handleOnChange = (e) => {
+    const value = e.target.value
+    setState({...state, [e.target.name]: value})
   }
   
   return (
@@ -54,17 +72,17 @@ function SignInDrawer() {
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="lg" />
+              <Input name="email" type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="lg" onChange={handleOnChange}/>
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" />
+              <Input name="password" type="password" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" onChange={handleOnChange}/>
             </InputGroup>
             <Text color="white" fontSize="xs" mt={5} mb={10} style={{textTransform: "uppercase", textAlign: "center"}}>Forgot password?</Text>
-            <Button size={`lg`} variant="outline" mb={2} style={buttonStyle} isFullWidth onClick={handleSignIn}>
+            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={2} style={buttonStyle} isFullWidth onClick={handleSignIn}>
               <Text color="white">Sign in</Text>
             </Button>
             <Text color="white" fontSize="xs" m={2} style={{textTransform: "uppercase", textAlign: "center"}} onClick={onClose}>New here? Create an account</Text>
@@ -77,4 +95,4 @@ function SignInDrawer() {
   );
 }
 
-export default SignInDrawer;
+export default withRouter(SignInDrawer);
