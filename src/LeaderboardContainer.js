@@ -60,7 +60,7 @@ function LeaderboardContainer() {
   const [active_page, setActivePage] = useState(1)
 
   function handlePageChange(page_number) {
-    console.log({page_number})
+    
     setActivePage(page_number)
   }
   

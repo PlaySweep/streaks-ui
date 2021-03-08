@@ -51,11 +51,21 @@ function DashboardContainer() {
       apiUrl.get(`v1/rounds?pending=true`).then((response) => {
         let rounds = response.data.rounds
         let round = rounds.filter(round => round.status === "pending")[0]
-        setState({...state, apiUrl: apiUrl, user: user, round: round, loading: false})
+        setState({...state, updatePlayedCards: updatePlayedCards, user: user, round: round, loading: false})
       })
     })
 
-  }, [])
+  }, [state])
+
+  function updatePlayedCards(playedCardId) {
+    setState({ 
+      ...state, 
+      user: {
+          ...state.user,
+          played_card_ids: state.user.played_card_ids?.concat(playedCardId)
+      } 
+    })
+  }
 
   if (state.loading) {
     return <></>
@@ -67,7 +77,7 @@ function DashboardContainer() {
   }
 
   if (Object.keys(state.user).length > 0) {
-    console.log('u', state.user)
+    
     return (
       <DashboardContext.Provider value={state}>
         <Fade in={true}>
@@ -80,7 +90,7 @@ function DashboardContainer() {
           <Container>
           <Box style={{margin: "2.5rem auto 0 auto", textAlign: "center"}}>
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
-            <Text mt={3} mb={3} color="white" style={{width: "100%",fontWeight: "500"}}>Pick 3 out of 5 correct each round to earn a streak. Redeem streaks for legendary rewards like free beer for a year, 2022 Final Four tickets & more</Text>
+            <Text mt={3} mb={3} color="white" style={{width: "100%",fontWeight: "500"}}>Pick 3 out of 5 correct each round to earn a streak. Redeem streaks for legendary rewards like free beer for a year, 2022 tickets & more</Text>
             <SvgWidget userId={state.user.id} round={state.round} width={`266`} height={`214`}/>
           </Box>
           </Container>

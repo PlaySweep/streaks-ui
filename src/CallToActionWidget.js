@@ -46,7 +46,7 @@ function CallToActionWidget({type, buttonText}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   function handleSignIn() {
-    console.log("Signing in...")
+    
   }
   
   return (

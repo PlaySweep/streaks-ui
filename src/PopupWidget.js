@@ -50,6 +50,30 @@ function PopupWidget({type, buttonText}) {
   const [applied, setApplied] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  if (type === "order_info") {
+    return (
+    <>
+      <FiInfo color="white" style={{fontSize: "1rem", marginLeft: "10px"}} onClick={onOpen}/>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
+          <ModalHeader style={{textAlign: "center", color: "#fff"}}>How does it work?</ModalHeader>
+          <ModalCloseButton color={`rgb(17, 30, 75)`}/>
+          <ModalBody >
+            <Box pt={3} pb={3}>
+              <VStack>
+                {/* <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/> */}
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter your order ID from your Drizly receipt and we will apply an extra bonus point to your Round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Orders are process in around 24-48 hours.</Text>
+              </VStack>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+    )
+  }
+
   if (type === "share") {
     return (
     <>

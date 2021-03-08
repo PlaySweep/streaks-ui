@@ -146,7 +146,7 @@ function SvgWidget({userId, round, height, width}) {
   if (state.loading) {
     return <></>
   }
-  console.log(state.played_cards[0])
+  
   return (
     <>
       <svg width={width} height={height} viewBox="0 0 266 214" fill="none" xmlns="http://www.w3.org/2000/svg" style={{margin: "0 auto"}}>

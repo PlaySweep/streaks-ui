@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button,
   Grid,
@@ -34,8 +34,12 @@ import { FiLock, FiUnlock, FiInfo } from "react-icons/fi";
 
 import moment from "moment";
 import Countdown from "react-countdown";
+import axios from 'axios';
 
 import { DashboardContext } from './DashboardContainer';
+import MatchupShow from './MatchupShow'
+
+const store = require('store');
 
 const primaryButtonStyle = {
   border: "2.5px solid #90D5FB",
@@ -76,26 +80,18 @@ const drawerContentStyle = {
 
 function PicksContainer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [applied, setApplied] = useState(false)
-  const [locked, setLocked] = useState(false)
+  const [state, setState] = useState({selections: [], applied: false, locked: false})
+  const contextValue = useContext(DashboardContext)
 
-  const events = [
-    {
-      id: 1, order: 1, description: "Who will win?", options: [{id: 1, order: 1, description: "UNC"}, {id: 2, order: 2, description: "Duke"}]
+  let authToken = store.get('auth_token')
+  const apiUrl = axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    timeout: 2500,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authToken,
     },
-    { 
-      id: 2, order: 2, description: "OSU win vs University of Michigan win", options: [{id: 3, order: 1, description: "OSU win"}, {id: 4, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 3, order: 3, description: "OSU win vs University of Michigan win", options: [{id: 5, order: 1, description: "OSU win"}, {id: 6, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 4, order: 4, description: "OSU win vs University of Michigan win", options: [{id: 7, order: 1, description: "OSU win"}, {id: 8, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 5, order: 5, description: "OSU win vs University of Michigan win", options: [{id: 9, order: 1, description: "OSU win"}, {id: 10, order: 2, description: "U. Michigan"}]
-    },
-  ]
+  })
 
   function handleOrderConfirmation() {
     const toast = createStandaloneToast()
@@ -110,7 +106,43 @@ function PicksContainer() {
         </Box>
       ),
     })
-    setApplied(true)
+    setState({...state, applied: true})
+  }
+
+  function handleAddPick(selectionObj) {
+    let newSelectionSet = state.selections.filter(s => s.matchup_id !== selectionObj.matchup_id)
+      setState({
+        ...state,
+        selections: [
+          ...newSelectionSet, selectionObj
+        ]
+      })
+  }
+
+  function handleSubmitPicks() {
+    state.selections.forEach((selection, index) => {
+      apiUrl.post(`v1/users/${contextValue.user.id}/picks`, {
+        user_id: contextValue.user.id,
+        matchup_id: selection.matchup_id,
+        selection_id: selection.selected_id
+      }).then((response) => {
+        console.log("✅ Pick Success!")
+        if (state.selections.length === index + 1) {
+          apiUrl.post(`v1/users/${contextValue.user.id}/cards`, {
+            user_id: contextValue.user.id,
+            round_id: contextValue.round.id
+          }).then((response) => {
+            console.log("✅ Round Successfully Played!")
+            contextValue.updatePlayedCards(response.data.card.id)
+            setState({...state, locked: true})
+          }).catch((error) => {
+            console.log("❌ Something went wrong with your round.")
+          })
+        }
+      }).catch((error) => {
+        console.log("❌ Something went wrong with your picks.")
+      })
+    })
   }
 
   const renderCountdown = ({ days, hours, minutes, seconds, completed }) => {
@@ -164,35 +196,8 @@ function PicksContainer() {
                   </Box>
                 </GridItem>
               </Grid>
-              { events.map((round) => {
-                return (
-                  <Grid
-                    key={round.id}
-                    h="auto"
-                    templateColumns="repeat(6, 1fr)"
-                    gap={3}
-                  >
-                    <GridItem colSpan={0.5} >
-                      <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", top: "3px", fontWeight: "800"}}>
-                        {round.order}
-                      </Tag>
-                    </GridItem>
-                    <GridItem colSpan={5} >
-                      <Text color={`#fff`} mb={2} fontSize={`sm`}>{round.description}</Text>
-                      <Wrap>
-                        { round.options.map((option) => {
-                          return (
-                            <WrapItem key={option.id} style={{flex: "1"}}>
-                              <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={secondaryButtonStyle} isFullWidth>
-                                <Text color="white" fontSize={`xs`}>{option.description}</Text>
-                              </Button>
-                            </WrapItem>
-                          )
-                        })}
-                      </Wrap>
-                    </GridItem>
-                  </Grid>
-                )
+              { round.matchups.map((matchup) => {
+                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick}/>
               })}
               <Grid templateColumns="repeat(6, 1fr)" mt={5} style={{display: "flex", alignItems: "center"}}>
                 <GridItem colSpan={1} p={2}>
@@ -214,14 +219,14 @@ function PicksContainer() {
                 />
                 <InputRightElement width="4.5rem">
                   <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={handleOrderConfirmation}>
-                    <Text color="white" style={{fontSize: "0.5rem"}}>{applied ? "Applied!" : "Apply"}</Text>
+                    <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
                   </Button>
                 </InputRightElement>
               </InputGroup>
               <Box mt={10}>
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
-                  { locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                  <Text color="white">Lock In My Picks</Text>
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={handleSubmitPicks}>
+                  { state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
+                  { state.locked ? <Text color="white">Picks locked in</Text> : <Text color="white">Lock in my picks</Text> }
                 </Button>
               </Box>
               </Container>

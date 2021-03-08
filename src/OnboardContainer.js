@@ -70,7 +70,7 @@ function OnboardContainer({history}) {
             justify={`center`} 
           >
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
-            <Text color="white" >Place your picks for March Madness, earn points, win prizes</Text>
+            <Text color="white" >Make your picks, build your streaks, win legendary rewards</Text>
             <Container>
               <SignUpDrawer />
               <SignInDrawer />
