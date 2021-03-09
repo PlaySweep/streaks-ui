@@ -77,7 +77,7 @@ function StatsContainer({history}) {
         <Button mt={5} size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={() => history.push(`/prizing`)}>
           <Text color="white" fontSize={`xs`} >Cash Out For Prizes</Text>
         </Button>
-        <PopupWidget type={`order`} buttonText={`Bonus Drizly Point`} />
+        <PopupWidget type={`order`} buttonText={`Bonus Drizly Point`} buttonSize={`md`} textSize={`xs`} />
       </Box>
     </Box>
     </>

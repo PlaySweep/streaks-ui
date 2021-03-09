@@ -71,7 +71,7 @@ function OnboardContainer({history}) {
           >
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
             <Text color="white" >Make your picks, build your streaks, win legendary rewards</Text>
-            <Container>
+            <Container style={{margin: "1rem auto"}}>
               <SignUpDrawer />
               <SignInDrawer />
             </Container>

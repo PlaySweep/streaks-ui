@@ -189,10 +189,9 @@ function PicksContainer() {
                     <Text color="white" fontSize={`sm`}>5th Round</Text>
                   </Button>
                     <Countdown
-                      date={moment().add(30, 'minutes').add(5, 'seconds')._d}
+                      date={moment(round.start_time)._d}
                       renderer={renderCountdown}
                     />
-            
                   </Box>
                 </GridItem>
               </Grid>

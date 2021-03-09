@@ -46,7 +46,7 @@ const primaryButtonStyle = {
   textTransform: "uppercase"
 }
 
-function PopupWidget({type, buttonText}) {
+function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const [applied, setApplied] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -153,8 +153,8 @@ function PopupWidget({type, buttonText}) {
   if (type === "order") {
     return (
     <>
-      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth onClick={onOpen}>
-        <Text color="white" fontSize={`xs`} >{buttonText}</Text>
+      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={buttonSize} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth onClick={onOpen}>
+        <Text color="white" fontSize={textSize} >{buttonText}</Text>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

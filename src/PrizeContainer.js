@@ -17,7 +17,8 @@ import {
   Heading,
   Fade,
   Spinner,
-  Tag
+  Tag,
+  Link
 } from '@chakra-ui/react';
 
 import MenuDrawer from './MenuDrawer'
@@ -178,10 +179,14 @@ function PrizeContainer({history}) {
         <Box p={5}>
           <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Can't wait?</Heading>
           <Button mt={5} size={`lg`} variant="outline" style={buttonStyle} isFullWidth>
-            <Text color="white" fontSize={`sm`} >See more Legandary Rewards</Text>
+            <Link color="white" fontSize={`sm`} href="https://www.budlight.com/en/legends.html" isExternal>
+              See more Legendary Rewards
+            </Link>
           </Button>
           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>
-            <Text color="white" fontSize={`sm`} >Order on Drizly</Text>
+            <Link color="white" fontSize={`sm`} href="https://www.budlight.com/en/legends.html" isExternal>
+              Order on Drizly
+            </Link>
           </Button>
           <Text mt={10} mb={5} color="white" fontSize={`md`} style={{textAlign: "center", textDecoration: "underline", textTransform: "uppercase"}} onClick={() => history.push(`/dashboard`)}>Continue Streak</Text>
         </Box>
