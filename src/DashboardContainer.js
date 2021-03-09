@@ -55,7 +55,7 @@ function DashboardContainer() {
       })
     })
 
-  }, [state])
+  }, [])
 
   function updatePlayedCards(playedCardId) {
     setState({ 
