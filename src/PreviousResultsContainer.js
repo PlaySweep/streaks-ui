@@ -108,9 +108,9 @@ function PreviousResultsContainer() {
       {({user, round}) => (
         <>  
         <Text color="white" fontSize="xs" mt={3} style={{textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>Review previous rounds</Text>
-        <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
+        <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false} size={`md`}>
           <DrawerOverlay>
-            <DrawerContent style={drawerContentStyle}>
+            <DrawerContent style={drawerContentStyle} >
               <DrawerCloseButton color={"#fff"}/>
               <DrawerBody>
               <Container mb={5}>

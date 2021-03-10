@@ -179,7 +179,7 @@ function PicksContainer() {
         <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
           { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
         </Button>
-        <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
+        <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false} size={`md`} >
           <DrawerOverlay>
             <DrawerContent style={drawerContentStyle}>
               <DrawerCloseButton color={"#fff"}/>
