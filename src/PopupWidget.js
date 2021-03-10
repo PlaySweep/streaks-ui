@@ -25,8 +25,9 @@ import {
   Link,
   SimpleGrid
 } from '@chakra-ui/react';
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, createStandaloneToast } from "@chakra-ui/react";
 import { FiInfo, FiShare, FiFacebook, FiTwitter, FiInstagram } from "react-icons/fi";
+import { FaCheckCircle } from "react-icons/fa";
 import { IoIosText } from "react-icons/io";
 
 const buttonStyle = {
@@ -47,8 +48,29 @@ const primaryButtonStyle = {
 }
 
 function PopupWidget({type, buttonText, buttonSize, textSize}) {
-  const [applied, setApplied] = useState(false)
+  const [state, setState] = useState({applied: false, drizly_order_id: ""})
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  function handleOrderConfirmation() {
+    const toast = createStandaloneToast()
+    toast({
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+      render: () => (
+        <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
+        </Box>
+      ),
+    })
+    setState({...state, applied: true, drizly_order_id: ""})
+  }
+
+  function handleOnChange(e) {
+    const value = e.target.value
+    setState({...state, [e.target.name]: value})
+  }
 
   if (type === "order_info") {
     return (
@@ -63,8 +85,8 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             <Box pt={3} pb={3}>
               <VStack>
                 {/* <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/> */}
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter your order ID from your Drizly receipt and we will apply an extra bonus point to your Round.</Text>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Orders are process in around 24-48 hours.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter your order ID from your Drizly receipt and we will apply an extra Bonus Point to your Round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Expect your order to be confirmed in the next 24 hours.</Text>
               </VStack>
             </Box>
           </ModalBody>
@@ -90,7 +112,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             <Box pt={3} pb={3}>
               <VStack>
                 <Text color="white" size="lg" style={{textAlign: "center"}}>
-                Share your results from this round to earn 1 bonus point to be applied towards your score in the next round. This will not affect your score for the current round.
+                Share your results from this round to earn 1 Bonus Point to be applied towards your score in the next round.
                 </Text>
               </VStack>
             </Box>
@@ -172,15 +194,18 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
 
           <ModalFooter mt={2} mb={5}>
             <InputGroup size="md">
-              <Input
-                pr="4.5rem"
-                variant="filled" 
-                style={{color: "white", background: "rgba(16, 40, 100, 0.25)"}}
-                placeholder="Enter Drizly Order ID"
-              />
+                <Input
+                  pr="4.5rem"
+                  variant="filled"
+                  name="drizly_order_id"
+                  style={{color: "white", background: "rgba(16, 40, 100, 0.25)"}}
+                  placeholder="Enter Drizly Order ID"
+                  value={state.drizly_order_id}
+                  onChange={handleOnChange}
+                />
               <InputRightElement width="4.5rem">
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={() => setApplied(true)}>
-                  <Text color="white" style={{fontSize: "0.5rem"}}>{applied ? "Applied!" : "Apply"}</Text>
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={handleOrderConfirmation}>
+                  <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
                 </Button>
               </InputRightElement>
             </InputGroup>

@@ -35,7 +35,7 @@ export const DashboardContext = createContext({})
 
 function DashboardContainer() {
   let authToken = store.get('auth_token')
-  const [state, setState] = useState({loading: true})
+  const [state, setState] = useState({loading: true, changed: 0})
   const apiUrl = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
     timeout: 2500,
@@ -44,7 +44,7 @@ function DashboardContainer() {
       Authorization: authToken,
     },
   })
-  
+
   useEffect(() => {
     apiUrl.get(`v1/users/${jwt_decode(authToken).user_id}`).then((response) => {
       const user = response.data.user
@@ -54,26 +54,21 @@ function DashboardContainer() {
         setState({...state, updatePlayedCards: updatePlayedCards, user: user, round: round, loading: false})
       })
     })
+  }, [state.changed])
 
-  }, [])
-
-  function updatePlayedCards(playedCardId) {
-    setState({ 
-      ...state, 
+  function updatePlayedCards(playedCard) {
+    setState(state => ({ 
+      ...state, changed: state.changed += 1, 
       user: {
           ...state.user,
-          played_card_ids: state.user.played_card_ids?.concat(playedCardId)
+          played_cards: state.user.played_cards?.concat(playedCard)
       } 
     })
+    )
   }
 
   if (state.loading) {
     return <></>
-  }
-
-  if (jwt_decode(authToken).exp < moment().unix()) {
-    store.set('auth_token', null)
-    return <Redirect to={`/`} />
   }
 
   if (Object.keys(state.user).length > 0) {
@@ -91,7 +86,7 @@ function DashboardContainer() {
           <Box style={{margin: "2.5rem auto 0 auto", textAlign: "center"}}>
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
             <Text mt={3} mb={3} color="white" style={{width: "100%",fontWeight: "500"}}>Pick 3 out of 5 correct each round to earn a streak. Redeem streaks for legendary rewards like free beer for a year, 2022 tickets & more</Text>
-            <SvgWidget userId={state.user.id} round={state.round} width={`266`} height={`214`}/>
+            <SvgWidget roundId={state.round.id} width={`266`} height={`214`} />
           </Box>
           </Container>
           <Container>

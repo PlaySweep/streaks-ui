@@ -23,6 +23,8 @@ import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
 
+import { DashboardContext } from './DashboardContainer';
+
 import axios from 'axios';
 
 const buttonStyle = {
@@ -123,10 +125,10 @@ const paths = [
 
 const store = require('store');
 
-export const DashboardContext = createContext({})
-
-function SvgWidget({userId, round, height, width}) {
+function SvgWidget({height, width}) {
   const [state, setState] = useState({loading: true, paths: paths})
+  const contextValue = useContext(DashboardContext)
+
   let authToken = store.get('auth_token')
   const apiUrl = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -137,10 +139,7 @@ function SvgWidget({userId, round, height, width}) {
     },
   })
   useEffect(() => {
-    apiUrl.get(`v1/users/${userId}/cards`).then((response) => {
-      const played_cards = response.data.cards
-      setState({...state, loading: false, played_cards: played_cards})
-    })
+    setState({...state, loading: false})
   }, [])
 
   if (state.loading) {
@@ -159,7 +158,7 @@ function SvgWidget({userId, round, height, width}) {
           return (
             <Fragment key={index}>
              <path d={svg.text} fill="white"/>
-             <path d={svg.path} stroke={state.played_cards[index]?.round.status === "pending" ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={state.played_cards[index]?.round.status === "complete" ? state.played_cards[index].status !== "pending" && state.played_cards[index].status === "win" ? "#398FD6" : "#EB5757" : null }/> 
+             <path d={svg.path} stroke={contextValue.user.played_cards && contextValue.user.played_cards[index]?.round.status === "pending" ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={contextValue.user.played_cards && contextValue.user.played_cards[index]?.round.status === "complete" ? contextValue.user.played_cards && contextValue.user.played_cards[index].status !== "pending" && contextValue.user.played_cards && contextValue.user.played_cards[index].status === "win" ? "#398FD6" : "#EB5757" : null }/> 
             </Fragment>
           )
         })}

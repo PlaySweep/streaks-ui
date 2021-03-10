@@ -27,6 +27,7 @@ import SvgWidget from './SvgWidget'
 import StatsContainer from './StatsContainer';
 import LeaderboardContainer from './LeaderboardContainer';
 import CallToActionWidget from './CallToActionWidget';
+import Dots from './Dots'
 
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -67,38 +68,55 @@ const redeemButtonStyle = {
 }
 
 function PrizeContainer({history}) {
-  const [state, setState] = useState({loading: true})
+  let authToken = store.get('auth_token')
+  const [state, setState] = useState({
+    loading: true, 
+    filter: 2, 
+    selectedRewardIndex: 0,
+    selectedPrizeIndex: 0
+  })
   const apiUrl = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
-    timeout: 2500
+    timeout: 2500,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authToken,
+    },
   })
 
   useEffect(() => {
-    let authToken = store.get('auth_token')
     let decoded_user = jwt_decode(authToken)
-    // apiUrl.get(`prizes`).then((response) => {
-    //   setState({...state, prizes: response.data.prizes})
-    // })
-    const prizes = [{ title: "Highest Streak", description: "Free Beer For A Year" }, { title: "5 out of 5", description: "Tickets to Final Four" }, { title: "Highest Streak Round 1", description: "Bud Light T-Shirt" }]
-    const rewards = [{ title: "Highest Streak", description: "Free Beer For A Year" }, { title: "5 out of 5", description: "Tickets to Final Four" }, { title: "Highest Streak Round 1", description: "Bud Light T-Shirt" }]
-    setState({...state, loading: false, apiUrl: apiUrl, user: decoded_user, prizes: prizes, rewards: rewards})
+    apiUrl.get(`v1/prizes`).then((response) => {
+      const rewards = [{ title: "6 out of 6 Streaks", description: "Free Beer For A Year" }, { title: "5 out of 5", description: "Tickets to Final Four" }]
+      setState({...state, loading: false, apiUrl: apiUrl, user: decoded_user, prizes: response.data.prizes, rewards: rewards})
+    })
   }, [])
 
+  function handleFilter(e) {
+    const selectedFilter = e.target.dataset.tag
+    setState({...state, filter: parseInt(selectedFilter), selectedPrizeIndex: 0})
+  }
+
+  function handleRewardSwipe(currentIndex) {
+    console.log({currentIndex})
+    setState({...state, selectedRewardIndex: currentIndex})
+  }
+
+  function handlePrizeSwipe(currentIndex) {
+    setState({...state, selectedPrizeIndex: currentIndex})
+  }
+
   const styles = {
-    root: {
-      margin: "0.25rem 0",
-      paddingRight: '125px',
-    },
-    slideContainer: {
-      
-    },
     slide: {
-      paddingRight: "10px",
-      width: "85%",
+      width: "98%",
       minHeight: 100,
       color: '#fff',
     }
   };
+
+  const selectedFilterStyles = { color: "#fff", border: "1px solid #398FD6", background: "#0D40A0", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem" }
+  const filterStyles = { color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem" }
+  const filteredPrizes = state.prizes?.filter(prize => prize.level === state.filter)
 
   if (state.loading) {
     return <Spinner color={`blue.900`}/>
@@ -128,44 +146,45 @@ function PrizeContainer({history}) {
             <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "100%",fontWeight: "500"}}>Cash out your points and streaks to win awesome Bud Light merch and other prizes</Text>
           </Box>
         </Container>
+        
         <Box p={5} >
-          <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Top Prizes</Heading>
-          <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer}>
-            { state?.prizes?.map((prize, index) => {
-              return (
-                <div key={index} style={Object.assign({}, styles.slide)}>
-                  <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
-                    <VStack>
-                      <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.title}</Heading>
-                      <Image boxSize="85px" src="https://streaks-challenge.s3.amazonaws.com/prizes/prize6.png" alt="Highest Streak" />
-                      <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{prize.description}</Text>
-                    </VStack>
-                  </Box>
-                </div>
-              )
-            }) }
-          </SwipeableViews>
-        </Box>
-        <Box p={5} >
-          <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Redeem Your Streak</Heading>
-            <Box mt={2} mb={5}>
-              <Text color="white" fontSize={`xs`} style={{display: "inline-block", marginRight: "10px", fontWeight: "700"}}>Select Streak</Text>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "#0D40A0", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>1</Tag>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>2</Tag>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>3</Tag>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>4</Tag>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>5</Tag>
-              <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem"}}>6</Tag>
-            </Box>
-            
-            <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer}>
+          <Heading mt={2} mb={2} color="white" size="md" style={{fontWeight: "800"}}>Top Prizes</Heading>
+            <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer} onChangeIndex={handleRewardSwipe}>
               { state?.rewards?.map((reward, index) => {
                 return (
                   <div key={index} style={Object.assign({}, styles.slide)}>
                     <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                       <VStack>
-                        <Image boxSize="85px" src="https://streaks-challenge.s3.amazonaws.com/prizes/prize6.png" alt="Highest Streak" />
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{reward.title}</Heading>
+                        <Image height={`75px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" alt="Highest Streak" />
+                        
+                        {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
+                      </VStack>
+                    </Box>
+                  </div>
+                )
+              }) }
+            </SwipeableViews>
+            <Dots selectedIndex={state.selectedRewardIndex} dotCount={state.rewards?.length} />
+        </Box>
+        <Box p={5} >
+          <Heading color="white" size="md" style={{fontWeight: "800"}}>Redeem Your Streak</Heading>
+            <Box mt={2} mb={5} >
+              <Text color="white" fontSize={`xs`} style={{display: "inline-block", marginRight: "10px", fontWeight: "700"}}>Select Streak</Text>
+              <Tag data-tag={2} style={state.filter === 2 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>2</Tag>
+              <Tag data-tag={3} style={state.filter === 3 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>3</Tag>
+              <Tag data-tag={4} style={state.filter === 4 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>4</Tag>
+              <Tag data-tag={5} style={state.filter === 5 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>5</Tag>
+              <Tag data-tag={6} style={state.filter === 6 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>6</Tag>
+            </Box>
+            <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer} onChangeIndex={handlePrizeSwipe}>
+              { filteredPrizes.map((prize, index) => {
+                return (
+                  <div key={index} style={Object.assign({}, styles.slide)}>
+                    <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
+                      <VStack>
+                        <Image src={prize.image_url} alt="Highest Streak" height={`75px`} width={`auto`}/>
+                        <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
                       <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "#0D40A0", fontWeight: "700", fontSize: "0.5rem", textTransform: "uppercase", height: "10px", padding: "0.5rem 0.5rem", margin: "0.75rem 0.25rem 0 0.25rem"}}>Redeem</Tag>
                       </VStack>
@@ -174,6 +193,7 @@ function PrizeContainer({history}) {
                 )
               }) }
             </SwipeableViews>
+            <Dots selectedIndex={state.selectedPrizeIndex} dotCount={filteredPrizes.length} />
         </Box>
         <Container style={{background: "rgb(17, 30, 75)"}}>
         <Box p={5}>
@@ -184,7 +204,7 @@ function PrizeContainer({history}) {
             </Link>
           </Button>
           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>
-            <Link color="white" fontSize={`sm`} href="https://www.budlight.com/en/legends.html" isExternal>
+            <Link color="white" fontSize={`sm`} href="https://drizly.com/" isExternal>
               Order on Drizly
             </Link>
           </Button>

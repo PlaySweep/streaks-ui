@@ -39,7 +39,7 @@ const selectedButtonStyle = {
   backgroundColor: "#0D40A0"
 }
 
-function MatchupShow({id, order, description, selections, addPickFunc}) {
+function MatchupShow({id, order, description, selections, addPickFunc, disabled}) {
   const [state, setState] = useState({ matchup_id: id, selected_id: null })
 
   function handleSelected(selectedId) {
@@ -71,9 +71,9 @@ function MatchupShow({id, order, description, selections, addPickFunc}) {
                   size={`md`} 
                   variant="outline" 
                   mb={5} 
-                  style={state.selected_id === selection.id ? selectedButtonStyle : secondaryButtonStyle} 
+                  style={state.selected_id === selection.id || selection.selected ? selectedButtonStyle : secondaryButtonStyle} 
                   isFullWidth
-                  onClick={() => handleSelected(selection.id)}
+                  onClick={!disabled ? () => handleSelected(selection.id) : null}
                 >
                   <Text color="white" style={{fontSize: "0.75rem"}}>{selection.description}</Text>
                 </Button>

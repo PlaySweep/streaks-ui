@@ -48,9 +48,7 @@ const drawerContentStyle = {
 
 function RoundCard() {
   const [state, setState] = useState({})
-  useEffect(() => {
-    
-  })
+  
   return (
     <DashboardContext.Consumer>
       {({user, round}) => (
@@ -66,9 +64,9 @@ function RoundCard() {
               isTruncated
             >
             <Heading mt={0} style={{textAlign: "center"}} color="white" size="md">Streak Scenarios</Heading>
-            { user.played_card_ids.includes(round.id) ? <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaCheckCircle style={{color: "green", display: "inline-flex"}}/> Picks have been selected</Text> : <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaInfoCircle style={{color: "#DD6937", display: "inline-flex"}}/> Select your picks by {moment(round.start_time).tz('America/New_York').format('M/DD h:mm z')}</Text>}
+            { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaCheckCircle style={{color: "green", display: "inline-flex"}}/> Picks have been selected</Text> : <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaInfoCircle style={{color: "#DD6937", display: "inline-flex"}}/> Select your picks by {moment(round.start_time).tz('America/New_York').format('M/DD h:mma z')}</Text>}
             <PicksContainer />
-            { user.played_card_ids.length >= 1 ? <PreviousResultsContainer /> : null }
+            { user.played_cards?.find(card => card.round.id === round.id) && user.played_cards?.find(card => card.round.id === round.id).status !== "pending" ? <PreviousResultsContainer /> : null }
             </Box>
           </Box>
         </Box>

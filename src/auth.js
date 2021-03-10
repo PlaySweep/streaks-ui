@@ -1,6 +1,9 @@
 // Data fetching
 import axios from 'axios'
 
+import jwt_decode from "jwt-decode";
+import moment from 'moment';
+
 // Store
 const store = require('store');
 
@@ -30,6 +33,17 @@ class Auth {
       return true
     }
     return false
+  }
+
+  isExpired() {
+    let authToken = store.get('auth_token')
+    if (authToken) {
+      if (jwt_decode(authToken).exp < moment().unix()) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 }
 

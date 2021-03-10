@@ -80,7 +80,7 @@ const drawerContentStyle = {
 
 function PicksContainer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [state, setState] = useState({selections: [], applied: false, locked: false})
+  const [state, setState] = useState({selections: [], applied: false, locked: false, drizly_order_id: ""})
   const contextValue = useContext(DashboardContext)
 
   let authToken = store.get('auth_token')
@@ -93,6 +93,11 @@ function PicksContainer() {
     },
   })
 
+  function handleOnChange(e) {
+    const value = e.target.value
+    setState({...state, [e.target.name]: value})
+  }
+
   function handleOrderConfirmation() {
     const toast = createStandaloneToast()
     toast({
@@ -102,11 +107,11 @@ function PicksContainer() {
       position: "top",
       render: () => (
         <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
-          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're processing your order now.</Text>
+          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
         </Box>
       ),
     })
-    setState({...state, applied: true})
+    setState({...state, applied: true, drizly_order_id: ""})
   }
 
   function handleAddPick(selectionObj) {
@@ -133,7 +138,7 @@ function PicksContainer() {
             round_id: contextValue.round.id
           }).then((response) => {
             console.log("✅ Round Successfully Played!")
-            contextValue.updatePlayedCards(response.data.card.id)
+            contextValue.updatePlayedCards(response.data.card)
             setState({...state, locked: true})
           }).catch((error) => {
             console.log("❌ Something went wrong with your round.")
@@ -172,8 +177,7 @@ function PicksContainer() {
       {({user, round})=> (
         <>
         <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
-          
-          { user.played_card_ids.includes(round.id) ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
+          { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
         </Button>
         <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay>
@@ -196,7 +200,7 @@ function PicksContainer() {
                 </GridItem>
               </Grid>
               { round.matchups.map((matchup) => {
-                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick}/>
+                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={state.locked || user.played_cards?.find(card => card.round.id === round.id)}/>
               })}
               <Grid templateColumns="repeat(6, 1fr)" mt={5} style={{display: "flex", alignItems: "center"}}>
                 <GridItem colSpan={1} p={2}>
@@ -212,9 +216,12 @@ function PicksContainer() {
               <InputGroup size="md">
                 <Input
                   pr="4.5rem"
-                  variant="filled" 
+                  variant="filled"
+                  name="drizly_order_id"
                   style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}}
                   placeholder="Enter Drizly Order ID"
+                  value={state.drizly_order_id}
+                  onChange={handleOnChange}
                 />
                 <InputRightElement width="4.5rem">
                   <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={handleOrderConfirmation}>
@@ -223,9 +230,9 @@ function PicksContainer() {
                 </InputRightElement>
               </InputGroup>
               <Box mt={10}>
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={handleSubmitPicks}>
-                  { state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                  { state.locked ? <Text color="white">Picks locked in</Text> : <Text color="white">Lock in my picks</Text> }
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
+                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
+                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
                 </Button>
               </Box>
               </Container>

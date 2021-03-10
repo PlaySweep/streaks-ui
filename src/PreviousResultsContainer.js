@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Button,
   Container,
@@ -38,6 +38,10 @@ import { FaCheckCircle } from "react-icons/fa";
 
 import { DashboardContext } from './DashboardContainer';
 
+import axios from 'axios';
+
+const store = require('store');
+
 const primaryButtonStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
@@ -55,6 +59,13 @@ const secondaryButtonStyle = {
   textTransform: "uppercase"
 }
 
+const selectedButtonStyle = {
+  border: "2.5px solid #90D5FB",
+  boxShadow: "0 0 5px #90d5fb",
+  textTransform: "uppercase",
+  backgroundColor: "#0D40A0"
+}
+
 const cardStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
@@ -68,46 +79,29 @@ const drawerContentStyle = {
 }
 
 function PreviousResultsContainer() {
+  let authToken = store.get('auth_token')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [selected_index, setSelectedIndex] = useState(0)
+  const [state, setState] = useState({loading: true, selected_index: 0})
+  const contextValue = useContext(DashboardContext)
+    const apiUrl = axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    timeout: 2500,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authToken,
+    },
+  })
 
-  const events = [
-    {
-      id: 1, order: 1, description: "Who will win?", options: [{id: 1, order: 1, description: "UNC"}, {id: 2, order: 2, description: "Duke"}]
-    },
-    { 
-      id: 2, order: 2, description: "OSU win vs University of Michigan win", options: [{id: 3, order: 1, description: "OSU win"}, {id: 4, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 3, order: 3, description: "OSU win vs University of Michigan win", options: [{id: 5, order: 1, description: "OSU win"}, {id: 6, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 4, order: 4, description: "OSU win vs University of Michigan win", options: [{id: 7, order: 1, description: "OSU win"}, {id: 8, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 5, order: 5, description: "OSU win vs University of Michigan win", options: [{id: 9, order: 1, description: "OSU win"}, {id: 10, order: 2, description: "U. Michigan"}]
-    },
-  ]
+  useEffect(() => {
+    apiUrl.get(`v1/users/${contextValue.user.id}/cards`).then((response) => {
+      const played_cards = response.data.cards
+      setState({...state, loading: false, played_cards: played_cards})
+    })
+  }, [])
 
-  const events2 = [
-    {
-      id: 1, order: 1, description: "Who will lose the game?", options: [{id: 1, order: 1, description: "UNC"}, {id: 2, order: 2, description: "Duke"}]
-    },
-    { 
-      id: 2, order: 2, description: "OSU win vs University of Michigan win", options: [{id: 3, order: 1, description: "OSU win"}, {id: 4, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 3, order: 3, description: "Will Baylor score more than 35 points?", options: [{id: 5, order: 1, description: "OSU win"}, {id: 6, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 4, order: 4, description: "OSU win vs University of Michigan win", options: [{id: 7, order: 1, description: "OSU win"}, {id: 8, order: 2, description: "U. Michigan"}]
-    },
-    { 
-      id: 5, order: 5, description: "OSU win vs University of Michigan win", options: [{id: 9, order: 1, description: "OSU win"}, {id: 10, order: 2, description: "U. Michigan"}]
-    },
-  ]
-
-  const rounds = [{id: 1, name: "1st", events: events}, {id: 2, name: "2nd", events: events2}]
+  if (state.loading) {
+    return <div>Loading</div>
+  }
   
   return (
     <DashboardContext.Consumer>
@@ -129,38 +123,39 @@ function PreviousResultsContainer() {
                     </Box>
                   </GridItem>
                 </Grid>
-                <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setSelectedIndex(index)}>
+                <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index})}>
                   <TabList style={{border: "none"}}>
-                    { rounds.map((round, index) => <Tab key={index} style={selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{round.name}</Tab> )}
+                    { state.played_cards?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
                   </TabList>
-                  <Box mt={5} mb={5} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
-                    <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> 5 out of 5 correct</Heading>
-                  </Box>
+                  
                   <TabPanels>
-                    { rounds.map((round) => {
+                    { state.played_cards?.map((card) => {
                       return (
-                        <TabPanel key={round.id}>
-                        { round.events.map((event) => {
-                          return (
-                              <Grid
-                              key={event.id}
+                        <TabPanel key={card.id}>
+                            <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
+                              <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {card.score} out of 5 correct</Heading>
+                            </Box>
+                          { card.round?.matchups?.map((matchup) => {
+                            return (
+                            <Grid
+                              key={matchup.id}
                               h="auto"
                               templateColumns="repeat(6, 1fr)"
                               gap={3}
                             >
                               <GridItem colSpan={0.5} >
                                 <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", top: "3px", fontWeight: "800"}}>
-                                  {event.order}
+                                  {matchup.order}
                                 </Tag>
                               </GridItem>
                               <GridItem colSpan={5} >
-                                <Text color={`#fff`} mb={2} fontSize={`sm`}>{event.description}</Text>
+                                <Text color={`#fff`} mb={2} fontSize={`sm`}>{matchup.description}</Text>
                                 <Wrap>
-                                  { event.options.map((option) => {
+                                  { matchup.selections.map((selection) => {
                                     return (
-                                      <WrapItem key={option.id} style={{flex: "1"}}>
-                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`sm`} variant="outline" mb={5} style={secondaryButtonStyle} isFullWidth>
-                                          <Text color="white" style={{fontSize: "0.5rem"}}>{option.description}</Text>
+                                      <WrapItem key={selection.id} style={{flex: "1"}}>
+                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`sm`} variant="outline" mb={5} style={selection.selected ? selectedButtonStyle : secondaryButtonStyle} isFullWidth>
+                                          <Text color="white" style={{fontSize: "0.5rem"}}>{selection.description}</Text>
                                         </Button>
                                       </WrapItem>
                                     )
@@ -168,8 +163,8 @@ function PreviousResultsContainer() {
                                 </Wrap>
                               </GridItem>
                             </Grid>
-                          )
-                        })}
+                            )
+                          })}
                         </TabPanel>
                       )
                     })}

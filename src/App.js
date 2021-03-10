@@ -11,6 +11,8 @@ import WelcomeContainer from './WelcomeContainer'
 import DashboardContainer from './DashboardContainer'
 import PrizeContainer from './PrizeContainer'
 
+import { OpenRoute, ProtectedRoute } from './routes'
+
 function App() {
 
   return (
@@ -18,9 +20,15 @@ function App() {
       <Router>
         <ScrollToTop />
         <Switch>
-          <Route exact path="/prizing" component={PrizeContainer} />
-          <Route exact path="/dashboard" component={DashboardContainer} />
-          <Route exact path="/welcome" component={WelcomeContainer} />
+          <ProtectedRoute exact path='/prizing' component={() => 
+            <PrizeContainer /> } 
+          />
+          <ProtectedRoute exact path='/dashboard' component={() => 
+            <DashboardContainer /> } 
+          />
+          <ProtectedRoute exact path='/welcome' component={() => 
+            <WelcomeContainer /> } 
+          />
           <Route exact path="/" component={OnboardContainer} />
         </Switch>
       </Router>

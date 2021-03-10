@@ -66,24 +66,24 @@ function SignInDrawer({history}) {
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody>
             <Box p={5}>
-            <Heading mt={0} mb={10} style={{textAlign: "center"}} color="white">Sign in</Heading>
+            <Heading style={{textAlign: "center"}} color="white">Sign in</Heading>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input name="email" type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="lg" onChange={handleOnChange}/>
+              <Input name="email" type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="md" onChange={handleOnChange}/>
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input name="password" type="password" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="lg" onChange={handleOnChange}/>
+              <Input name="password" type="password" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="md" onChange={handleOnChange}/>
             </InputGroup>
-            <Text color="white" fontSize="xs" mt={5} mb={10} style={{textTransform: "uppercase", textAlign: "center"}}>Forgot password?</Text>
-            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={2} style={buttonStyle} isFullWidth onClick={handleSignIn}>
-              <Text color="white">Sign in</Text>
+            {/* <Text color="white" fontSize="xs" mb={7} style={{textTransform: "uppercase", textAlign: "center"}}>Forgot password?</Text> */}
+            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={2} style={buttonStyle} isFullWidth onClick={handleSignIn}>
+              <Text color="white" fontSize={`sm`}>Sign in</Text>
             </Button>
             <Text color="white" fontSize="xs" m={2} style={{textTransform: "uppercase", textAlign: "center"}} onClick={onClose}>New here? Create an account</Text>
             </Box>
