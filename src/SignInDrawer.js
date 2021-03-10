@@ -72,7 +72,7 @@ function SignInDrawer({history}) {
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input name="email" type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="md" onChange={handleOnChange}/>
+              <Input name="email" type="email" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="md" onChange={handleOnChange}/>
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
