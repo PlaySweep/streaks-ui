@@ -32,6 +32,7 @@ const cardStyle = {
   boxShadow: "0 0 5px #90d5fb",
   background: "#111e4b",
   position: "relative",
+  margin: "0 auto 1.5rem auto"
 }
 
 const drawerContentStyle = { 
@@ -44,10 +45,6 @@ const drawerContentStyle = {
 
 function CallToActionWidget({type, buttonText}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  function handleSignIn() {
-    
-  }
   
   return (
     <>

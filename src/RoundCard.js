@@ -35,7 +35,8 @@ const cardStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
   background: "#111e4b",
-  position: "relative"
+  position: "relative",
+  margin: "0 auto"
 }
 
 const drawerContentStyle = { 
@@ -43,7 +44,7 @@ const drawerContentStyle = {
   border: "2.5px solid #90D5FB",
   borderBottom: "none",
   boxShadow: "0 0 5px #90d5fb",
-  borderRadius: "15px 15px 0 0"
+  borderRadius: "15px 15px 0 0",
 }
 
 function RoundCard() {
