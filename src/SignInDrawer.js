@@ -12,10 +12,13 @@ import {
   InputGroup,
   InputLeftElement,
   Box,
-  Text
+  Text,
+  Spinner
 } from '@chakra-ui/react';
 import { useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
+
+import LoadingWidget from './LoadingWidget';
 
 import auth from './auth'
 
@@ -35,7 +38,7 @@ const drawerContentStyle = {
 
 function SignInDrawer({history}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [state, setState] = useState({email: null, password: null})
+  const [state, setState] = useState({submitting: false, email: null, password: null})
 
   const isValidEmail = (email) => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -43,7 +46,9 @@ function SignInDrawer({history}) {
   };
 
   const handleSignIn = () => {
+    setState({...state, submitting: true})
     auth.authenticate(state.email, state.password).then(() => {
+      setState({...state, submitting: false})
       history.push(`/dashboard`)
     }).catch((error) => {
       alert('error!')
@@ -54,6 +59,8 @@ function SignInDrawer({history}) {
     const value = e.target.value
     setState({...state, [e.target.name]: value})
   }
+
+  let form_completed = state.email && state.password
   
   return (
     <>
@@ -65,6 +72,9 @@ function SignInDrawer({history}) {
         <DrawerContent style={drawerContentStyle}>
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody>
+            { state.submitting ? <LoadingWidget>
+              <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} />
+            </LoadingWidget> : null }
             <Box p={5}>
             <Heading style={{textAlign: "center"}} color="white">Sign in</Heading>
             <InputGroup mt={5} mb={5}>
@@ -72,17 +82,17 @@ function SignInDrawer({history}) {
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input name="email" type="email" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="md" onChange={handleOnChange}/>
+              <Input disabled={state.submitting} name="email" type="email" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Email" size="md" onChange={handleOnChange}/>
             </InputGroup>
             <InputGroup mt={5} mb={5}>
               <InputLeftElement
                 pointerEvents="none"
                 children={<CalendarIcon color="white" />}
               />
-              <Input name="password" type="password" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="md" onChange={handleOnChange}/>
+              <Input disabled={state.submitting} name="password" type="password" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Password" size="md" onChange={handleOnChange}/>
             </InputGroup>
             {/* <Text color="white" fontSize="xs" mb={7} style={{textTransform: "uppercase", textAlign: "center"}}>Forgot password?</Text> */}
-            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={2} style={buttonStyle} isFullWidth onClick={handleSignIn}>
+            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={2} style={buttonStyle} isFullWidth disabled={state.submitting || !form_completed} onClick={handleSignIn}>
               <Text color="white" fontSize={`sm`}>Sign in</Text>
             </Button>
             <Text color="white" fontSize="xs" m={2} style={{textTransform: "uppercase", textAlign: "center"}} onClick={onClose}>New here? Create an account</Text>

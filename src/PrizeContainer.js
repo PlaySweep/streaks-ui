@@ -28,6 +28,7 @@ import StatsContainer from './StatsContainer';
 import LeaderboardContainer from './LeaderboardContainer';
 import CallToActionWidget from './CallToActionWidget';
 import Dots from './Dots'
+import LoadingWidget from './LoadingWidget'
 
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -119,7 +120,7 @@ function PrizeContainer({history}) {
   const filteredPrizes = state.prizes?.filter(prize => prize.level === state.filter)
 
   if (state.loading) {
-    return <Spinner color={`blue.900`}/>
+    return <LoadingWidget><Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /></LoadingWidget>
   }
 
   if (state.user.exp < moment().unix()) {
@@ -175,7 +176,6 @@ function PrizeContainer({history}) {
               <Tag data-tag={3} style={state.filter === 3 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>3</Tag>
               <Tag data-tag={4} style={state.filter === 4 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>4</Tag>
               <Tag data-tag={5} style={state.filter === 5 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>5</Tag>
-              <Tag data-tag={6} style={state.filter === 6 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>6</Tag>
             </Box>
             <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer} onChangeIndex={handlePrizeSwipe}>
               { filteredPrizes.map((prize, index) => {

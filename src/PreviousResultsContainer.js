@@ -171,9 +171,9 @@ function PreviousResultsContainer() {
                   </TabPanels>
                 </Tabs>
               
-              <Box mt={10}>
-                <PopupWidget type={`share`} />
-              </Box>
+                <Box mt={10}>
+                  <PopupWidget type={`share`} />
+                </Box>
               </Container>
               </DrawerBody>
             </DrawerContent>

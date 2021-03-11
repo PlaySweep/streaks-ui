@@ -19,9 +19,18 @@ import {
   Tag,
   VStack,
   Container,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   Wrap,
   WrapItem,
-  Image
+  Spinner,
+  Image,
+  Link
 } from '@chakra-ui/react';
 import { useDisclosure, createStandaloneToast } from "@chakra-ui/react";
 
@@ -30,14 +39,17 @@ import PopupWidget from './PopupWidget'
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosLock, IoIosUnlock } from "react-icons/io";
-import { FiLock, FiUnlock, FiInfo } from "react-icons/fi";
+import { FiLock, FiUnlock, FiInfo, FiCheckCircle } from "react-icons/fi";
 
 import moment from "moment";
 import Countdown from "react-countdown";
 import axios from 'axios';
 
 import { DashboardContext } from './DashboardContainer';
-import MatchupShow from './MatchupShow'
+import MatchupShow from './MatchupShow';
+import LoadingWidget from './LoadingWidget';
+
+import Confetti from "react-confetti";
 
 const store = require('store');
 
@@ -80,7 +92,15 @@ const drawerContentStyle = {
 
 function PicksContainer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [state, setState] = useState({selections: [], applied: false, locked: false, drizly_order_id: ""})
+  const [state, setState] = useState({
+    selections: [], 
+    submitting: false, 
+    complete: false, 
+    finished: false,
+    applied: false, 
+    locked: false, 
+    drizly_order_id: ""
+  })
   const contextValue = useContext(DashboardContext)
 
   let authToken = store.get('auth_token')
@@ -125,6 +145,7 @@ function PicksContainer() {
   }
 
   function handleSubmitPicks() {
+    setState({...state, submitting: true})
     state.selections.forEach((selection, index) => {
       apiUrl.post(`v1/users/${contextValue.user.id}/picks`, {
         user_id: contextValue.user.id,
@@ -139,7 +160,12 @@ function PicksContainer() {
           }).then((response) => {
             console.log("✅ Round Successfully Played!")
             contextValue.updatePlayedCards(response.data.card)
-            setState({...state, locked: true})
+            setTimeout(() => {
+              setState({...state, locked: true, complete: true})
+            }, 1500);
+            setTimeout(() => {
+              setState({...state, submitting: false, complete: false, finished: true})
+            }, 1500)
           }).catch((error) => {
             console.log("❌ Something went wrong with your round.")
           })
@@ -184,13 +210,25 @@ function PicksContainer() {
             <DrawerContent style={drawerContentStyle}>
               <DrawerCloseButton color={"#fff"}/>
               <DrawerBody>
+              { state.finished ? <Confetti
+                height={`800px`}
+                recycle={false}
+                numberOfPieces={250}
+                gravity={0.15}
+                colors={[
+                  "rgb(6, 17, 72)",
+                  "rgb(0, 39, 145)",
+                  "rgb(0, 161, 225)",
+                  "rgb(255, 255, 255)",
+                ]}
+              /> : null }
               <Container mb={5}>
               <Grid h="auto" templateColumns="repeat(6, 1fr)" gap={4}>
                 <GridItem colSpan={6} style={{margin: "0 auto"}}>
                   <Image src="https://streaks-challenge.s3.amazonaws.com/legends_logo.png" alt="Legends Logo" height={`175px`} style={{margin: "0 auto"}}/>
                   <Box style={{position: "relative", bottom: "35px"}}>
                   <Button size={`md`} variant="outline" style={{ border: "2.5px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", textTransform: "uppercase", borderRadius: "50px"}} isFullWidth>
-                    <Text color="white" fontSize={`sm`}>5th Round</Text>
+                    <Text color="white" fontSize={`sm`}>{round.name}</Text>
                   </Button>
                     <Countdown
                       date={moment(round.start_time)._d}
@@ -213,7 +251,7 @@ function PicksContainer() {
                   <PopupWidget type={`order_info`}/>
                 </GridItem>
               </Grid>
-              <InputGroup size="md">
+              <InputGroup size="md" style={{zIndex: "0"}}>
                 <Input
                   pr="4.5rem"
                   variant="filled"
@@ -229,15 +267,41 @@ function PicksContainer() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <Box mt={10}>
+              <Box mt={10} >
                 <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
                   { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
                   { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
                 </Button>
               </Box>
               </Container>
+              { state.submitting ? 
+              <LoadingWidget>
+                { state.complete ? <FaCheckCircle color={`rgba(255, 255, 255)`} style={{fontSize: "2rem"}}/> : <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /> }
+              </LoadingWidget> : null }
+              { state.finished ? 
+              <Modal isCentered isOpen={state.finished} onClose={() => setState({...state, finished: false})}>
+              <ModalOverlay />
+                <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
+                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Your picks are in!</ModalHeader>
+                  <ModalCloseButton color={`rgb(17, 30, 75)`}/>
+                  <ModalBody >
+                    <Box pt={3} pb={3}>
+                      <VStack>
+                        <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
+                        <Text color="white" size="lg" style={{textAlign: "center"}}>You deserve a cold one</Text>
+                        <Button size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
+                          <Link color="white" fontSize={`xs`} href="https://www.drizly.com" isExternal>
+                            Order beer on Drizly
+                          </Link>
+                        </Button>
+                      </VStack>
+                    </Box>
+                  </ModalBody>
+                </ModalContent>
+              </Modal> : null }
               </DrawerBody>
             </DrawerContent>
+          
           </DrawerOverlay>
         </Drawer>
         </>

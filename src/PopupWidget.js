@@ -99,9 +99,9 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   if (type === "share") {
     return (
     <>
-      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
+      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
         <FiShare color="white" style={{marginRight: "5px"}}/>
-        <Text color="white">Share my results</Text>
+        <Text fontSize={textSize} color="white">{ buttonText }</Text>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

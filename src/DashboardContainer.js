@@ -17,6 +17,7 @@ import SvgWidget from './SvgWidget'
 import StatsContainer from './StatsContainer';
 import LeaderboardContainer from './LeaderboardContainer';
 import CallToActionWidget from './CallToActionWidget';
+import PopupWidget from './PopupWidget';
 
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
@@ -62,7 +63,7 @@ function DashboardContainer() {
       user: {
           ...state.user,
           played_cards: state.user.played_cards?.concat(playedCard)
-      } 
+      }
     })
     )
   }
@@ -94,8 +95,9 @@ function DashboardContainer() {
           </Container>
           <StatsContainer />
           <LeaderboardContainer />
-          <Container style={{background: "rgb(17, 30, 75)"}}>
+          <Container pb={5} style={{background: "rgb(17, 30, 75)"}}>
             <CallToActionWidget type={`partner_link`} buttonText={`Join Now`}/>
+            <PopupWidget type={`share`} buttonText={`Share with friends`} textSize={`sm`} />
           </Container>
         </Grid>
       </Fade>
