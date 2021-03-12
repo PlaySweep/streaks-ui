@@ -29,6 +29,7 @@ import LeaderboardContainer from './LeaderboardContainer';
 import CallToActionWidget from './CallToActionWidget';
 import Dots from './Dots'
 import LoadingWidget from './LoadingWidget'
+import CashOutDrawer from './CashOutDrawer'
 
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -186,7 +187,7 @@ function PrizeContainer({history}) {
                         <Image src={prize.image_url} alt="Highest Streak" height={`75px`} width={`auto`}/>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
-                      <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}}>Redeem</Tag>
+                      <CashOutDrawer />
                       </VStack>
                     </Box>
                   </div>

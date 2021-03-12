@@ -24,7 +24,8 @@ import {
   Image,
   Link,
   SimpleGrid,
-  Flex
+  Flex,
+  Tag
 } from '@chakra-ui/react';
 import { useDisclosure, createStandaloneToast, useClipboard } from "@chakra-ui/react";
 import { FiInfo, FiShare, FiFacebook, FiTwitter, FiInstagram } from "react-icons/fi";
@@ -54,7 +55,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const [state, setState] = useState({applied: false, drizly_order_id: ""})
   const { isOpen, onOpen, onClose } = useDisclosure()
   const contextValue = useContext(DashboardContext)
-  const referralUrl = `streakforthebeer.budlight.com?referral=${contextValue.user.referral_code}`
+  const referralUrl = `streakforthebeer.budlight.com?referral=${contextValue.user?.referral_code}`
   const { hasCopied, onCopy } = useClipboard(referralUrl)
 
   function handleOrderConfirmation() {
@@ -233,24 +234,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
 
   return (
     <>
-      <FiInfo color="white" style={{fontSize: "1rem", marginLeft: "10px"}} onClick={onOpen}/>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent style={{margin: "0 1rem"}}>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      
     </>
   )
 }
