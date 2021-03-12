@@ -88,7 +88,7 @@ function PrizeContainer({history}) {
   useEffect(() => {
     let decoded_user = jwt_decode(authToken)
     apiUrl.get(`v1/prizes`).then((response) => {
-      const rewards = [{ title: "6 out of 6 Streaks", description: "Free Beer For A Year" }, { title: "5 out of 5", description: "Tickets to Final Four" }]
+      const rewards = [{ title: "Perfect Streaks (6 Streaks)", description: "Year’s Worth of Free Beer", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" }, { title: "Highest Points", description: "2022 March Hoops Experience", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/basketball_logo.png" }]
       setState({...state, loading: false, apiUrl: apiUrl, user: decoded_user, prizes: response.data.prizes, rewards: rewards})
     })
   }, [])
@@ -144,7 +144,7 @@ function PrizeContainer({history}) {
         <Container>
           <Box style={{width: "75%", margin: "1rem auto 0 auto", textAlign: "center"}}>
             <Heading mt={3} color="white" size="xl" style={{textTransform: "uppercase", fontWeight: "800"}}>Legendary Rewards</Heading>
-            <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "100%",fontWeight: "500"}}>Cash out your points and streaks to win awesome Bud Light merch and other prizes</Text>
+            <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "100%",fontWeight: "500"}}>Cash out your streaks to win awesome Bud Light merch and other prizes.</Text>
           </Box>
         </Container>
         
@@ -157,9 +157,9 @@ function PrizeContainer({history}) {
                     <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                       <VStack>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{reward.title}</Heading>
-                        <Image height={`75px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" alt="Highest Streak" />
+                        <Image height={`75px`} width={`auto`} src={reward.image_url} />
                         
-                        {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
+                        <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text>
                       </VStack>
                     </Box>
                   </div>
@@ -199,16 +199,16 @@ function PrizeContainer({history}) {
         <Box p={5}>
           <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Can't wait?</Heading>
           <Button mt={5} size={`lg`} variant="outline" style={buttonStyle} isFullWidth>
-            <Link color="white" fontSize={`sm`} href="https://www.budlight.com/en/legends.html" isExternal>
+            <Link color="white" fontSize={`sm`} href="https://shopbeergear.com/collections/bud-light" isExternal>
               See more Legendary Rewards
             </Link>
           </Button>
           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>
-            <Link color="white" fontSize={`sm`} href="https://drizly.com/" isExternal>
+            <Link color="white" fontSize={`sm`} href="https://drizly.com/beer-brands/bud-light/b1019 " isExternal>
               Order on Drizly
             </Link>
           </Button>
-          <Text mt={10} mb={5} color="white" fontSize={`md`} style={{textAlign: "center", textDecoration: "underline", textTransform: "uppercase"}} onClick={() => history.push(`/dashboard`)}>Continue Streak</Text>
+          <Text mt={10} mb={5} color="white" fontSize={`md`} style={{textAlign: "center", textDecoration: "underline", textTransform: "uppercase"}} onClick={() => history.push(`/dashboard`)}>Return to Dashboard</Text>
         </Box>
         <Box style={{textAlign: "center"}}>
           <Text color="white" fontSize="md">In Partnership With</Text>

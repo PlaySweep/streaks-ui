@@ -54,10 +54,10 @@ function MenuDrawer({history, type}) {
         <Image height={`25px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_logo.png" alt="Bud Light" />
       </Box></> : <>
       <Box w="130px" h="10" style={{display: "flex", alignItems: "center"}}>
-        <HamburgerIcon color="white" onClick={onOpen}/>
+        <HamburgerIcon color="white" onClick={onOpen} style={{position: "relative", right: "20px", fontSize: "1.25rem"}}/>
       </Box>
       <Box w="170px" h="10" style={{display: "flex", alignItems: "center"}}>
-        <Image height={`25px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_logo.png" alt="Bud Light" />
+        <Image height={`25px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_logo.png" alt="Bud Light" onClick={() => history.push(`/dashboard`)}/>
       </Box></> }
     </Flex>
     <Drawer placement={`left`} onClose={onClose} isOpen={isOpen}>

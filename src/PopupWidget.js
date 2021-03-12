@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Container,
@@ -23,12 +23,15 @@ import {
   VStack,
   Image,
   Link,
-  SimpleGrid
+  SimpleGrid,
+  Flex
 } from '@chakra-ui/react';
-import { useDisclosure, createStandaloneToast } from "@chakra-ui/react";
+import { useDisclosure, createStandaloneToast, useClipboard } from "@chakra-ui/react";
 import { FiInfo, FiShare, FiFacebook, FiTwitter, FiInstagram } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosText } from "react-icons/io";
+
+import { DashboardContext } from './DashboardContainer';
 
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
@@ -50,6 +53,9 @@ const primaryButtonStyle = {
 function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const [state, setState] = useState({applied: false, drizly_order_id: ""})
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const contextValue = useContext(DashboardContext)
+  const referralUrl = `streakforthebeer.budlight.com?referral=${contextValue.user.referral_code}`
+  const { hasCopied, onCopy } = useClipboard(referralUrl)
 
   function handleOrderConfirmation() {
     const toast = createStandaloneToast()
@@ -79,13 +85,14 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
-          <ModalHeader style={{textAlign: "center", color: "#fff"}}>How does it work?</ModalHeader>
+          <ModalHeader style={{textAlign: "center", color: "#fff"}}>Want a boost?</ModalHeader>
           <ModalCloseButton color={`rgb(17, 30, 75)`}/>
           <ModalBody >
             <Box pt={3} pb={3}>
               <VStack>
                 {/* <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/> */}
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter your order ID from your Drizly receipt and we will apply an extra Bonus Point to your Round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter the 8 digit order ID from your Drizly receipt and we will apply a bonus point to your round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
                 <Text color="white" size="lg" style={{textAlign: "center"}}>Expect your order to be confirmed in the next 24 hours.</Text>
               </VStack>
             </Box>
@@ -98,7 +105,9 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
 
   if (type === "share") {
     return (
-    <>
+    <DashboardContext.Consumer>
+    {({user, round})=> (
+      <>
       <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
         <FiShare color="white" style={{marginRight: "5px"}}/>
         <Text fontSize={textSize} color="white">{ buttonText }</Text>
@@ -106,14 +115,17 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
-          <ModalHeader style={{textAlign: "center", color: "#fff"}}>FYI</ModalHeader>
+          <ModalHeader style={{textAlign: "center", color: "#fff"}}>Share with Friends</ModalHeader>
           <ModalCloseButton color={`rgb(17, 30, 75)`} style={{background: "none"}}/>
           <ModalBody >
-            <Box pt={3} pb={3}>
+            <Box pt={3} pb={3} >
               <VStack>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>
-                Share your results from this round to earn 1 Bonus Point to be applied towards your score in the next round.
-                </Text>
+                {/* <Text mb={2} color="white" size="lg" style={{textAlign: "center"}}>
+                  Check out this awesome game I’m playing. You should join.
+                </Text> */}
+                <Button onClick={onCopy} >
+                    {hasCopied ? "Copied!" : "Copy your referral code"}
+                  </Button>
               </VStack>
             </Box>
           </ModalBody>
@@ -136,7 +148,9 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+      </>
+    )}
+    </DashboardContext.Consumer>
     )
   }
   

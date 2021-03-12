@@ -8,7 +8,9 @@ import {
   Box,
   Image,
   Heading,
-  Fade
+  Fade,
+  Link,
+  Button
 } from '@chakra-ui/react';
 
 import MenuDrawer from './MenuDrawer'
@@ -30,6 +32,21 @@ const gridStyle = {
   backgroundSize: "contain",
   justifyContent: "center"
 }
+
+const buttonStyle = {
+  border: "2.5px solid #90D5FB",
+  background: "#398FD6",
+  textTransform: "uppercase"
+}
+
+const cardStyle = {
+  border: "2.5px solid #90D5FB",
+  boxShadow: "0 0 5px #90d5fb",
+  background: "#111e4b",
+  position: "relative",
+  margin: "0 auto 1.5rem auto"
+}
+
 const store = require('store');
 
 export const DashboardContext = createContext({})
@@ -86,7 +103,7 @@ function DashboardContainer() {
           <Container>
           <Box style={{margin: "2.5rem auto 0 auto", textAlign: "center"}}>
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
-            <Text mt={3} mb={3} color="white" style={{width: "100%",fontWeight: "500"}}>Pick 3 out of 5 correct each round to earn a streak. Redeem streaks for legendary rewards like free beer for a year, 2022 tickets & more</Text>
+            <Text mt={3} mb={3} color="white" style={{width: "100%",fontWeight: "500"}}>Pick 3 out of 5 correct each round to earn a streak. Redeem streaks for legendary prizes like a year’s worth of free beer or a 2022 March Hoops Experience.</Text>
             <SvgWidget roundId={state.round.id} width={`266`} height={`214`} />
           </Box>
           </Container>
@@ -96,7 +113,23 @@ function DashboardContainer() {
           <StatsContainer />
           <LeaderboardContainer />
           <Container pb={5} style={{background: "rgb(17, 30, 75)"}}>
-            <CallToActionWidget type={`partner_link`} buttonText={`Join Now`}/>
+            <Box maxW="sm" borderWidth="1px" borderRadius="lg" mt={5} mb={5} style={cardStyle}>
+              <Box p="3">
+                <Box
+                  m={2}
+                  fontWeight="semibold"
+                  lineHeight="tight"
+                >
+                <Heading mt={0} style={{textAlign: "center", fontWeight: "800"}} color="white" size="md">Become a Bud Light Legend</Heading>
+                <Text color="white" fontSize="xs" mt={3} mb={3} style={{textAlign: "center"}} >Get exclusive access to merch, experiences, and discounts.</Text>
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={buttonStyle} isFullWidth >
+                  <Link color="white" fontSize={`sm`} href="budlightlegends.com/joinnow" isExternal>
+                    Join Now
+                  </Link>
+                </Button>
+                </Box>
+              </Box>
+            </Box>
             <PopupWidget type={`share`} buttonText={`Share with friends`} textSize={`sm`} />
           </Container>
         </Grid>

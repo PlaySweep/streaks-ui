@@ -10,6 +10,8 @@ import OnboardContainer from './OnboardContainer'
 import WelcomeContainer from './WelcomeContainer'
 import DashboardContainer from './DashboardContainer'
 import PrizeContainer from './PrizeContainer'
+import RulesContainer from './RulesContainer'
+import AboutContainer from './AboutContainer'
 
 import { OpenRoute, ProtectedRoute } from './routes'
 
@@ -20,6 +22,12 @@ function App() {
       <Router>
         <ScrollToTop />
         <Switch>
+          <ProtectedRoute exact path='/rules' component={() => 
+            <RulesContainer /> } 
+          />
+          <ProtectedRoute exact path='/about' component={() => 
+            <AboutContainer /> } 
+          />
           <ProtectedRoute exact path='/prizing' component={() => 
             <PrizeContainer /> } 
           />
