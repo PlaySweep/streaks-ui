@@ -10148,6 +10148,11 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-snapchat-pixel@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-snapchat-pixel/-/react-snapchat-pixel-1.1.1.tgz#58904fc59fbdaa77038e54e832c42ddd51d85074"
+  integrity sha512-3lzBcq9YMhLS0j5HAijMmtsgdgvsoIlridY2nTyWXQEDASxZyx1eKS0X/gE8LlE7x3z9nClDD0lduvdELi6U5A==
+
 react-style-singleton@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-style-singleton/-/react-style-singleton-2.1.1.tgz#ce7f90b67618be2b6b94902a30aaea152ce52e66"

@@ -12,6 +12,8 @@ import {
   Fade
 } from '@chakra-ui/react';
 
+import ReactPixel from 'react-snapchat-pixel';
+
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
@@ -24,6 +26,7 @@ function WelomeContainer({history}) {
 
   useEffect(() => {
     setTimeout(() => {
+      ReactPixel.track(`SIGN_UP`)
       setLoading(false)
     }, 250)
   })
