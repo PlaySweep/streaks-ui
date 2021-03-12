@@ -154,12 +154,12 @@ function PrizeContainer({history}) {
               { state?.rewards?.map((reward, index) => {
                 return (
                   <div key={index} style={Object.assign({}, styles.slide)}>
-                    <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(17, 30, 75, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{reward.title}</Heading>
                         <Image height={`75px`} width={`auto`} src={reward.image_url} />
                         
-                        <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text>
+                        <Text color="#fff" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text>
                       </VStack>
                     </Box>
                   </div>
@@ -181,12 +181,12 @@ function PrizeContainer({history}) {
               { filteredPrizes.map((prize, index) => {
                 return (
                   <div key={index} style={Object.assign({}, styles.slide)}>
-                    <Box w="100%" style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(17, 30, 75, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Image src={prize.image_url} alt="Highest Streak" height={`75px`} width={`auto`}/>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
-                      <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "#0D40A0", fontWeight: "700", fontSize: "0.5rem", textTransform: "uppercase", height: "10px", padding: "0.5rem 0.5rem", margin: "0.75rem 0.25rem 0 0.25rem"}}>Redeem</Tag>
+                      <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}}>Redeem</Tag>
                       </VStack>
                     </Box>
                   </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { withRouter } from 'react-router';
 import {
   Button,
   Grid,
@@ -90,7 +91,7 @@ const drawerContentStyle = {
   backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/stars_bg.png")`
 }
 
-function PicksContainer() {
+function PicksContainer({history}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [state, setState] = useState({
     selections: [], 
@@ -283,17 +284,15 @@ function PicksContainer() {
               <Modal isCentered isOpen={state.finished} onClose={() => setState({...state, finished: false})}>
               <ModalOverlay />
                 <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
-                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Your picks are in!</ModalHeader>
+                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Locked down</ModalHeader>
                   <ModalCloseButton color={`rgb(17, 30, 75)`}/>
                   <ModalBody >
                     <Box pt={3} pb={3}>
                       <VStack>
                         <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
-                        <Text color="white" size="lg" style={{textAlign: "center"}}>You deserve a cold one</Text>
-                        <Button size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
-                          <Link color="white" fontSize={`xs`} href="https://www.drizly.com" isExternal>
-                            Order beer on Drizly
-                          </Link>
+                        <Text mt={2} mb={5} color="white" size="lg" style={{width: "75%", textAlign: "center"}}>Come back after the game to see your results!</Text>
+                        <Button size={`md`} variant="outline" style={secondaryButtonStyle} isFullWidth onClick={onClose}>
+                          <Text color="white">See my dashboard</Text>
                         </Button>
                       </VStack>
                     </Box>
@@ -302,7 +301,6 @@ function PicksContainer() {
               </Modal> : null }
               </DrawerBody>
             </DrawerContent>
-          
           </DrawerOverlay>
         </Drawer>
         </>
@@ -311,4 +309,4 @@ function PicksContainer() {
   );
 }
 
-export default PicksContainer;
+export default withRouter(PicksContainer);

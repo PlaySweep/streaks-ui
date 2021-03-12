@@ -51,16 +51,15 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
     <Grid
       key={id}
       h="auto"
-      templateColumns="repeat(6, 1fr)"
-      gap={3}
+      templateColumns="repeat(6)"
     >
-      <GridItem colSpan={0.5} >
-        <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", top: "3px", fontWeight: "800"}}>
+      <GridItem colSpan={6} style={{position: "relative", width: "85%", margin: "0 auto"}}>
+        <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", fontWeight: "800", position: "absolute", left: "-35px"}}>
           {order}
         </Tag>
-      </GridItem>
-      <GridItem colSpan={5} >
-        <Text color={`#fff`} mb={2} fontSize={`sm`}>{description}</Text>
+        <Text color={`#fff`} mb={2} fontSize={`sm`}>
+        {description}
+        </Text>
         <Wrap>
           { selections.map((selection, index) => {
             return (
