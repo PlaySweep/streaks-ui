@@ -66,7 +66,7 @@ function StatsContainer({history}) {
               <VStack>
               <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak</Heading>
               <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak}</Heading>
-              <Text color="#398FD6" fontSize="xs">{user.streak > 1 ? `rounds` : `round`}</Text>
+              <Text color="#398FD6" fontSize="xs">{user.streak === 1 ? `round` : `rounds`}</Text>
               </VStack>
             </Box>
             <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>

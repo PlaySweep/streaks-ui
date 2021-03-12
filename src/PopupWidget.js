@@ -216,9 +216,10 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
                   placeholder="Enter Drizly Order ID"
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
+                  maxLength={`8`}
                 />
               <InputRightElement width="4.5rem">
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" onClick={handleOrderConfirmation}>
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
                   <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
                 </Button>
               </InputRightElement>

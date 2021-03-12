@@ -96,7 +96,7 @@ function LeaderboardContainer() {
           <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
             <VStack>
               <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
-              <Text color="white" size="lg" style={{margin: "0 auto", width: "75%", textAlign: "center"}}>The Streaks Leaderboard will be active once Round 1 is complete</Text>
+              <Text color="white" size="lg" style={{margin: "0 auto", width: "75%", textAlign: "center"}}>The Streaks Leaderboard will be active once Round 1 is complete.</Text>
             </VStack>
           </Box>
         </Grid>
