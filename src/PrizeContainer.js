@@ -179,7 +179,7 @@ function PrizeContainer({history}) {
               { filteredPrizes.map((prize, index) => {
                 console.log(prize)
                   return (
-                    <Box key={index} w="100%" height={`30vh`} style={{borderRadius: "12px", background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
+                    <Box key={index} w="100%" height={`25vh`} style={{borderRadius: "12px", background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Heading color="#fff" size="xs" style={{padding: "1rem", textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         <Image height={`75px`} width={`auto`} src={prize.image_url} />
