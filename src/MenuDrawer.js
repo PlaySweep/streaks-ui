@@ -37,7 +37,7 @@ const drawerContentStyle = {
   border: "none",
 }
 
-function MenuDrawer({history, type}) {
+function MenuDrawer({history, type, onCloseFunc}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
 
@@ -55,14 +55,17 @@ function MenuDrawer({history, type}) {
         <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" />
       </Box></Flex> : <Flex style={{height: "10vh", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 2rem"}}>
       <Box w="170px" h="10" style={{display: "flex", alignItems: "center"}}>
-        <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" onClick={() => history.push(`/dashboard`)} />
+        <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" onClick={type === `picks` ? onCloseFunc : () => history.push(`/dashboard`)} />
       </Box>
       <Box style={{display: "inline-flex", position: "absolute", right: "35px"}}>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={type === `picks` ? onCloseFunc : () => history.push(`/dashboard`)}>Dashboard</Heading>
       </Box>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
         <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/prizing`)}>Prizes</Heading>
+      </Box>
+      <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/rules`)}>Rules</Heading>
       </Box>
       <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
         <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/about`)}>About</Heading>
@@ -75,7 +78,7 @@ function MenuDrawer({history, type}) {
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody style={{display: "flex"}}>
             <Box mt={10} p={5}>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/dashboard`)}>Home</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
               <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/prizing`)}>Prizes</Heading>
               <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/rules`)}>Rules</Heading>
               <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/about`)}>About</Heading>

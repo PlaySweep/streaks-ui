@@ -1,6 +1,6 @@
 /* Pagination Leaderboard Styles */
 
-h1, h2, h3, h4, p {
+h1, h2, h3, h4, p, svg, img {
   cursor: pointer;
 }
 

@@ -47,7 +47,6 @@ const desktopCardStyle = {
   boxShadow: "0 0 5px #90d5fb",
   background: "#111e4b",
   position: "relative",
-  margin: "0 2.5rem",
   maxWidth: "650px",
   display: "flex",
   justifyContent: "center",

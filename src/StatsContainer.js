@@ -61,7 +61,7 @@ function StatsContainer({history}) {
       <DashboardContext.Consumer>
         {({user, round}) => (
           <>
-            <Box p={5} style={{width: "700px", margin: "0 2.5rem"}}>
+            <Box style={{padding: "0 1.5rem", width: "700px"}}>
             <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={5} style={{position: "relative", display: "flex", alignItems: "center"}}>
               <Heading color="white" size="lg" style={{fontWeight: "800"}}>My Stats</Heading>
               <PopupWidget type={`share`} buttonText={`Share with friends`} textSize={`sm`} />

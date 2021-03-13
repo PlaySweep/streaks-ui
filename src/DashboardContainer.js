@@ -48,6 +48,7 @@ function DashboardContainer() {
   let authToken = store.get('auth_token')
   const [state, setState] = useState({loading: true, changed: 0})
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
+  const [isIpad] = useMediaQuery("(min-width: 835px)")
   const backgroundImage = isDesktop ? "https://streaks-challenge.s3.amazonaws.com/desktop_bg.png" : "https://streaks-challenge.s3.amazonaws.com/mobile_bg_xl.png"
   const gridStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -110,8 +111,13 @@ function DashboardContainer() {
           bg={`blue.900`}
           style={desktopGridStyle}
         >
-          <RoundCard />
-          <StatsContainer />
+          { !isIpad ? <>
+            <RoundCard />
+            <StatsContainer />
+          </> : <Box style={{alignItems: "flex-end", display: "flex"}}>
+            <RoundCard />
+            <StatsContainer />
+          </Box> }
           </Grid>
           <LeaderboardContainer />
           <Box maxW="sm" borderWidth="1px" borderRadius="lg" mt={5} mb={5} style={cardStyle}>

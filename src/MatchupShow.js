@@ -23,6 +23,7 @@ import {
   WrapItem,
   Image
 } from '@chakra-ui/react';
+import { useMediaQuery } from "@chakra-ui/react";
 
 const store = require('store');
 
@@ -41,6 +42,7 @@ const selectedButtonStyle = {
 
 function MatchupShow({id, order, description, selections, addPickFunc, disabled}) {
   const [state, setState] = useState({ matchup_id: id, selected_id: null })
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
 
   function handleSelected(selectedId) {
     setState({...state, selected_id: selectedId })
@@ -57,7 +59,7 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
         <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{borderRadius: "25px", textAlign: "center", fontWeight: "800", position: "absolute", left: "-35px"}}>
           {order}
         </Tag>
-        <Text color={`#fff`} mb={2} fontSize={`sm`}>
+        <Text color={`#fff`} mb={2} fontSize={isDesktop ? `lg` : `sm`}>
         {description}
         </Text>
         <Wrap>

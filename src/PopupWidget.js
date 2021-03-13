@@ -92,7 +92,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   if (type === "order_info") {
     return (
     <>
-      <FiInfo color="white" style={{fontSize: "1rem", marginLeft: "10px"}} onClick={onOpen}/>
+      <FiInfo color="white" style={{fontSize: "1rem", marginLeft: "5px"}} onClick={onOpen}/>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
