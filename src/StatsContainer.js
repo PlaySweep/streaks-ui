@@ -62,7 +62,7 @@ function StatsContainer({history}) {
         {({user, round}) => (
           <>
             <Box style={{padding: "0 3rem", width: "700px"}}>
-            <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={5} style={{position: "relative", display: "flex", alignItems: "center"}}>
+            <Grid templateColumns="repeat(2, 1fr)" gap={5} style={{position: "relative", display: "flex", alignItems: "center"}}>
               <Heading color="white" size="lg" style={{fontWeight: "800"}}>My Stats</Heading>
               <PopupWidget type={`share`} buttonText={`Share with friends`} textSize={`sm`} />
             </Grid>
@@ -71,14 +71,14 @@ function StatsContainer({history}) {
                   <VStack>
                   <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak</Heading>
                   <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak}</Heading>
-                  <Text color="#398FD6" fontSize="xs">{user.streak === 1 ? `round` : `rounds`}</Text>
+                  <Text color="#398FD6" fontSize="sm">{user.streak === 1 ? `round` : `rounds`}</Text>
                   </VStack>
                 </Box>
                 <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                   <VStack>
                   <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Rank</Heading>
                   <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak_rank}</Heading>
-                  <Text color="#398FD6" fontSize="xs">{user.points} {user.points === 1 ? `pt` : `pts`}</Text>
+                  <Text color="#398FD6" fontSize="sm">{user.points} {user.points === 1 ? `pt` : `pts`}</Text>
                   </VStack>
                 </Box>
               </Grid>

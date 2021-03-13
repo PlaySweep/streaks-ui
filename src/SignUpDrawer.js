@@ -90,6 +90,7 @@ function SignUpDrawer({history}) {
       email: state.email,
       password: state.password,
       password_confirmation: state.password_confirmation,
+      dob: store.get(`dob`),
       account_id: 1
     }).then((response) => {
       store.set('auth_token', response.data.token)

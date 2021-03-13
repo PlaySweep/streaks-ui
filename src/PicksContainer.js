@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from 'react-router';
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
   Button,
   Grid,
   GridItem,
@@ -224,7 +228,12 @@ function PicksContainer({history}) {
             
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>
-              <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
+                <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
+                { state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
+                  <Box flex="1" style={{textAlign: "center"}}>
+                    <AlertTitle>Bonus Point Activated!</AlertTitle>
+                  </Box>
+                </Alert> : null }
                 <DrawerBody>
                 { state.finished ? <Confetti
                   height={`800px`}
@@ -271,6 +280,7 @@ function PicksContainer({history}) {
                         value={state.drizly_order_id}
                         onChange={handleOnChange}
                         maxLength="8"
+                        disabled={state.applied}
                       />
                       <InputRightElement width="4.5rem">
                         <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
@@ -332,6 +342,11 @@ function PicksContainer({history}) {
         <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false} size={`md`} >
           <DrawerOverlay>
             <DrawerContent style={drawerContentStyle}>
+              { state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
+                  <Box flex="1" style={{textAlign: "center"}}>
+                    <AlertTitle>Bonus Point Activated!</AlertTitle>
+                  </Box>
+                </Alert> : null }
               <DrawerCloseButton color={"#fff"}/>
               <DrawerBody>
               { state.finished ? <Confetti
@@ -385,6 +400,7 @@ function PicksContainer({history}) {
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
                   maxLength="8"
+                  disabled={state.applied}
                 />
                 <InputRightElement width="4.5rem">
                   <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>

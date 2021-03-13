@@ -100,6 +100,7 @@ function AgeGateDrawer() {
 
   const handleSubmit = () => {
     if (isEligible()) {
+      store.set("dob", dob)
       store.set("eligible", true)
       onClose()
     } else {

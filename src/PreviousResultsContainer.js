@@ -126,6 +126,8 @@ function PreviousResultsContainer() {
     })
   }, [])
 
+  const cardTabs = state.played_cards?.filter(card => card.status !== "pending")
+
   if (state.loading) {
     return <div>Loading</div>
   }
@@ -150,7 +152,7 @@ function PreviousResultsContainer() {
               <SimpleGrid columns={1} style={{margin: "0 auto"}}>
                 <Box height={`40px`}>
                   <TabList style={{border: "none"}}>
-                    { state.played_cards?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
+                    { cardTabs.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
                   </TabList>
                 </Box>
               </SimpleGrid>
@@ -179,7 +181,6 @@ function PreviousResultsContainer() {
                                 </Text>
                                 <Wrap style={{margin: "0 2rem"}}>
                                   { matchup.selections.map((selection) => {
-                                    
                                     return (
                                       <WrapItem key={selection.id} style={{flex: "1"}}>
                                         <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? selectedButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
@@ -199,7 +200,7 @@ function PreviousResultsContainer() {
                   </TabPanels>
                 </Box>
                 <Box>
-                  <Box style={{margin: "0 auto", textAlign: "center"}}>
+                  <Box style={{margin: "0 auto", textAlign: "center", justifyContent: "center"}}>
                     <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> 5 out of 5 correct</Heading>
                     <SvgWidget userId={user.id} round={round} width={`332`} height={`280`}/>
                   </Box>
@@ -242,16 +243,16 @@ function PreviousResultsContainer() {
                 </Grid>
                 <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index})}>
                   <TabList style={{border: "none"}}>
-                    { state.played_cards?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
+                    { cardTabs?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
                   </TabList>
                   
                   <TabPanels>
                     { state.played_cards?.map((card) => {
                       return (
                         <TabPanel key={card.id}>
-                            <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
+                            { card.status !== "pending" ? <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
                               <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {card.score} out of 5 correct</Heading>
-                            </Box>
+                            </Box> : null }
                           { card.round?.matchups?.map((matchup) => {
                             return (
                             <Grid
@@ -269,9 +270,10 @@ function PreviousResultsContainer() {
                                 <Text color={`#fff`} mb={2} fontSize={`sm`}>{matchup.description}</Text>
                                 <Wrap>
                                   { matchup.selections.map((selection) => {
+                                    console.log('sel', selection)
                                     return (
                                       <WrapItem key={selection.id} style={{flex: "1"}}>
-                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`sm`} variant="outline" mb={5} style={selection.selected ? selectedButtonStyle : secondaryButtonStyle} isFullWidth>
+                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? selectedButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
                                           <Text color="white" style={{fontSize: "0.5rem"}}>{selection.description}</Text>
                                         </Button>
                                       </WrapItem>
@@ -289,7 +291,7 @@ function PreviousResultsContainer() {
                 </Tabs>
               
                 <Box mt={10}>
-                  <PopupWidget type={`share`} />
+                  <PopupWidget type={`share`} textSize={`md`} buttonText={`Share with friends`} />
                 </Box>
               </Container>
               </DrawerBody>

@@ -294,7 +294,9 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             <Box pt={3} pb={3}>
               <VStack>
                 <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter your order ID from your Drizly receipt to apply an extra point to your round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter the 8 digit order ID from your Drizly receipt and we will apply a bonus point to your round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Expect your order to be confirmed in the next 24 hours.</Text>
               </VStack>
             </Box>
           </ModalBody>
