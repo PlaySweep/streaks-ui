@@ -51,7 +51,8 @@ const desktopCardStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "32.5vh"
+  height: "32.5vh",
+  padding: "0 3rem"
 }
 
 const drawerContentStyle = { 

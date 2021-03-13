@@ -31,7 +31,7 @@ import Dots from './Dots'
 import LoadingWidget from './LoadingWidget'
 import CashOutDrawer from './CashOutDrawer'
 
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 
 import { FiChevronLeft } from 'react-icons/fi';
 
@@ -71,6 +71,7 @@ const redeemButtonStyle = {
 
 function PrizeContainer({history}) {
   let authToken = store.get('auth_token')
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const [state, setState] = useState({
     loading: true, 
     filter: 2, 
@@ -128,11 +129,11 @@ function PrizeContainer({history}) {
     return <Redirect to={`/`} />
   }
 
-  if (Object.keys(state.user).length > 0) {
+  if (isDesktop) {
     return (
       <PrizeContext.Provider value={state}>
       <Fade in={true}>
-      <MenuDrawer />
+      <MenuDrawer activeTab={`prizes`} />
         <Grid
         minH={`100vh`}
         bg={`blue.900`}
@@ -155,7 +156,7 @@ function PrizeContainer({history}) {
               { state?.rewards?.map((reward, index) => {
                 return (
                   <div key={index} style={Object.assign({}, styles.slide)}>
-                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(17, 30, 75, 0.75)"}} pt={3} pb={3}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{reward.title}</Heading>
                         <Image height={`75px`} width={`auto`} src={reward.image_url} />
@@ -182,7 +183,101 @@ function PrizeContainer({history}) {
               { filteredPrizes.map((prize, index) => {
                 return (
                   <div key={index} style={Object.assign({}, styles.slide)}>
-                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(17, 30, 75, 0.75)"}} pt={3} pb={3}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
+                      <VStack>
+                        <Image src={prize.image_url} alt="Highest Streak" height={`75px`} width={`auto`}/>
+                        <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
+                        {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
+                      <CashOutDrawer />
+                      </VStack>
+                    </Box>
+                  </div>
+                )
+              }) }
+            </SwipeableViews>
+            <Dots selectedIndex={state.selectedPrizeIndex} dotCount={filteredPrizes.length} />
+        </Box>
+        <Container style={{background: "rgb(17, 30, 75)"}}>
+        <Box p={5}>
+          <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Can't wait?</Heading>
+          <Button mt={5} size={`lg`} variant="outline" style={buttonStyle} isFullWidth>
+            <Link color="white" fontSize={`sm`} href="https://shopbeergear.com/collections/bud-light" isExternal>
+              Shop Merch Now
+            </Link>
+          </Button>
+          <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>
+            <Link color="white" fontSize={`sm`} href="https://drizly.com/beer-brands/bud-light/b1019 " isExternal>
+              Order on Drizly
+            </Link>
+          </Button>
+          <Text mt={10} mb={5} color="white" fontSize={`md`} style={{textAlign: "center", textDecoration: "underline", textTransform: "uppercase"}} onClick={() => history.push(`/dashboard`)}>Return to Dashboard</Text>
+        </Box>
+        <Box style={{textAlign: "center"}}>
+          <Text color="white" fontSize="md">In Partnership With</Text>
+          <Image boxSize="50px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly" style={{margin: "1rem auto"}}/>
+        </Box>
+        </Container>
+      </Grid>
+      </Fade>
+      </PrizeContext.Provider>
+    );
+  }
+
+  if (Object.keys(state.user).length > 0) {
+    return (
+      <PrizeContext.Provider value={state}>
+      <Fade in={true}>
+      <MenuDrawer activeTab={`prizes`} />
+        <Grid
+        minH={`100vh`}
+        bg={`blue.900`}
+        style={gridStyle}
+      >
+        <Box mt={5} ml={5} style={{display: "flex", alignItems: "center"}} onClick={() => history.push(`/dashboard`)}>
+          <FiChevronLeft color={`white`} style={{marginRight: "2.5px"}}/>
+          <Text color={`white`} fontSize={`sm`} style={{fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}}>Back</Text>
+        </Box>
+        <Container>
+          <Box style={{width: "75%", margin: "1rem auto 0 auto", textAlign: "center"}}>
+            <Heading mt={3} color="white" size="xl" style={{textTransform: "uppercase", fontWeight: "800"}}>Legendary Rewards</Heading>
+            <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "100%",fontWeight: "500"}}>Cash out your streaks to win awesome Bud Light merch and other prizes.</Text>
+          </Box>
+        </Container>
+        
+        <Box p={5} >
+          <Heading mt={2} mb={2} color="white" size="md" style={{fontWeight: "800"}}>Top Prizes</Heading>
+            <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer} onChangeIndex={handleRewardSwipe}>
+              { state?.rewards?.map((reward, index) => {
+                return (
+                  <div key={index} style={Object.assign({}, styles.slide)}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
+                      <VStack>
+                        <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{reward.title}</Heading>
+                        <Image height={`75px`} width={`auto`} src={reward.image_url} />
+                        
+                        <Text color="#fff" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text>
+                      </VStack>
+                    </Box>
+                  </div>
+                )
+              }) }
+            </SwipeableViews>
+            <Dots selectedIndex={state.selectedRewardIndex} dotCount={state.rewards?.length} />
+        </Box>
+        <Box p={5} >
+          <Heading color="white" size="md" style={{fontWeight: "800"}}>Redeem Your Streak</Heading>
+            <Box mt={2} mb={5} >
+              <Text color="white" fontSize={`xs`} style={{display: "inline-block", marginRight: "10px", fontWeight: "700"}}>Select Streak</Text>
+              <Tag data-tag={2} style={state.filter === 2 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>2</Tag>
+              <Tag data-tag={3} style={state.filter === 3 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>3</Tag>
+              <Tag data-tag={4} style={state.filter === 4 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>4</Tag>
+              <Tag data-tag={5} style={state.filter === 5 ? selectedFilterStyles : filterStyles} onClick={handleFilter}>5</Tag>
+            </Box>
+            <SwipeableViews enableMouseEvents style={styles.root} slideStyle={styles.slideContainer} onChangeIndex={handlePrizeSwipe}>
+              { filteredPrizes.map((prize, index) => {
+                return (
+                  <div key={index} style={Object.assign({}, styles.slide)}>
+                    <Box w="100%" style={{borderRadius: "12px"}} style={{background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Image src={prize.image_url} alt="Highest Streak" height={`75px`} width={`auto`}/>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>

@@ -37,7 +37,7 @@ const drawerContentStyle = {
   border: "none",
 }
 
-function MenuDrawer({history, type, onCloseFunc}) {
+function MenuDrawer({history, type, onCloseFunc, activeTab}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
 
@@ -59,51 +59,19 @@ function MenuDrawer({history, type, onCloseFunc}) {
       </Box>
       <Box style={{display: "inline-flex", position: "absolute", right: "35px"}}>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={type === `picks` ? onCloseFunc : () => history.push(`/dashboard`)}>Dashboard</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={type === `picks` ? onCloseFunc : () => history.push(`/dashboard`)}>Dashboard</Heading>
       </Box>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/prizing`)}>Prizes</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={() => history.push(`/prizing`)}>Prizes</Heading>
       </Box>
       <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/rules`)}>Rules</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => history.push(`/rules`)}>Rules</Heading>
       </Box>
       <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/about`)}>About</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => history.push(`/about`)}>About</Heading>
       </Box>
       </Box>
       </Flex> }
-    <Drawer placement={`left`} onClose={onClose} isOpen={isOpen}>
-      <DrawerOverlay>
-        <DrawerContent style={drawerContentStyle}>
-          <DrawerCloseButton color={"#fff"}/>
-          <DrawerBody style={{display: "flex"}}>
-            <Box mt={10} p={5}>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/prizing`)}>Prizes</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/rules`)}>Rules</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/about`)}>About</Heading>
-            </Box>
-            {/* <Box p={5} style={{position: "absolute", bottom: "50px"}}>
-              <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Follow</Heading>
-              <SimpleGrid columns={3} spacing={10}>
-                <Box >
-                  <FiFacebook color={`#fff`}/>
-                </Box>
-                <Box >
-                  <FiTwitter color={`#fff`}/>
-                </Box>
-                <Box >
-                  <FiInstagram color={`#fff`}/>
-                </Box>
-              </SimpleGrid>
-            </Box> */}
-            <Box p={5} style={{position: "absolute", bottom: "50px"}} onClick={handleLogOut}>
-              <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Log out</Heading>
-            </Box>
-          </DrawerBody>
-        </DrawerContent>
-      </DrawerOverlay>
-    </Drawer>
     </Box>
     );
   }
@@ -128,10 +96,10 @@ function MenuDrawer({history, type, onCloseFunc}) {
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody style={{display: "flex"}}>
             <Box mt={10} p={5}>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/dashboard`)}>Home</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/prizing`)}>Prizes</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/rules`)}>Rules</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color="white" onClick={() => history.push(`/about`)}>About</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={() => history.push(`/prizing`)}>Prizes</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => history.push(`/rules`)}>Rules</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => history.push(`/about`)}>About</Heading>
             </Box>
             {/* <Box p={5} style={{position: "absolute", bottom: "50px"}}>
               <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Follow</Heading>

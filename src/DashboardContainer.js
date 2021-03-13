@@ -105,7 +105,7 @@ function DashboardContainer() {
     return (
       <DashboardContext.Provider value={state}>
         <Fade in={true}>
-          <MenuDrawer />
+          <MenuDrawer activeTab={`dashboard`}/>
           <Grid
           templateColumns="repeat(2, 1fr)" gap={6}
           bg={`blue.900`}
@@ -146,7 +146,7 @@ function DashboardContainer() {
     return (
       <DashboardContext.Provider value={state}>
         <Fade in={true}>
-          <MenuDrawer />
+          <MenuDrawer activeTab={`dashboard`}/>
           <Grid
           minH={`100vh`}
           bg={`blue.900`}
