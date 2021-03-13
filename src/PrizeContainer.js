@@ -96,9 +96,12 @@ function PrizeContainer({history}) {
 
   useEffect(() => {
     let decoded_user = jwt_decode(authToken)
-    apiUrl.get(`v1/prizes`).then((response) => {
-      const rewards = [{ title: "Perfect Streaks (6 Streaks)", description: "Year’s Worth of Free Beer", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" }, { title: "Most Points", description: "2022 March Hoops Experience", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/basketball_logo.png" }]
-      setState({...state, loading: false, apiUrl: apiUrl, user: decoded_user, prizes: response.data.prizes, rewards: rewards})
+    apiUrl.get(`v1/users/${decoded_user.user_id}`).then((response) => {
+      const user = response.data.user
+      apiUrl.get(`v1/prizes`).then((response) => {
+        const rewards = [{ title: "Perfect Streaks (6 Streaks)", description: "Year’s Worth of Free Beer", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" }, { title: "Most Points", description: "2022 March Hoops Experience", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/basketball_logo.png" }]
+        setState({...state, loading: false, apiUrl: apiUrl, user: user, prizes: response.data.prizes, rewards: rewards})
+      })
     })
   }, [])
 
@@ -177,13 +180,13 @@ function PrizeContainer({history}) {
               </Box>
               <SimpleGrid columns={filteredPrizes.length} spacing={5} style={{alignItems: "center"}}>
               { filteredPrizes.map((prize, index) => {
-                console.log(prize)
+                
                   return (
                     <Box key={index} w="100%" height={`25vh`} style={{borderRadius: "12px", background: "rgba(27, 58, 147, 0.75)"}} pt={3} pb={3}>
                       <VStack>
                         <Heading color="#fff" size="xs" style={{padding: "1rem", textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         <Image height={`75px`} width={`auto`} src={prize.image_url} />
-                        <CashOutDrawer />
+                        { state.user.streak >= state.filter ? <CashOutDrawer /> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
                       </VStack>
                     </Box>
                   )
@@ -275,8 +278,7 @@ function PrizeContainer({history}) {
                       <VStack>
                         <Image src={prize.image_url} alt="Streak" height={`75px`} width={`auto`}/>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
-                        {/* <Text color="#398FD6" fontSize="xs" style={{textTransform: "uppercase", fontWeight: "900", textAlign: "center"}}>{reward.description}</Text> */}
-                      <CashOutDrawer />
+                      { state.user.streak >= state.filter ? <CashOutDrawer /> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
                       </VStack>
                     </Box>
                   </div>
