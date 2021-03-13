@@ -62,7 +62,8 @@ function DashboardContainer() {
     backgroundSize: "cover",
     height: "50vh",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center"
   }
   const apiUrl = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -123,7 +124,7 @@ function DashboardContainer() {
               <Heading mt={0} style={{textAlign: "center", fontWeight: "800"}} color="white" size="md">Become a Bud Light Legend</Heading>
               <Text color="white" fontSize="xs" mt={3} mb={3} style={{textAlign: "center"}} >Get exclusive access to merch, experiences, and discounts.</Text>
               <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={buttonStyle} isFullWidth >
-                <Link color="white" fontSize={`sm`} href="budlightlegends.com/joinnow" isExternal>
+                <Link color="white" fontSize={`sm`} href="https://budlightlegends.com/joinnow" isExternal>
                   Join Now
                 </Link>
               </Button>
