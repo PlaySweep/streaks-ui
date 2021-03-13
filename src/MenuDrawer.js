@@ -96,10 +96,10 @@ function MenuDrawer({history, type, onCloseFunc, activeTab}) {
           <DrawerCloseButton color={"#fff"}/>
           <DrawerBody style={{display: "flex"}}>
             <Box mt={10} p={5}>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={() => history.push(`/prizing`)}>Prizes</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => history.push(`/rules`)}>Rules</Heading>
-              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => history.push(`/about`)}>About</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={() => history.push(`/dashboard`)}>Dashboard</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={() => history.push(`/prizing`)}>Prizes</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => history.push(`/rules`)}>Rules</Heading>
+              <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => history.push(`/about`)}>About</Heading>
             </Box>
             {/* <Box p={5} style={{position: "absolute", bottom: "50px"}}>
               <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Follow</Heading>
@@ -117,6 +117,9 @@ function MenuDrawer({history, type, onCloseFunc, activeTab}) {
             </Box> */}
             <Box p={5} style={{position: "absolute", bottom: "50px"}} onClick={handleLogOut}>
               <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Log out</Heading>
+            </Box>
+            <Box p={5} style={{position: "absolute", bottom: "15px"}} onClick={handleLogOut}>
+              <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Support</Heading>
             </Box>
           </DrawerBody>
         </DrawerContent>

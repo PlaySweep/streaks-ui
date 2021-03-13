@@ -80,20 +80,15 @@ function RulesContainer({history}) {
         bg={`blue.900`}
         style={gridStyle}
       >
-        <Box mt={5} ml={5} style={{display: "flex", alignItems: "center"}} onClick={() => history.push(`/dashboard`)}>
-          <FiChevronLeft color={`white`} style={{marginRight: "2.5px"}}/>
-          <Text color={`white`} fontSize={`sm`} style={{fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}}>Back</Text>
-        </Box>
         <Container>
-          <Box style={{width: "75%", margin: "1rem auto 0 auto", textAlign: "center"}}>
+          <Box p={5} style={{width: "95%", margin: "1rem auto 0 auto", textAlign: "center"}}>
             <Heading mt={3} color="white" size="xl" style={{textTransform: "uppercase", fontWeight: "800"}}>Rules</Heading>
             <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "100%",fontWeight: "500"}}>Simple rules and so many ways to win. Just come back every week during March Madness and get as many options correct as you can. Super official fine print below:</Text>
           </Box>
         </Container>
         
-        <Container style={{background: "rgb(17, 30, 75)", textAlign: "center"}}>
-        <Box p={5}>
-          <Text mt={2} color="white" fontSize="sm">
+        <Box p={5} style={{background: "rgb(17, 30, 75)", textAlign: "center", letterSpacing: "1.25px"}}>
+          <Text mt={2} color="white" fontSize="sm" mr={10} ml={10}>
             BUD LIGHT® LEGENDS: STREAK FOR THE BEER
             OFFICIAL RULES
 
@@ -265,7 +260,6 @@ function RulesContainer({history}) {
           <Text color="white" fontSize="md">In Partnership With</Text>
           <Image boxSize="50px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly" style={{margin: "1rem auto"}}/>
         </Box>
-        </Container>
       </Grid>
       </Fade>
     );
