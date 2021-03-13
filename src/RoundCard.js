@@ -47,7 +47,7 @@ const desktopCardStyle = {
   boxShadow: "0 0 5px #90d5fb",
   background: "#111e4b",
   position: "relative",
-  maxWidth: "650px",
+  maxWidth: "550px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -66,28 +66,24 @@ const drawerContentStyle = {
 function RoundCard() {
   const [state, setState] = useState({})
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
+  const context = useContext(DashboardContext);
 
   if (isDesktop) {
     return (
     <DashboardContext.Consumer>
+    
       {({user, round}) => (
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" style={desktopCardStyle}>
           <Box >
           <Badge borderRadius="full" px="2" bg="#DD6937" color="white" style={{padding: "0 1rem", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", zIndex: "1", "position":"absolute","width":"auto","height":"24px", left: "40px", top: "0px", transform: "translate(-50%, -50%)"}}>
             { round.name }
           </Badge>
-          <Box p="6">
-            <Box
-              mt="1"
-              fontWeight="semibold"
-              lineHeight="tight"
-              isTruncated
-            >
+          <Box p="1">
             <Heading mt={0} style={{textAlign: "center"}} color="white" size="md">Streak Scenarios</Heading>
             { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaCheckCircle style={{color: "green", display: "inline-flex"}}/> Picks have been selected</Text> : <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaInfoCircle style={{color: "#DD6937", display: "inline-flex"}}/> Select your picks by {moment(round.start_time).tz('America/New_York').format('M/DD h:mma z')}</Text>}
             <PicksContainer />
-            { user.played_cards?.find(card => card.round.id === round.id) && user.played_cards?.find(card => card.round.id === round.id).status !== "pending" ? <PreviousResultsContainer /> : null }
-            </Box>
+            { user.played_cards?.filter(card => card.round.status === "complete").length > 0 ? <PreviousResultsContainer /> : null }
+            
           </Box>
           </Box>
           <Box>
@@ -116,7 +112,7 @@ function RoundCard() {
             <Heading mt={0} style={{textAlign: "center"}} color="white" size="md">Streak Scenarios</Heading>
             { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaCheckCircle style={{color: "green", display: "inline-flex"}}/> Picks have been selected</Text> : <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ><FaInfoCircle style={{color: "#DD6937", display: "inline-flex"}}/> Select your picks by {moment(round.start_time).tz('America/New_York').format('M/DD h:mma z')}</Text>}
             <PicksContainer />
-            { user.played_cards?.find(card => card.round.id === round.id) && user.played_cards?.find(card => card.round.id === round.id).status !== "pending" ? <PreviousResultsContainer /> : null }
+            { user.played_cards?.filter(card => card.round.status === "complete").length > 0 ? <PreviousResultsContainer /> : null }
             </Box>
           </Box>
         </Box>

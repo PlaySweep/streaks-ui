@@ -91,10 +91,10 @@ function LeaderboardContainer() {
   if (isDesktop && state.leaderboard_users.length === 0) {
     return (
       <Box bg={`rgb(17, 30, 75)`}>
-      <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
+      <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto 0 auto"}}>
         <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
         <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
-          <Box w="100%" p={2} style={{display: "flex", justifyContent: "center", alignItems: "center", height: "50vh", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+          <Box w="100%" p={2} style={{maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "center", alignItems: "center", height: "50vh", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
             <VStack>
               <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
               <Text color="white" size="lg" style={{margin: "0 auto", width: "75%", textAlign: "center"}}>The Streaks Leaderboard will be active once Round 1 is complete.</Text>
@@ -110,10 +110,10 @@ function LeaderboardContainer() {
     return (
       <>
       <Box bg={`rgb(17, 30, 75)`}>
-        <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
+        <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto 0 auto"}}>
           <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
           <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
-          <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+          <Box w="100%" p={2} style={{maxWidth: "1100px", margin: "0 auto", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
             <Table variant="unstyled" size={`xs`}>
               <Thead>
                 <Tr>

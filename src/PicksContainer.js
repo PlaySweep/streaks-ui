@@ -224,7 +224,7 @@ function PicksContainer({history}) {
             
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>
-              <MenuDrawer onCloseFunc={onClose} type={`picks`}/>
+              <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
                 <DrawerBody>
                 { state.finished ? <Confetti
                   height={`800px`}
@@ -280,7 +280,7 @@ function PicksContainer({history}) {
                     </InputGroup>
                     </Box>
                     <Box mt={10} style={{margin: "1rem auto", width: "55%"}}>
-                    <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonSolidStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
+                    <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonSolidStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
                       { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
                       { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
                     </Button>
@@ -393,7 +393,7 @@ function PicksContainer({history}) {
                 </InputRightElement>
               </InputGroup>
               <Box mt={10} >
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
+                <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
                   { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
                   { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
                 </Button>

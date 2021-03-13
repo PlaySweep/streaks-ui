@@ -89,6 +89,34 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
     setState({...state, [e.target.name]: value})
   }
 
+  function handleResultsClose() {
+    localStorage.setItem("results", null)
+    onClose()
+  }
+
+  if (type === "results") {
+    return (
+      <Modal isCentered isOpen={isOpen} onClose={handleResultsClose}>
+      <ModalOverlay />
+        <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
+          <ModalHeader style={{textAlign: "center", color: "#fff"}}>Congratulations!</ModalHeader>
+          <ModalCloseButton color={`rgb(17, 30, 75)`}/>
+          <ModalBody >
+            <Box pt={3} pb={3}>
+              <VStack>
+                <Text mt={2} mb={5} color="white" size="lg" style={{width: "75%", textAlign: "center"}}>You selected 5/5 picks correctly in the 1st Round!</Text>
+                <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
+                <Button size={`md`} variant="outline" style={secondaryButtonStyle} isFullWidth onClick={onClose}>
+                  <Text color="white">See my results</Text>
+                </Button>
+              </VStack>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    )
+  }
+
   if (type === "order_info") {
     return (
     <>
@@ -126,6 +154,57 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
         <FiShare color="white" style={{marginRight: "5px"}}/>
         <Text fontSize={textSize} color="white">{ buttonText }</Text>
       </Button> }
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
+          <ModalHeader style={{textAlign: "center", color: "#fff"}}>Share with Friends</ModalHeader>
+          <ModalCloseButton color={`rgb(17, 30, 75)`} style={{background: "none"}}/>
+          <ModalBody >
+            <Box pt={3} pb={3} >
+              <VStack>
+                {/* <Text mb={2} color="white" size="lg" style={{textAlign: "center"}}>
+                  Check out this awesome game I’m playing. You should join.
+                </Text> */}
+                <Button onClick={onCopy} >
+                    {hasCopied ? "Copied!" : "Copy your referral code"}
+                  </Button>
+              </VStack>
+            </Box>
+          </ModalBody>
+
+          <ModalFooter mt={2} mb={5} style={{justifyContent: "center"}}>
+            <SimpleGrid columns={4} spacing={10} >
+              <Box >
+                <IoIosText color={`#fff`}/>
+              </Box>
+              <Box >
+                <FiFacebook color={`#fff`}/>
+              </Box>
+              <Box >
+                <FiTwitter color={`#fff`}/>
+              </Box>
+              <Box >
+                <FiInstagram color={`#fff`}/>
+              </Box>
+            </SimpleGrid>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      </>
+    )}
+    </DashboardContext.Consumer>
+    )
+  }
+
+  if (type === "results_share") {
+    return (
+    <DashboardContext.Consumer>
+    {({user, round})=> (
+      <>
+      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
+        <FiShare color="white" style={{marginRight: "5px"}}/>
+        <Text fontSize={textSize} color="white">{ buttonText }</Text>
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>

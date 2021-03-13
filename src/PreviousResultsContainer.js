@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   GridItem,
+  SimpleGrid,
   Image,
   Tag,
   Tabs, 
@@ -18,6 +19,13 @@ import {
   DrawerContent,
   DrawerCloseButton,
   DrawerBody,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   Heading,
   Input,
   InputGroup,
@@ -25,13 +33,16 @@ import {
   Box,
   Badge,
   Text,
-  VStack
+  VStack,
+  HStack,
+  Spinner
 } from '@chakra-ui/react';
 
 import PopupWidget from './PopupWidget'
 import SvgWidget from './SvgWidget'
+import LoadingWidget from './LoadingWidget'
 
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FiShare } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
@@ -66,6 +77,13 @@ const selectedButtonStyle = {
   backgroundColor: "#0D40A0"
 }
 
+const incorrectButtonStyle = {
+  border: "2.5px solid rgb(235, 88, 87)",
+  boxShadow: "0 0 5px rgb(235, 88, 87)",
+  textTransform: "uppercase",
+  backgroundColor: "rgba(235, 88, 87, 0.9)"
+}
+
 const cardStyle = {
   border: "2.5px solid #90D5FB",
   boxShadow: "0 0 5px #90d5fb",
@@ -78,9 +96,18 @@ const drawerContentStyle = {
   backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/stars_bg.png")`
 }
 
+const modalContentStyle = { 
+  background: "#111e4b",
+  border: "2.5px solid #90D5FB",
+  boxShadow: "0 0 5px #90d5fb",
+  borderRadius: "15px",
+  maxWidth: "1000px",
+}
+
 function PreviousResultsContainer() {
   let authToken = store.get('auth_token')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const [state, setState] = useState({loading: true, selected_index: 0})
   const contextValue = useContext(DashboardContext)
     const apiUrl = axios.create({
@@ -101,6 +128,96 @@ function PreviousResultsContainer() {
 
   if (state.loading) {
     return <div>Loading</div>
+  }
+
+  if (isDesktop) {
+    return (
+      <DashboardContext.Consumer>
+      {({user, round}) => (
+      <>
+      <Text color="white" fontSize="xs" mt={3} style={{textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>Review previous rounds</Text>
+      <Modal isCentered onClose={onClose} isOpen={isOpen}>
+      <ModalOverlay>
+        <ModalContent style={modalContentStyle}>
+          <ModalCloseButton color={"#fff"}/>
+          <ModalBody>
+            <SimpleGrid columns={1} style={{margin: "1.5rem auto 1rem auto"}}>
+              <Box >
+                <Heading mt={3} color="white" size="lg" style={{textTransform: "uppercase", fontWeight: "800"}}>Previous Rounds</Heading>
+              </Box>
+            </SimpleGrid>
+            <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index})}>
+              <SimpleGrid columns={1} style={{margin: "0 auto"}}>
+                <Box height={`40px`}>
+                  <TabList style={{border: "none"}}>
+                    { state.played_cards?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
+                  </TabList>
+                </Box>
+              </SimpleGrid>
+              <SimpleGrid columns={2} style={{alignItems: "center"}}>
+                <Box >
+                  <TabPanels>
+                    { state.played_cards?.map((card) => {
+                      return (
+                        <TabPanel key={card.id}>
+                            
+                          { card.round?.matchups?.map((matchup) => {
+                            return (
+                            <Grid
+                              key={matchup.id}
+                              h="auto"
+                              templateColumns="repeat(6, 1fr)"
+                              gap={3}
+                            >
+                              
+                              <GridItem colSpan={6} >
+                                <Text color={`#fff`} mb={2} fontSize={`md`} style={{display: "flex", alignItems: "center"}}>
+                                <Tag size={`sm`} variant="solid" color={`rgb(17, 30, 75)`} bg="#398FD6" style={{marginRight: "10px", borderRadius: "25px", textAlign: "center", top: "3px", fontWeight: "800"}}>
+                                  {matchup.order}
+                                </Tag>
+                                {matchup.description}
+                                </Text>
+                                <Wrap style={{margin: "0 2rem"}}>
+                                  { matchup.selections.map((selection) => {
+                                    
+                                    return (
+                                      <WrapItem key={selection.id} style={{flex: "1"}}>
+                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? selectedButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
+                                          <Text color="white" style={{fontSize: "0.5rem"}}>{selection.description}</Text>
+                                        </Button>
+                                      </WrapItem>
+                                    )
+                                  })}
+                                </Wrap>
+                              </GridItem>
+                            </Grid>
+                            )
+                          })}
+                        </TabPanel>
+                      )
+                    })}
+                  </TabPanels>
+                </Box>
+                <Box>
+                  <Box style={{margin: "0 auto", textAlign: "center"}}>
+                    <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> 5 out of 5 correct</Heading>
+                    <SvgWidget userId={user.id} round={round} width={`332`} height={`280`}/>
+                  </Box>
+                  <Box style={{width: "75%", margin: "0 auto"}}>
+                    <PopupWidget type={`results_share`} textSize={`md`} buttonText={`Share with friends`}/>
+                  </Box>
+                </Box>
+              </SimpleGrid>
+            </Tabs>
+            
+          </ModalBody>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
+      </>
+      )}
+      </DashboardContext.Consumer>
+    )
   }
   
   return (
