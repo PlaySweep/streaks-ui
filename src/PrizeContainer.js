@@ -201,7 +201,7 @@ function PrizeContainer({history}) {
           <Heading mt={2} color="white" size="md" style={{fontWeight: "800"}}>Can't wait?</Heading>
           <Button mt={5} size={`lg`} variant="outline" style={buttonStyle} isFullWidth>
             <Link color="white" fontSize={`sm`} href="https://shopbeergear.com/collections/bud-light" isExternal>
-              See more Legendary Rewards
+              Shop Merch Now
             </Link>
           </Button>
           <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mt={2.5} style={secondaryButtonStyle} isFullWidth>

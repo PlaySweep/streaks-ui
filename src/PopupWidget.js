@@ -27,7 +27,7 @@ import {
   Flex,
   Tag
 } from '@chakra-ui/react';
-import { useDisclosure, createStandaloneToast, useClipboard } from "@chakra-ui/react";
+import { useDisclosure, createStandaloneToast, useClipboard, useMediaQuery } from "@chakra-ui/react";
 import { FiInfo, FiShare, FiFacebook, FiTwitter, FiInstagram } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosText } from "react-icons/io";
@@ -51,9 +51,19 @@ const primaryButtonStyle = {
   textTransform: "uppercase"
 }
 
+const shareButtonStyle = {
+  border: "none",
+  textTransform: "uppercase",
+  width: "100px",
+  position: "absolute",
+  right: "0",
+  top: "2.5px"
+}
+
 function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const [state, setState] = useState({applied: false, drizly_order_id: ""})
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const contextValue = useContext(DashboardContext)
   const referralUrl = `streakforthebeer.budlight.com?referral=${contextValue.user?.referral_code}`
   const { hasCopied, onCopy } = useClipboard(referralUrl)
@@ -109,10 +119,13 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
     <DashboardContext.Consumer>
     {({user, round})=> (
       <>
-      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
+      { isDesktop ? <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={shareButtonStyle} isFullWidth onClick={onOpen}>
+        <FiShare color="white" style={{marginRight: "5px"}} onClick={onOpen}/>
+        <Text fontSize={textSize} color="white">Share</Text>
+      </Button> : <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={onOpen}>
         <FiShare color="white" style={{marginRight: "5px"}}/>
         <Text fontSize={textSize} color="white">{ buttonText }</Text>
-      </Button>
+      </Button> }
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>

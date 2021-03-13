@@ -10,9 +10,16 @@ import {
   InputGroup,
   InputLeftElement,
   Box,
-  Text
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react';
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 
 // Data fetching
@@ -40,6 +47,13 @@ const drawerContentStyle = {
   borderRadius: "15px 15px 0 0"
 }
 
+const modalContentStyle = { 
+  background: "#111e4b",
+  border: "2.5px solid #90D5FB",
+  boxShadow: "0 0 5px #90d5fb",
+  borderRadius: "15px"
+}
+
 const CustomInput = styled(NumberFormat)`
   width: 100%;
   min-width: 0;
@@ -64,6 +78,7 @@ const CustomInput = styled(NumberFormat)`
 
 function AgeGateDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure({defaultIsOpen: true})
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const [dob, setDob] = useState(null)
 
   const isEligible = () => {
@@ -93,6 +108,41 @@ function AgeGateDrawer() {
   }
 
   
+  if (isDesktop) {
+    return (
+    <Modal isCentered onClose={null} isOpen={isOpen}>
+      <ModalOverlay>
+        <ModalContent style={modalContentStyle}>
+          <ModalBody>
+            <Box p={5}>
+            <Heading mt={0} mb={5} style={{textAlign: "center"}} color="white">ID, please</Heading>
+            <Text color="white" fontSize="md" mt={5} mb={10} style={{textAlign: "center"}}>You must be of legal drinking age to enter this site.</Text>
+            <InputGroup mt={5} mb={5}>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<CalendarIcon color="white" />}
+              />
+              {/* <Input type="tel" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Birthday (MM/DD/YYYY)" size="lg" /> */}
+                  <CustomInput
+                    type="tel"
+                    format="## / ## / ####"
+                    placeholder="Birthday MM/DD/YYYY"
+                    name={"dob"}
+                    value={dob}
+                    onChange={handleOnChange}
+                  />
+            </InputGroup>
+            <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={handleSubmit}>
+              <Text color="white">Enter</Text>
+            </Button>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
+    );
+  }
+
   return (
     <Drawer placement={`bottom`} onClose={null} isOpen={isOpen}>
       <DrawerOverlay>

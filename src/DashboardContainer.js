@@ -12,6 +12,7 @@ import {
   Link,
   Button
 } from '@chakra-ui/react';
+import { useMediaQuery } from "@chakra-ui/react";
 
 import MenuDrawer from './MenuDrawer'
 import RoundCard from './RoundCard'
@@ -24,14 +25,6 @@ import PopupWidget from './PopupWidget';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import moment from 'moment';
-
-const gridStyle = {
-  backgroundImage: `url("https://streaks-challenge.s3.amazonaws.com/mobile_bg.png")`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "top center",
-  backgroundSize: "contain",
-  justifyContent: "center"
-}
 
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
@@ -54,6 +47,23 @@ export const DashboardContext = createContext({})
 function DashboardContainer() {
   let authToken = store.get('auth_token')
   const [state, setState] = useState({loading: true, changed: 0})
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
+  const backgroundImage = isDesktop ? "https://streaks-challenge.s3.amazonaws.com/desktop_bg.png" : "https://streaks-challenge.s3.amazonaws.com/mobile_bg_xl.png"
+  const gridStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "top",
+    backgroundSize: "cover",
+  }
+  const desktopGridStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "top",
+    backgroundSize: "cover",
+    height: "50vh",
+    display: "flex",
+    justifyContent: "center"
+  }
   const apiUrl = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
     timeout: 2500,
@@ -89,8 +99,43 @@ function DashboardContainer() {
     return <></>
   }
 
+  if (isDesktop && Object.keys(state.user).length > 0) {
+    return (
+      <DashboardContext.Provider value={state}>
+        <Fade in={true}>
+          <MenuDrawer />
+          <Grid
+          templateColumns="repeat(2, 1fr)" gap={6}
+          bg={`blue.900`}
+          style={desktopGridStyle}
+        >
+          <RoundCard />
+          <StatsContainer />
+          </Grid>
+          <LeaderboardContainer />
+          <Box maxW="sm" borderWidth="1px" borderRadius="lg" mt={5} mb={5} style={cardStyle}>
+            <Box p="3">
+              <Box
+                m={2}
+                fontWeight="semibold"
+                lineHeight="tight"
+              >
+              <Heading mt={0} style={{textAlign: "center", fontWeight: "800"}} color="white" size="md">Become a Bud Light Legend</Heading>
+              <Text color="white" fontSize="xs" mt={3} mb={3} style={{textAlign: "center"}} >Get exclusive access to merch, experiences, and discounts.</Text>
+              <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" style={buttonStyle} isFullWidth >
+                <Link color="white" fontSize={`sm`} href="budlightlegends.com/joinnow" isExternal>
+                  Join Now
+                </Link>
+              </Button>
+              </Box>
+            </Box>
+          </Box>
+      </Fade>
+      </DashboardContext.Provider>
+    );
+  }
+
   if (Object.keys(state.user).length > 0) {
-    
     return (
       <DashboardContext.Provider value={state}>
         <Fade in={true}>

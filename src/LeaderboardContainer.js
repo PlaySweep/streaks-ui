@@ -29,7 +29,7 @@ import {
 
 import Pagination from "react-js-pagination";
 
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -66,6 +66,7 @@ const drawerContentStyle = {
 function LeaderboardContainer() {
   let authToken = store.get('auth_token')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const [state, setState] = useState({leaderboard_users: [], active_page: 1})
   const contextValue = useContext(DashboardContext)
   const apiUrl = axios.create({
@@ -85,6 +86,104 @@ function LeaderboardContainer() {
 
   function handlePageChange(page_number) {
     setState({...state, active_page: page_number})
+  }
+
+  if (isDesktop && state.leaderboard_users.length === 0) {
+    return (
+      <Box bg={`rgb(17, 30, 75)`}>
+      <Box p={5} pb={10} style={{maxWidth: "1285px", margin: "2.5rem auto"}}>
+        <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+        <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1285px", margin: "2.5rem auto"}}>
+          <Box w="100%" p={2} style={{display: "flex", justifyContent: "center", alignItems: "center", height: "50vh", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+            <VStack>
+              <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
+              <Text color="white" size="lg" style={{margin: "0 auto", width: "75%", textAlign: "center"}}>The Streaks Leaderboard will be active once Round 1 is complete.</Text>
+            </VStack>
+          </Box>
+        </Grid>
+      </Box>
+      </Box>
+    )
+  }
+
+  if (isDesktop) {
+    return (
+      <>
+      <Box bg={`rgb(17, 30, 75)`}>
+        <Box p={5} pb={10} style={{maxWidth: "1285px", margin: "2.5rem auto"}}>
+          <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+          <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1285px", margin: "2.5rem auto"}}>
+          <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+            <Table variant="unstyled" size={`xs`}>
+              <Thead>
+                <Tr>
+                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
+                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Name</Th>
+                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
+                  {/* <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Points</Th> */}
+                </Tr>
+              </Thead>
+              <Tbody>
+                { state.leaderboard_users.map((u) => {
+                  return (
+                    <Tr key={u.id}>
+                      <Td colSpan={1} color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
+                      <Td color="#fff" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.username}</Td>
+                      <Td color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.score} round</Td>
+                      {/* <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td> */}
+                    </Tr>
+                  )
+                })}
+              </Tbody>
+            </Table>
+            <Text color="white" fontSize="xs" mt={5} style={{textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
+            <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
+              <DrawerOverlay>
+                <DrawerContent style={drawerContentStyle}>
+                  <DrawerCloseButton color={"#fff"}/>
+                  <DrawerBody>
+                    <Box>
+                    <Heading mt={5} mb={5} style={{textAlign: "center"}} color="white">Leaderboard</Heading>
+                    <Table variant="unstyled" size={`sm`}>
+                      <Thead>
+                        <Tr>
+                          <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
+                          <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Name</Th>
+                          <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
+                          <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Points</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        { [{id: 1, rank: "1", name: "ryan", streak: "4 rounds", points: "21pts"}, {id: 2, rank: "2", name: "katie", streak: "4 rounds", points: "19pts"}, {id: 3, rank: "3", name: "naval", streak: "3 rounds", points: "17pts"}, {id: 4, rank: "4", name: "kitty", streak: "3 rounds", points: "14pts"}, {id: 5, rank: "5", name: "anon", streak: "2 rounds", points: "12pts"}].map((u) => {
+                          return (
+                            <Tr key={u.id}>
+                              <Td colSpan={1} color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
+                              <Td color="#fff" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.name}</Td>
+                              <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.streak}</Td>
+                              <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td>
+                            </Tr>
+                          )
+                        })}
+                      </Tbody>
+                    </Table>
+                    <Pagination
+                        activePage={state.active_page}
+                        itemsCountPerPage={5}
+                        totalItemsCount={100}
+                        pageRangeDisplayed={5}
+                        onChange={handlePageChange}
+                      />
+                    </Box>
+                  </DrawerBody>
+                </DrawerContent>
+              </DrawerOverlay>
+            </Drawer>
+          </Box>
+        </Grid>
+        </Box>
+      </Box>
+      </>
+    );
   }
 
   if (state.leaderboard_users.length === 0) {
