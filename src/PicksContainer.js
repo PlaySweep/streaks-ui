@@ -112,6 +112,7 @@ function PicksContainer({history}) {
     drizly_order_id: ""
   })
   const contextValue = useContext(DashboardContext)
+  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round.id)
 
   let authToken = store.get('auth_token')
   const apiUrl = axios.create({
@@ -137,19 +138,23 @@ function PicksContainer({history}) {
   }
 
   function handleOrderConfirmation() {
-    const toast = createStandaloneToast()
-    toast({
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-      position: "top",
-      render: () => (
-        <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
-          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
-        </Box>
-      ),
+    apiUrl.patch(`v1/users/${contextValue.user.id}/cards/${current_card_for_round.id}`, { bonus: true }).then((response) => {
+      const toast = createStandaloneToast()
+      toast({
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+            <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
+          </Box>
+        ),
+      })
+      setState({...state, applied: true, drizly_order_id: ""})
+    }).catch((error) => {
+      console.log(error)
     })
-    setState({...state, applied: true, drizly_order_id: ""})
   }
 
   function handleAddPick(selectionObj) {
@@ -222,14 +227,14 @@ function PicksContainer({history}) {
         {({user, round})=> (
           <>
           <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
-            { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
+            { current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
           </Button>
           <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={true} size={`md`} >
             
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>
                 <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
-                { state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
+                { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
                   <Box flex="1" style={{textAlign: "center"}}>
                     <AlertTitle>Bonus Point Activated!</AlertTitle>
                   </Box>
@@ -280,11 +285,11 @@ function PicksContainer({history}) {
                         value={state.drizly_order_id}
                         onChange={handleOnChange}
                         maxLength="8"
-                        disabled={state.applied}
+                        disabled={!user.played || current_card_for_round?.bonus || state.applied}
                       />
                       <InputRightElement width="4.5rem">
-                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
-                          <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
+                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={!user.played || state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
+                          <Text color="white" style={{fontSize: "0.5rem"}}>{current_card_for_round?.bonus || state.applied ? "Applied!" : "Apply"}</Text>
                         </Button>
                       </InputRightElement>
                     </InputGroup>
@@ -292,10 +297,10 @@ function PicksContainer({history}) {
                     <Box mt={10} style={{margin: "1rem auto", width: "55%"}}>
                     <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonSolidStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
                       { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                      { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
+                      { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Picks locked</Text> : <Text color="white">Lock in my picks</Text> }
                     </Button>
                   </Box>
-                  <Text color={`white`} fontSize={`sm`} style={{display: "inline-block", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={onClose}>Back</Text>
+                  <Text color={`white`} fontSize={`md`} style={{display: "inline-block", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={onClose}>Back</Text>
                   </Box> 
                   </SimpleGrid>
 
@@ -337,12 +342,12 @@ function PicksContainer({history}) {
       {({user, round})=> (
         <>
         <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
-          { user.played_cards?.find(card => card.round.id === round.id) ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
+          { current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
         </Button>
         <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false} size={`md`} >
           <DrawerOverlay>
             <DrawerContent style={drawerContentStyle}>
-              { state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
+              { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
                   <Box flex="1" style={{textAlign: "center"}}>
                     <AlertTitle>Bonus Point Activated!</AlertTitle>
                   </Box>
@@ -400,18 +405,18 @@ function PicksContainer({history}) {
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
                   maxLength="8"
-                  disabled={state.applied}
+                  disabled={!user.played || current_card_for_round?.bonus || state.applied}
                 />
                 <InputRightElement width="4.5rem">
-                  <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
-                    <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
+                  <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={!user.played || state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
+                    <Text color="white" style={{fontSize: "0.5rem"}}>{current_card_for_round?.bonus || state.applied ? "Applied!" : "Apply"}</Text>
                   </Button>
                 </InputRightElement>
               </InputGroup>
               <Box mt={10} >
                 <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
                   { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Unlock my picks</Text> : <Text color="white">Lock in my picks</Text> }
+                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Picks locked</Text> : <Text color="white">Lock in my picks</Text> }
                 </Button>
               </Box>
               </Container>

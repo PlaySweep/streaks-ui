@@ -110,11 +110,13 @@ function LeaderboardContainer() {
     return (
       <>
       <Box bg={`rgb(17, 30, 75)`}>
-        <Box style={{maxWidth: "1350px", margin: "0 auto 2.5rem auto"}}>
+        <Box style={{maxWidth: "1275px", margin: "0 auto 2.5rem auto"}}>
           
-          <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
-          <Heading mt={2} ml={10} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
-          <Box w="100%" p={2} style={{maxWidth: "950px", margin: "0 auto", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+          <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1275px", margin: "2.5rem auto"}}>
+          
+          <Box style={{maxWidth: "950px", display: "contents"}}>
+            <Heading mt={5} color="white" size="xl" style={{fontWeight: "800"}}>Leaderboard</Heading>
+            <Box w="100%" p={2} style={{margin: "0 auto", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
             <Table variant="unstyled" size={`xl`}>
               <Thead>
                 <Tr>
@@ -177,6 +179,7 @@ function LeaderboardContainer() {
                 </DrawerContent>
               </DrawerOverlay>
             </Drawer>
+          </Box>
           </Box>
         </Grid>
         </Box>
