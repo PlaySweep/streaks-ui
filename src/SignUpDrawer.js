@@ -82,8 +82,9 @@ function SignUpDrawer({history}) {
   }
 
   function handleSignUp() {
+    const signUpPath = store.get("ref") ? `v1/users?ref=${store.get(`ref`)}` : `v1/users`
     setState({...state, submitting: true})
-    apiUrl.post(`v1/users`, {
+    apiUrl.post(signUpPath, {
       username: state.username,
       first_name: state.name.split(' ')[0],
       last_name: state.name.split(' ')[1],
@@ -91,7 +92,7 @@ function SignUpDrawer({history}) {
       password: state.password,
       password_confirmation: state.password_confirmation,
       dob: store.get(`dob`),
-      account_id: 1
+      account_id: 1,
     }).then((response) => {
       store.set('auth_token', response.data.token)
       setState({...state, submitting: false})

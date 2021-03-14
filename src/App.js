@@ -37,7 +37,7 @@ function App() {
           <ProtectedRoute exact path='/welcome' component={() => 
             <WelcomeContainer /> } 
           />
-          <Route exact path="/" component={OnboardContainer} />
+          <Route exact path="/:ref?" component={OnboardContainer} />
         </Switch>
       </Router>
     </ChakraProvider>

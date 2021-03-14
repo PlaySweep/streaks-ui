@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from "react-router";
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {
@@ -48,15 +48,23 @@ const drawerContentStyle = {
   borderRadius: "15px 15px 0 0"
 }
 
-function OnboardContainer({history}) {
+function OnboardContainer({history, match}) {
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const backgroundImage = isDesktop ? "https://streaks-challenge.s3.amazonaws.com/desktop_bg.png" : "https://streaks-challenge.s3.amazonaws.com/mobile_bg_xl.png"
   const gridStyle = {
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "top",
-  backgroundSize: "cover"
-}
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "top",
+    backgroundSize: "cover"
+  }
+
+  useEffect(() => {
+    if (match.params.ref) {
+      store.set("ref", match.params.ref.split('_')[1])
+    } else {
+      store.remove("ref")
+    }
+  })
 
   if (isDesktop) {
     return (

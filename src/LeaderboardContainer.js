@@ -79,7 +79,7 @@ function LeaderboardContainer() {
   })
 
   useEffect(() => {
-    apiUrl.get(`v1/leaderboards?type=streak&page=1`).then((response) => {
+    apiUrl.get(`v1/leaderboards?type=points&page=1`).then((response) => {
       setState({...state, leaderboard_users: response.data.users})
     })
   }, [])
@@ -91,10 +91,10 @@ function LeaderboardContainer() {
   if (isDesktop && state.leaderboard_users.length === 0) {
     return (
       <Box bg={`rgb(17, 30, 75)`}>
-      <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto 0 auto"}}>
-        <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+      <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "0 auto 2.5rem auto"}}>
         <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
-          <Box w="100%" p={2} style={{maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "center", alignItems: "center", height: "50vh", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+          <Heading mt={2} ml={10} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+          <Box w="100%" p={2} style={{maxWidth: "950px", margin: "0 auto", display: "flex", justifyContent: "center", alignItems: "center", height: "50vh", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
             <VStack>
               <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
               <Text color="white" size="lg" style={{margin: "0 auto", width: "75%", textAlign: "center"}}>The Streaks Leaderboard will be active once Round 1 is complete.</Text>
@@ -110,16 +110,17 @@ function LeaderboardContainer() {
     return (
       <>
       <Box bg={`rgb(17, 30, 75)`}>
-        <Box p={5} pb={10} style={{maxWidth: "1350px", margin: "2.5rem auto 0 auto"}}>
-          <Heading mt={2} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+        <Box style={{maxWidth: "1350px", margin: "0 auto 2.5rem auto"}}>
+          
           <Grid templateColumns="repeat(1, 1fr)" gap={5} mt={5} style={{maxWidth: "1350px", margin: "2.5rem auto"}}>
-          <Box w="100%" p={2} style={{maxWidth: "1100px", margin: "0 auto", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
-            <Table variant="unstyled" size={`xs`}>
+          <Heading mt={2} ml={10} color="white" size="lg" style={{fontWeight: "800"}}>Leaderboard</Heading>
+          <Box w="100%" p={2} style={{maxWidth: "950px", margin: "0 auto", borderRadius: "12px"}} bg="#102864" pt={5} pb={5}>
+            <Table variant="unstyled" size={`xl`}>
               <Thead>
                 <Tr>
-                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
-                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Name</Th>
-                  <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
+                  <Th color="#DD6937" size="lg" style={{textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
+                  <Th color="#DD6937" size="lg" style={{textAlign: "center", textTransform: "uppercase"}}>Name</Th>
+                  <Th color="#DD6937" size="lg" style={{textAlign: "center", textTransform: "uppercase"}}>Points</Th>
                   {/* <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Points</Th> */}
                 </Tr>
               </Thead>
@@ -127,16 +128,16 @@ function LeaderboardContainer() {
                 { state.leaderboard_users.map((u) => {
                   return (
                     <Tr key={u.id}>
-                      <Td colSpan={1} color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
-                      <Td color="#fff" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.username}</Td>
-                      <Td color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.score} round</Td>
+                      <Td colSpan={1} color="#398FD6" size="xl" style={{ fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
+                      <Td color="#fff" size="xl" style={{ fontWeight: "700", textAlign: "center"}}>{u.username}</Td>
+                      <Td color="#398FD6" size="xl" style={{ fontWeight: "700", textAlign: "center"}}>{u.score} {u.score === 1 ? `point` : `points`}</Td>
                       {/* <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td> */}
                     </Tr>
                   )
                 })}
               </Tbody>
             </Table>
-            <Text color="white" fontSize="xs" mt={5} style={{textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
+            <Text color="white" fontSize="sm" mt={10} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
             <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
               <DrawerOverlay>
                 <DrawerContent style={drawerContentStyle}>
@@ -149,7 +150,6 @@ function LeaderboardContainer() {
                         <Tr>
                           <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
                           <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Name</Th>
-                          <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
                           <Th color="#DD6937" size="xs" style={{textAlign: "center", textTransform: "uppercase"}}>Points</Th>
                         </Tr>
                       </Thead>
@@ -159,8 +159,7 @@ function LeaderboardContainer() {
                             <Tr key={u.id}>
                               <Td colSpan={1} color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
                               <Td color="#fff" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.name}</Td>
-                              <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.streak}</Td>
-                              <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td>
+                              <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.score} {u.score === 1 ? `point` : `points`}</Td>
                             </Tr>
                           )
                         })}
@@ -216,7 +215,7 @@ function LeaderboardContainer() {
               <Tr>
                 <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Rank</Th>
                 <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Name</Th>
-                <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Streak</Th>
+                <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Points</Th>
                 {/* <Th color="#DD6937" size="xs" style={{fontSize: "0.75rem", textAlign: "center", textTransform: "uppercase"}}>Points</Th> */}
               </Tr>
             </Thead>
@@ -226,14 +225,14 @@ function LeaderboardContainer() {
                   <Tr key={u.id}>
                     <Td colSpan={1} color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.rank}</Td>
                     <Td color="#fff" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.username}</Td>
-                    <Td color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.score} round</Td>
+                    <Td color="#398FD6" size="xs" style={{fontSize: "0.9rem", fontWeight: "700", textAlign: "center"}}>{u.score} {u.score === 1 ? `point` : `points`}</Td>
                     {/* <Td color="#398FD6" size="sm" style={{fontWeight: "700", textAlign: "center"}}>{u.points}</Td> */}
                   </Tr>
                 )
               })}
             </Tbody>
           </Table>
-          <Text color="white" fontSize="xs" mt={5} style={{textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
+          <Text color="white" fontSize="xs" mt={5} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
           <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>

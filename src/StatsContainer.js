@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter } from 'react-router';
 import {
   Button,
@@ -55,6 +55,7 @@ const drawerContentStyle = {
 
 function StatsContainer({history}) {
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
+  const context = useContext(DashboardContext)
   
   if (isDesktop) {
     return (
@@ -69,16 +70,16 @@ function StatsContainer({history}) {
               <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={5}>
                 <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                   <VStack>
-                  <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak</Heading>
-                  <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak}</Heading>
-                  <Text color="#398FD6" fontSize="sm">{user.streak === 1 ? `round` : `rounds`}</Text>
+                  <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak Rank</Heading>
+                  <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak_rank}</Heading>
+                  <Text color="#398FD6" fontSize="sm">{user.streak_score} {user.streak_score === 1 ? `round` : `rounds`}</Text>
                   </VStack>
                 </Box>
                 <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                   <VStack>
-                  <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Rank</Heading>
-                  <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak_rank}</Heading>
-                  <Text color="#398FD6" fontSize="sm">{user.points} {user.points === 1 ? `pt` : `pts`}</Text>
+                  <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Points Rank</Heading>
+                  <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.points_rank}</Heading>
+                  <Text color="#398FD6" fontSize="sm">{user.points_score} {user.points_score === 1 ? `pt` : `pts`}</Text>
                   </VStack>
                 </Box>
               </Grid>
@@ -102,16 +103,16 @@ function StatsContainer({history}) {
             <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={5}>
               <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                 <VStack>
-                <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak</Heading>
-                <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak}</Heading>
-                <Text color="#398FD6" fontSize="xs">{user.streak === 1 ? `round` : `rounds`}</Text>
+                <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Streak Rank</Heading>
+                <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak_rank}</Heading>
+                <Text color="#398FD6" fontSize="xs">{user.streak_score} {user.streak_score === 1 ? `round` : `rounds`}</Text>
                 </VStack>
               </Box>
               <Box w="100%" p={2} style={{borderRadius: "12px"}} bg="#102864" pt={3} pb={3}>
                 <VStack>
-                <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Rank</Heading>
-                <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.streak_rank}</Heading>
-                <Text color="#398FD6" fontSize="xs">{user.points} {user.points === 1 ? `pt` : `pts`}</Text>
+                <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Points Rank</Heading>
+                <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.points_rank}</Heading>
+                <Text color="#398FD6" fontSize="xs">{user.points_score} {user.points_score === 1 ? `pt` : `pts`}</Text>
                 </VStack>
               </Box>
             </Grid>

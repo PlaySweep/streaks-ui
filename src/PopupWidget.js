@@ -65,7 +65,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const contextValue = useContext(DashboardContext)
-  const referralUrl = `streakforthebeer.budlight.com?referral=${contextValue.user?.referral_code}`
+  const referralUrl = `${process.env.REACT_APP_WEB_URL}/ref_${contextValue.user?.referral_code}`
   const { hasCopied, onCopy } = useClipboard(referralUrl)
 
   function handleOrderConfirmation() {
