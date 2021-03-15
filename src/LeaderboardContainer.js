@@ -120,8 +120,6 @@ function LeaderboardContainer() {
     )
   }
 
-  const total_users_count = ((state.leaderboard_users[0]?.total_members % 5 + 1) * 5)
-
   if (isDesktop) {
     return (
       <>
@@ -160,7 +158,7 @@ function LeaderboardContainer() {
                 prevPageText={`Back`}
                 nextPageText={`Next`}
                 onChange={handlePageChange}
-                totalItemsCount={total_users_count * 2}
+                totalItemsCount={state.leaderboard_users[0]?.total_members * 2}
               />
             </Box>
             
@@ -253,7 +251,7 @@ function LeaderboardContainer() {
                       prevPageText={`Back`}
                       nextPageText={`Next`}
                       onChange={handlePageChange}
-                      totalItemsCount={total_users_count * 2}
+                      totalItemsCount={state.leaderboard_users[0]?.total_members * 2}
                     />
                   </Box>
                 </DrawerBody>

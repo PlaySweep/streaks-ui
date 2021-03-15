@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import {
   Button,
@@ -30,6 +30,9 @@ import { CalendarIcon } from '@chakra-ui/icons';
 import { IoMdPerson } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaLock } from "react-icons/fa";
+
+import signUpFBEvent from './pixels/FacebookPixel';
+import signUpSnapEvent from './pixels/SnapPixel';
 
 import LoadingWidget from './LoadingWidget';
 
@@ -95,6 +98,8 @@ function SignUpDrawer({history}) {
       dob: moment(store.get(`dob`))._d,
       account_id: 1,
     }).then((response) => {
+      signUpFBEvent()
+      signUpSnapEvent()
       store.set('auth_token', response.data.token)
       setState({...state, submitting: false})
       history.push(`/welcome`)
