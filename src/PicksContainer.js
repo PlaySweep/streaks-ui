@@ -139,7 +139,7 @@ function PicksContainer({history}) {
 
   function handleOrderConfirmation() {
     apiUrl.patch(`v1/users/${contextValue.user.id}/cards/${current_card_for_round.id}`, { bonus: true }).then((response) => {
-      axios.post(`https://sheet2api.com/v1/gnOukYlLQX6x/drizly-streaks-order-ids`, { 
+      axios.post(`https://sheet2api.com/v1/gnOukYlLQX6x/drizly-streaks-order-ids/Orders`, { 
         user_id: contextValue.user.id, 
         round_id: current_card_for_round.round.id, 
         order_id: state.drizly_order_id
