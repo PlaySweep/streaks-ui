@@ -139,7 +139,7 @@ function LeaderboardContainer() {
                 })}
               </Tbody>
             </Table>
-            <Text color="white" fontSize="sm" mt={10} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
+            <Text color="white" fontSize="sm" mt={10} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} >See Full Leaderboard</Text>
             <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
               <DrawerOverlay>
                 <DrawerContent style={drawerContentStyle}>
@@ -235,7 +235,7 @@ function LeaderboardContainer() {
               })}
             </Tbody>
           </Table>
-          <Text color="white" fontSize="xs" mt={5} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} onClick={onOpen}>See Full Leaderboard</Text>
+          <Text color="white" fontSize="xs" mt={5} style={{display: "inline-block", display: "flex", justifyContent: "center", textDecoration: "underline", textTransform: "uppercase", textAlign: "center"}} >See Full Leaderboard</Text>
           <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>
