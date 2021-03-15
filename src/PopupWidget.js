@@ -32,7 +32,11 @@ import { FiInfo, FiShare, FiFacebook, FiTwitter, FiInstagram } from "react-icons
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosText } from "react-icons/io";
 
+import axios from "axios";
+
 import { DashboardContext } from './DashboardContainer';
+
+const store = require('store');
 
 const buttonStyle = {
   border: "2.5px solid #90D5FB",
@@ -64,24 +68,46 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const [state, setState] = useState({applied: false, drizly_order_id: ""})
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
+  let authToken = store.get('auth_token')
+  const apiUrl = axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    timeout: 2500,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authToken,
+    },
+  })
+
   const contextValue = useContext(DashboardContext)
   const referralUrl = `${process.env.REACT_APP_WEB_URL}/ref_${contextValue.user?.referral_code}`
   const { hasCopied, onCopy } = useClipboard(referralUrl)
 
+  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round.id)
+
   function handleOrderConfirmation() {
-    const toast = createStandaloneToast()
-    toast({
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-      position: "top",
-      render: () => (
-        <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
-          <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
-        </Box>
-      ),
+    apiUrl.patch(`v1/users/${contextValue.user.id}/cards/${current_card_for_round.id}`, { bonus: true }).then((response) => {
+      axios.post(`https://sheet2api.com/v1/gnOukYlLQX6x/drizly-streaks-order-ids`, { 
+        user_id: contextValue.user.id, 
+        round_id: current_card_for_round.round.id, 
+        order_id: state.drizly_order_id
+      }).then((response) => {
+        const toast = createStandaloneToast()
+        toast({
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+              <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
+            </Box>
+          ),
+        })
+      })
+      setState({...state, applied: true, drizly_order_id: ""})
+    }).catch((error) => {
+      console.log(error)
     })
-    setState({...state, applied: true, drizly_order_id: ""})
   }
 
   function handleOnChange(e) {
@@ -312,10 +338,11 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
                   maxLength={`8`}
+                  disabled={!contextValue.user.played || current_card_for_round?.bonus || state.applied}
                 />
               <InputRightElement width="4.5rem">
-                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
-                  <Text color="white" style={{fontSize: "0.5rem"}}>{state.applied ? "Applied!" : "Apply"}</Text>
+                <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={!contextValue.user.played || state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
+                  <Text color="white" style={{fontSize: "0.5rem"}}>{current_card_for_round?.bonus || state.applied ? "Applied!" : "Apply"}</Text>
                 </Button>
               </InputRightElement>
             </InputGroup>

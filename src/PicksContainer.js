@@ -139,17 +139,23 @@ function PicksContainer({history}) {
 
   function handleOrderConfirmation() {
     apiUrl.patch(`v1/users/${contextValue.user.id}/cards/${current_card_for_round.id}`, { bonus: true }).then((response) => {
-      const toast = createStandaloneToast()
-      toast({
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        render: () => (
-          <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
-            <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
-          </Box>
-        ),
+      axios.post(`https://sheet2api.com/v1/gnOukYlLQX6x/drizly-streaks-order-ids`, { 
+        user_id: contextValue.user.id, 
+        round_id: current_card_for_round.round.id, 
+        order_id: state.drizly_order_id
+      }).then((response) => {
+        const toast = createStandaloneToast()
+        toast({
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+              <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Thanks! We're confirming your order now.</Text>
+            </Box>
+          ),
+        })
       })
       setState({...state, applied: true, drizly_order_id: ""})
     }).catch((error) => {
