@@ -35,6 +35,7 @@ import LoadingWidget from './LoadingWidget';
 
 // Data fetching
 import axios from "axios";
+import moment from "moment";
 
 const store = require('store');
 
@@ -91,7 +92,7 @@ function SignUpDrawer({history}) {
       email: state.email,
       password: state.password,
       password_confirmation: state.password_confirmation,
-      dob: store.get(`dob`),
+      dob: moment(store.get(`dob`))._d,
       account_id: 1,
     }).then((response) => {
       store.set('auth_token', response.data.token)
