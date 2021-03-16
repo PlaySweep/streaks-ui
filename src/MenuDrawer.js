@@ -101,25 +101,8 @@ function MenuDrawer({history, type, onCloseFunc, activeTab}) {
               <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => window.location.href = `/rules`}>Rules</Heading>
               <Heading mt={0} mb={10} fontSize={`2xl`} style={{textAlign: "left"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => window.location.href = `/about`}>About</Heading>
             </Box>
-            {/* <Box p={5} style={{position: "absolute", bottom: "50px"}}>
-              <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Follow</Heading>
-              <SimpleGrid columns={3} spacing={10}>
-                <Box >
-                  <FiFacebook color={`#fff`}/>
-                </Box>
-                <Box >
-                  <FiTwitter color={`#fff`}/>
-                </Box>
-                <Box >
-                  <FiInstagram color={`#fff`}/>
-                </Box>
-              </SimpleGrid>
-            </Box> */}
-            <Box p={5} style={{position: "absolute", bottom: "50px"}} onClick={handleLogOut}>
+            <Box p={5} style={{position: "absolute", bottom: "25px"}} onClick={handleLogOut}>
               <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Log out</Heading>
-            </Box>
-            <Box p={5} style={{position: "absolute", bottom: "15px"}} onClick={handleLogOut}>
-              <Heading mt={5} mb={5} fontSize={`lg`} style={{textAlign: "left"}} color="white">Support</Heading>
             </Box>
           </DrawerBody>
         </DrawerContent>

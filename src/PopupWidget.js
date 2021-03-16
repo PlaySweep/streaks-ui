@@ -201,7 +201,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             </Box>
           </ModalBody>
 
-          <ModalFooter mt={2} mb={5} style={{justifyContent: "center"}}>
+          {/* <ModalFooter mt={2} mb={5} style={{justifyContent: "center"}}>
             <SimpleGrid columns={4} spacing={10} >
               <Box >
                 <IoIosText color={`#fff`}/>
@@ -216,7 +216,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
                 <FiInstagram color={`#fff`}/>
               </Box>
             </SimpleGrid>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
       </>
