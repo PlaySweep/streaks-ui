@@ -66,6 +66,7 @@ function SignInDrawer({history}) {
       setState({...state, submitting: false})
       history.push(`/dashboard`)
     }).catch((error) => {
+      setState({...state, submitting: false})
       alert('error!')
     })
   }

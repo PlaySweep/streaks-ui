@@ -104,6 +104,7 @@ function SignUpDrawer({history}) {
       setState({...state, submitting: false})
       window.location.href = "/welcome"
     }).catch((error) => {
+      setState({...state, submitting: false})
       alert('error has occurred')
     })
   }
