@@ -156,12 +156,15 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             <Box pt={3} pb={3}>
               <VStack>
                 {/* <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/> */}
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter the 8 digit order ID from your Drizly receipt and we will apply a bonus point to your round.</Text>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Expect your order to be confirmed in the next 24 hours.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>After you have made your picks, enter the 8 digit order ID from your Drizly receipt to earn a bonus point for your current round. Use promo code STREAK for $5 off.</Text>
               </VStack>
             </Box>
           </ModalBody>
+          <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
+          </Box>
         </ModalContent>
       </Modal>
     </>
@@ -320,9 +323,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
             <Box pt={3} pb={3}>
               <VStack>
                 <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Enter the 8 digit order ID from your Drizly receipt and we will apply a bonus point to your round.</Text>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
-                <Text color="white" size="lg" style={{textAlign: "center"}}>Expect your order to be confirmed in the next 24 hours.</Text>
+                <Text color="white" size="lg" style={{textAlign: "center"}}>Wanna earn a boost? After you have made your picks, enter the 8 digit order ID from your Drizly receipt to earn a bonus point for your current round. Use promo code STREAK for $5 off.</Text>
               </VStack>
             </Box>
           </ModalBody>
@@ -348,6 +349,12 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
               </InputRightElement>
             </InputGroup>
           </ModalFooter>
+          <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
+            <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
+          </Box>
+          
         </ModalContent>
       </Modal>
     </>

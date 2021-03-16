@@ -14,6 +14,13 @@ import {
 } from '@chakra-ui/react';
 import { useMediaQuery } from "@chakra-ui/react";
 
+import {
+  load as loadIntercom,
+  boot as bootIntercom,
+  update as updateIntercom,
+  shutdown as shutdownIntercom
+} from "./intercom"
+
 import MenuDrawer from './MenuDrawer'
 import RoundCard from './RoundCard'
 import SvgWidget from './SvgWidget'
@@ -82,6 +89,10 @@ function DashboardContainer() {
         let rounds = response.data.rounds
         let round = rounds.filter(round => round.status === "pending")[0]
         setState({...state, updatePlayedCards: updatePlayedCards, user: user, round: round, loading: false})
+      })
+      loadIntercom()
+      bootIntercom({
+        email: user.email
       })
     })
   }, [state.changed])

@@ -242,7 +242,7 @@ function PicksContainer({history}) {
                 <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
                 { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
                   <Box flex="1" style={{textAlign: "center"}}>
-                    <AlertTitle>Bonus Point Activated!</AlertTitle>
+                    <AlertTitle style={{textTransform: "uppercase"}}>Bonus point activated!</AlertTitle>
                   </Box>
                 </Alert> : null }
                 <DrawerBody>
@@ -311,28 +311,52 @@ function PicksContainer({history}) {
                   </SimpleGrid>
 
                 { state.submitting ? 
-                <LoadingWidget>
-                  { state.complete ? <FaCheckCircle color={`rgba(255, 255, 255)`} style={{fontSize: "2rem"}}/> : <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /> }
-                </LoadingWidget> : null }
-                { state.finished ? 
-                <Modal isCentered isOpen={state.finished} onClose={() => setState({...state, finished: false})}>
-                <ModalOverlay />
-                  <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
-                    <ModalHeader style={{textAlign: "center", color: "#fff"}}>Locked down</ModalHeader>
-                    <ModalCloseButton color={`rgb(17, 30, 75)`}/>
-                    <ModalBody >
-                      <Box pt={3} pb={3}>
-                        <VStack>
-                          <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
-                          <Text mt={2} mb={5} color="white" size="lg" style={{width: "75%", textAlign: "center"}}>Come back after the game to see your results!</Text>
-                          <Button size={`md`} variant="outline" style={secondaryButtonStyle} isFullWidth onClick={onClose}>
-                            <Text color="white">See my dashboard</Text>
-                          </Button>
-                        </VStack>
-                      </Box>
-                    </ModalBody>
-                  </ModalContent>
-                </Modal> : null }
+              <LoadingWidget>
+                { state.complete ? <FaCheckCircle color={`rgba(255, 255, 255)`} style={{fontSize: "2rem"}}/> : <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /> }
+              </LoadingWidget> : null }
+              { state.finished ? 
+              <Modal isCentered isOpen={state.finished} onClose={() => setState({...state, finished: false})}>
+              <ModalOverlay />
+                <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
+                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Congrats, you're locked in!</ModalHeader>
+                  <ModalCloseButton color={`rgb(17, 30, 75)`}/>
+                  <ModalBody >
+                    <Box pt={3} pb={3}>
+                      <VStack>
+                        <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/>
+                        <Text color="white" size="lg" style={{textAlign: "center"}}>Wanna earn a boost? Enter the 8 digit order ID from your Drizly receipt to earn a bonus point for your current round. Use promo code STREAK for $5 off.</Text>
+                      </VStack>
+                    </Box>
+                  </ModalBody>
+
+                  <ModalFooter mt={2} mb={5}>
+                    <InputGroup size="md">
+                        <Input
+                          pr="4.5rem"
+                          variant="filled"
+                          name="drizly_order_id"
+                          style={{color: "white", background: "rgba(16, 40, 100, 0.25)"}}
+                          placeholder="Enter Drizly Order ID"
+                          value={state.drizly_order_id}
+                          onChange={handleOnChange}
+                          maxLength={`8`}
+                          type="tel"
+                          disabled={!contextValue.user.played || current_card_for_round?.bonus || state.applied}
+                        />
+                      <InputRightElement width="4.5rem">
+                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={!contextValue.user.played || state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
+                          <Text color="white" style={{fontSize: "0.5rem"}}>{current_card_for_round?.bonus || state.applied ? "Applied!" : "Apply"}</Text>
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </ModalFooter>
+                  <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
+                  </Box>
+                </ModalContent>
+              </Modal> : null }
                 </DrawerBody>
               </DrawerContent>
             </DrawerOverlay>
@@ -355,7 +379,7 @@ function PicksContainer({history}) {
             <DrawerContent style={drawerContentStyle}>
               { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
                   <Box flex="1" style={{textAlign: "center"}}>
-                    <AlertTitle>Bonus Point Activated!</AlertTitle>
+                    <AlertTitle style={{textTransform: "uppercase"}}>Bonus point activated!</AlertTitle>
                   </Box>
                 </Alert> : null }
               <DrawerCloseButton color={"#fff"}/>
@@ -435,19 +459,43 @@ function PicksContainer({history}) {
               <Modal isCentered isOpen={state.finished} onClose={() => setState({...state, finished: false})}>
               <ModalOverlay />
                 <ModalContent style={{borderRadius: "25px", border: "1px solid #fff", background: "rgb(57, 143, 214)", margin: "0 1rem"}}>
-                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Locked down</ModalHeader>
+                  <ModalHeader style={{textAlign: "center", color: "#fff"}}>Congrats, you're locked in!</ModalHeader>
                   <ModalCloseButton color={`rgb(17, 30, 75)`}/>
                   <ModalBody >
                     <Box pt={3} pb={3}>
                       <VStack>
-                        <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/swish.gif" alt="Swish"/>
-                        <Text mt={2} mb={5} color="white" size="lg" style={{width: "75%", textAlign: "center"}}>Come back after the game to see your results!</Text>
-                        <Button size={`md`} variant="outline" style={secondaryButtonStyle} isFullWidth onClick={onClose}>
-                          <Text color="white">See my dashboard</Text>
-                        </Button>
+                        <Image mb={2} boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly"/>
+                        <Text color="white" size="lg" style={{textAlign: "center"}}>Wanna earn a boost? Enter the 8 digit order ID from your Drizly receipt to earn a bonus point for your current round. Use promo code STREAK for $5 off.</Text>
                       </VStack>
                     </Box>
                   </ModalBody>
+
+                  <ModalFooter mt={2} mb={5}>
+                    <InputGroup size="md">
+                        <Input
+                          pr="4.5rem"
+                          variant="filled"
+                          name="drizly_order_id"
+                          style={{color: "white", background: "rgba(16, 40, 100, 0.25)"}}
+                          placeholder="Enter Drizly Order ID"
+                          value={state.drizly_order_id}
+                          onChange={handleOnChange}
+                          maxLength={`8`}
+                          type="tel"
+                          disabled={!contextValue.user.played || current_card_for_round?.bonus || state.applied}
+                        />
+                      <InputRightElement width="4.5rem">
+                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mr={2} style={primaryButtonStyle} isFullWidth h="1.75rem" size="sm" disabled={!contextValue.user.played || state.drizly_order_id.length < 8} onClick={handleOrderConfirmation}>
+                          <Text color="white" style={{fontSize: "0.5rem"}}>{current_card_for_round?.bonus || state.applied ? "Applied!" : "Apply"}</Text>
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </ModalFooter>
+                  <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
+                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
+                 </Box>
                 </ModalContent>
               </Modal> : null }
               </DrawerBody>
