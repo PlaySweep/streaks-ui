@@ -338,6 +338,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
                   maxLength={`8`}
+                  type="tel"
                   disabled={!contextValue.user.played || current_card_for_round?.bonus || state.applied}
                 />
               <InputRightElement width="4.5rem">

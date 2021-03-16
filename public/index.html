@@ -58,7 +58,9 @@
     'https://sc-static.net/scevent.min.js');
 
     snaptr('init', '449640a0-1412-48c3-9050-4aef788a9a3f');
-    snaptr('track', 'PAGE_VIEW');
+    if (window.location.href === "https://streakforthebeer.budlight.com/") {
+      snaptr('track', 'PAGE_VIEW');
+    }
     if (window.location.href === "https://streakforthebeer.budlight.com/welcome") {
       snaptr('track','SIGN_UP');
     }

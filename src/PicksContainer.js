@@ -411,6 +411,7 @@ function PicksContainer({history}) {
                   value={state.drizly_order_id}
                   onChange={handleOnChange}
                   maxLength="8"
+                  type="tel"
                   disabled={!user.played || current_card_for_round?.bonus || state.applied}
                 />
                 <InputRightElement width="4.5rem">
