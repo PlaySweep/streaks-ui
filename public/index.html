@@ -46,11 +46,23 @@
       <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=293266404633982&ev=PageView&noscript=1"/>
     </noscript>
     <!-- End Facebook Pixel Code -->
-    
-    <!-- Snap Pixel Code --> 
+
+
+    <!-- Snap Pixel Code -->
     <script type='text/javascript'>
-      (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function() {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)}; a.queue=[];var s='script';r=t.createElement(s);r.async=!0; r.src=n;var u=t.getElementsByTagName(s)[0]; u.parentNode.insertBefore(r,u);})(window,document, 'https://sc-static.net/scevent.min.js'); snaptr('init', '449640a0-1412-48c3-9050-4aef788a9a3f'); snaptr('track', 'PAGE_VIEW');
-      </script>
+    (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
+    {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+    a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+    r.src=n;var u=t.getElementsByTagName(s)[0];
+    u.parentNode.insertBefore(r,u);})(window,document,
+    'https://sc-static.net/scevent.min.js');
+
+    snaptr('init', '449640a0-1412-48c3-9050-4aef788a9a3f');
+    snaptr('track', 'PAGE_VIEW');
+    if (window.location.href === "https://streakforthebeer.budlight.com/welcome") {
+      snaptr('track','SIGN_UP');
+    }
+    </script>
     <!-- End Snap Pixel Code -->
   </body>
 </html>
