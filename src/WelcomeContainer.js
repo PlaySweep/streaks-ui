@@ -128,7 +128,7 @@ function WelomeContainer({history}) {
       <Box style={{textAlign: "center"}}>
         <Image boxSize="210px" src="https://streaks-challenge.s3.amazonaws.com/clinking_beer_image.png" alt="Beer" style={{margin: "1rem auto"}}/>
         <Text m={5} color="white">Redeem streaks for prizes including Drizly promos and Bud Light merch.</Text>
-        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={() => history.push(`/dashboard`)}>
+        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={() => window.location.href = `/dashboard`}>
           <Text color="white">Let's go</Text>
         </Button>
         <Button size={`lg`} variant="link" mb={5} isFullWidth onClick={() => setCurrentIndex(current_index - 1)}>
@@ -158,7 +158,7 @@ function WelomeContainer({history}) {
       </Box> 
       </SimpleGrid>
       <Box mt={10} mb={5} style={{textAlign: "center"}}>
-      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} onClick={() => history.push(`/dashboard`)}>
+      <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} onClick={() => window.location.href = `/dashboard`}>
         <Text color="white">I'm ready to play</Text>
       </Button>
       <Button size={`lg`} variant="link" mb={5} isFullWidth onClick={() => setCurrentIndex(current_index - 1)}>

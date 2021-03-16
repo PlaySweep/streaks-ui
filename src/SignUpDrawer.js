@@ -102,7 +102,7 @@ function SignUpDrawer({history}) {
       signUpSnapEvent()
       store.set('auth_token', response.data.token)
       setState({...state, submitting: false})
-      history.push(`/welcome`)
+      window.location.href = "/welcome"
     }).catch((error) => {
       alert('error has occurred')
     })
