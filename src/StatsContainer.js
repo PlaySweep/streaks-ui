@@ -81,7 +81,7 @@ function StatsContainer({history}) {
                   <VStack>
                   <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Points</Heading>
                   <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.points_score}</Heading>
-                  <Text color="#398FD6" fontSize="sm">{ordinal(user.points_rank)} place</Text>
+                  <Text color="#398FD6" fontSize="sm">{user.points_rank === 0 ? `unranked` : `${ordinal(user.points_rank)} place`}</Text>
                   </VStack>
                 </Box>
               </Grid>
@@ -114,7 +114,7 @@ function StatsContainer({history}) {
                 <VStack>
                 <Heading color="#DD6937" size="xs" style={{textTransform: "uppercase"}}>Points</Heading>
                 <Heading color="white" size="xl" style={{fontWeight: "900"}}>{user.points_score}</Heading>
-                <Text color="#398FD6" fontSize="sm">{ordinal(user.points_rank)} place</Text>
+                <Text color="#398FD6" fontSize="sm">{user.points_rank === 0 ? `unranked` : `${ordinal(user.points_rank)} place`}</Text>
                 </VStack>
               </Box>
             </Grid>
