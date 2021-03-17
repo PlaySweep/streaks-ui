@@ -353,7 +353,6 @@ function PicksContainer({history}) {
                   <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
                     <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
                     <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
-                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
                   </Box>
                 </ModalContent>
               </Modal> : null }
@@ -494,7 +493,6 @@ function PicksContainer({history}) {
                   <Box style={{margin: "0 auto 0.75rem auto", width: "85%"}}>
                     <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Receipts valid on any Bud Light products purchased between 3/14 and when picks are due for the current round.</Text>
                     <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Expect your order to be confirmed in the next 24 hours.</Text>
-                    <Text m={1} color="white" fontSize="xs" style={{textAlign: "center"}}>* Courtesy of Drizly. Must be 21+. Applies to gratuity, tax and delivery only. Cannot be combined with any other offer. Not valid in CT, KY, ME, MO, PA, OH, OK, CA, and AL. Valid for New Drizly Users Only. Void where prohibited.</Text>
                  </Box>
                 </ModalContent>
               </Modal> : null }
