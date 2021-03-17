@@ -103,12 +103,13 @@ function PicksContainer({history}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const [state, setState] = useState({
-    selections: [], 
+    selections: [],
+    locked: false, 
     submitting: false, 
     complete: false, 
     finished: false,
+    updated: false,
     applied: false, 
-    locked: false, 
     drizly_order_id: ""
   })
   const contextValue = useContext(DashboardContext)
@@ -193,7 +194,7 @@ function PicksContainer({history}) {
               setState({...state, locked: true, complete: true})
             }, 1500);
             setTimeout(() => {
-              setState({...state, submitting: false, complete: false, finished: true})
+              setState({...state, submitting: false, complete: false, finished: true, selections: []})
             }, 1500)
           }).catch((error) => {
             console.log("❌ Something went wrong with your round.")
@@ -201,6 +202,41 @@ function PicksContainer({history}) {
         }
       }).catch((error) => {
         console.log("❌ Something went wrong with your picks.")
+      })
+    })
+  }
+
+  function handleUpdatePicks() {
+    state.selections.forEach((selection, index) => {
+      apiUrl.get(`v1/users/${contextValue.user.id}/picks?matchup_id=${selection.matchup_id}`).then((response) => {
+        let current_picks = response.data.picks
+        current_picks.map((pick, i) => {
+          apiUrl.patch(`v1/users/${contextValue.user.id}/picks/${pick.id}`, {
+            selection_id: selection.selected_id
+          }).then((response) => {
+            console.log("✅ Pick Success!")
+            // contextValue.updatePick(response.data.pick.matchup_id, response.data.pick.selection_id)
+            if (index === 0) {
+              const toast = createStandaloneToast()
+              toast({
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+                render: () => (
+                  <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+                    <Text fontSize={`xs`} style={{textAlign: "center"}}><FaCheckCircle style={{color: "white", display: "inline-flex"}}/> Your picks have been updated!</Text>
+                  </Box>
+                ),
+              })
+            }
+          }).catch((error) => {
+            console.log("❌ Something went wrong with your picks.")
+          })
+          if (i + 1 === current_picks.length) {
+            setState({...state, updated: true, selections: []})
+          }
+        })
       })
     })
   }
@@ -239,7 +275,7 @@ function PicksContainer({history}) {
             
             <DrawerOverlay>
               <DrawerContent style={drawerContentStyle}>
-                <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`}/>
+                <MenuDrawer onCloseFunc={onClose} type={`picks`} activeTab={`dashboard`} reload={state.selections.length > 0} />
                 { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
                   <Box flex="1" style={{textAlign: "center"}}>
                     <AlertTitle style={{textTransform: "uppercase"}}>Bonus point activated!</AlertTitle>
@@ -262,7 +298,7 @@ function PicksContainer({history}) {
                 <SimpleGrid columns={2} spacing={5} style={{padding: "0 1.5rem", alignItems: "center", height: "75vh", margin: "2.5rem auto"}}>
                   <Box style={{textAlign: "left"}}>
                     { round.matchups.map((matchup) => {
-                      return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={state.locked || user.played_cards?.find(card => card.round.id === round.id)}/>
+                      return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started"}/>
                     })}
                   </Box> 
                   <Box style={{textAlign: "center"}}>
@@ -301,12 +337,18 @@ function PicksContainer({history}) {
                     </InputGroup>
                     </Box>
                     <Box mt={10} style={{margin: "1rem auto", width: "55%"}}>
-                    <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonSolidStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
-                      { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                      { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Picks locked</Text> : <Text color="white">Lock in my picks</Text> }
-                    </Button>
+                    { current_card_for_round?.round?.status === "started" ? 
+                    <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
+                      <FiLock color="white" style={{marginRight: "5px"}}/> <Text color="white">Picks locked</Text>
+                    </Button> : !current_card_for_round && state.selections.length < 5 ? 
+                    <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={!current_card_for_round ? handleSubmitPicks : handleUpdatePicks} >
+                      <Text color="white">Lock in my picks</Text>
+                    </Button> :  
+                    <Button disabled={current_card_for_round && state.selections.length === 0} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={!current_card_for_round ? handleSubmitPicks : handleUpdatePicks} >
+                      { current_card_for_round ? <Text color="white">Update my picks</Text> : <Text color="white">Lock in my picks</Text>}
+                    </Button> }
                   </Box>
-                  <Text color={`white`} fontSize={`md`} style={{display: "inline-block", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={onClose}>Back</Text>
+                  <Text color={`white`} fontSize={`md`} style={{display: "inline-block", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={() => window.location.reload()}>Back to Dashboard</Text>
                   </Box> 
                   </SimpleGrid>
 
@@ -373,7 +415,7 @@ function PicksContainer({history}) {
         <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
           { current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
         </Button>
-        <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false} size={`md`} >
+        <Drawer placement={`bottom`} onClose={() => window.location.reload()} isOpen={isOpen} isFullHeight={false} size={`md`} >
           <DrawerOverlay>
             <DrawerContent style={drawerContentStyle}>
               { current_card_for_round?.bonus || state.applied ? <Alert style={{color: "#fff", background: "rgba(13, 64, 160, 0.9)"}}>
@@ -411,7 +453,7 @@ function PicksContainer({history}) {
                 </GridItem>
               </Grid>
               { round.matchups.map((matchup) => {
-                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={state.locked || user.played_cards?.find(card => card.round.id === round.id)}/>
+                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started"}/>
               })}
               <Grid templateColumns="repeat(6, 1fr)" mt={5} style={{display: "flex", alignItems: "center"}}>
                 <GridItem colSpan={1} p={2}>
@@ -443,11 +485,18 @@ function PicksContainer({history}) {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <Box mt={10} >
-                <Button disabled={state.selections.length < 5} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={state.locked || user.played_cards?.find(card => card.round.id === round.id) ? null : handleSubmitPicks} >
-                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <FiLock color="white" style={{marginRight: "5px"}}/> : <FiUnlock color="white" style={{marginRight: "5px"}}/> }
-                  { user.played_cards?.find(card => card.round.id === round.id) || state.locked ? <Text color="white">Picks locked</Text> : <Text color="white">Lock in my picks</Text> }
-                </Button>
+              <Box mt={10} style={{margin: "0.75rem auto", textAlign: "center"}}>
+                { current_card_for_round?.round?.status === "started" ? 
+                <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
+                  <FiLock color="white" style={{marginRight: "5px"}}/> <Text color="white">Picks locked</Text>
+                </Button> : !current_card_for_round && state.selections.length < 5 ? 
+                <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={!current_card_for_round ? handleSubmitPicks : handleUpdatePicks} >
+                  <Text color="white">Lock in my picks</Text>
+                </Button> :  
+                <Button disabled={current_card_for_round && state.selections.length === 0} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth onClick={!current_card_for_round ? handleSubmitPicks : handleUpdatePicks} >
+                  { current_card_for_round ? <Text color="white">Update my picks</Text> : <Text color="white">Lock in my picks</Text>}
+                </Button> }
+                <Text mt={5} color={`white`} fontSize={`md`} style={{display: "inline-block", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={() => window.location.reload()}>Back to Dashboard</Text>
               </Box>
               </Container>
               { state.submitting ? 

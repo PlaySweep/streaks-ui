@@ -88,7 +88,14 @@ function DashboardContainer() {
       apiUrl.get(`v1/rounds?pending=true`).then((response) => {
         let rounds = response.data.rounds
         let round = rounds.filter(round => round.status === "pending")[0]
-        setState({...state, updatePlayedCards: updatePlayedCards, user: user, round: round, loading: false})
+        setState({
+          ...state, 
+          updatePlayedCards: updatePlayedCards, 
+          updatePick: updatePick, 
+          user: user, 
+          round: round, 
+          loading: false
+        })
       })
       loadIntercom()
       bootIntercom({
@@ -104,8 +111,19 @@ function DashboardContainer() {
           ...state.user,
           played_cards: state.user.played_cards?.concat(playedCard)
       }
-    })
-    )
+    }))
+  }
+
+  function updatePick(matchup_id, selection_id) {
+    setState(state => ({ 
+      ...state, changed: state.changed += 1,
+      round: {
+          ...state.round,
+          matchup: { 
+            ...state.round.matchups.find(m => m.id === matchup_id).selections.filter(sel => sel.id !== selection_id).concat({matchup_id: matchup_id, selection_id: selection_id, selected: true})
+          }
+      }
+    }))
   }
 
   if (state.loading) {

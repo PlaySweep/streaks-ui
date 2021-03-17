@@ -37,7 +37,7 @@ const drawerContentStyle = {
   border: "none",
 }
 
-function MenuDrawer({history, type, onCloseFunc, activeTab}) {
+function MenuDrawer({history, type, onCloseFunc, activeTab, reload}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
 
@@ -55,20 +55,20 @@ function MenuDrawer({history, type, onCloseFunc, activeTab}) {
         <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" />
       </Box></Flex> : <Flex style={{height: "10vh", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 2rem"}}>
       <Box w="170px" h="10" style={{display: "flex", alignItems: "center"}}>
-        <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" onClick={type === `picks` ? onCloseFunc : () => window.location.href = `/dashboard`} />
+        <Image height={`60px`} width={`auto`} src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Bud Light" onClick={type === `picks` ? () => window.location.reload() : () => window.location.href = `/dashboard`} />
       </Box>
       <Box style={{display: "inline-flex", position: "absolute", right: "35px"}}>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={type === `picks` ? onCloseFunc : () => window.location.href = `/dashboard`}>Dashboard</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `dashboard` ? "#DD6937" : "white"} onClick={type === `picks` ? () => window.location.reload() : () => window.location.href = `/dashboard`}>Dashboard</Heading>
       </Box>
       <Box  h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={() => window.location.href = `/prizing`}>Prizes</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `prizes` ? "#DD6937" : "white"} onClick={reload ? () => window.location.reload() : () => window.location.href = `/prizing`}>Prizes</Heading>
       </Box>
       <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={() => window.location.href = `/rules`}>Rules</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `rules` ? "#DD6937" : "white"} onClick={reload ? () => window.location.reload() : () => window.location.href = `/rules`}>Rules</Heading>
       </Box>
       <Box h="10" style={{display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 0.75rem"}}>
-        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={() => window.location.href = `/about`}>About</Heading>
+        <Heading fontSize={`2xl`} style={{textAlign: "center"}} color={activeTab === `about` ? "#DD6937" : "white"} onClick={reload ? () => window.location.reload() : () => window.location.href = `/about`}>About</Heading>
       </Box>
       </Box>
       </Flex> }

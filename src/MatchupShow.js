@@ -41,7 +41,7 @@ const selectedButtonStyle = {
 }
 
 function MatchupShow({id, order, description, selections, addPickFunc, disabled}) {
-  const [state, setState] = useState({ matchup_id: id, selected_id: null })
+  const [state, setState] = useState({ matchup_id: id, selected_id: selections.find(selection => selection.selected)?.id })
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
 
   function handleSelected(selectedId) {
@@ -72,7 +72,7 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
                   size={`md`} 
                   variant="outline" 
                   mb={5} 
-                  style={state.selected_id === selection.id || selection.selected ? selectedButtonStyle : secondaryButtonStyle} 
+                  style={state.selected_id === selection.id ? selectedButtonStyle : secondaryButtonStyle} 
                   isFullWidth
                   onClick={!disabled ? () => handleSelected(selection.id) : null}
                 >
