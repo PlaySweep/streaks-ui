@@ -71,7 +71,7 @@ function RoundCard() {
   const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round.id)
   const played = current_card_for_round
   const unplayed = !current_card_for_round
-  const started = contextValue.round.status === "started"
+  const started = contextValue.round.status === "started" || contextValue.round.status === "ready"
 
   if (isDesktop) {
     return (

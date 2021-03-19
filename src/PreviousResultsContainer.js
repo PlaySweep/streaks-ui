@@ -44,7 +44,7 @@ import LoadingWidget from './LoadingWidget'
 
 import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { CalendarIcon } from '@chakra-ui/icons';
-import { FiShare } from "react-icons/fi";
+import { FiShare, FiX } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 
 import { DashboardContext } from './DashboardContainer';
@@ -209,7 +209,7 @@ function PreviousResultsContainer() {
                 </Box>
                 <Box>
                   <Box style={{margin: "0 auto", textAlign: "center", justifyContent: "center"}}>
-                    <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/>{state.selected_card.score} out of 5 correct</Heading>
+                    { state.selected_card.score >= 3 ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
                     <SvgWidget userId={user.id} round={round} width={`332`} height={`280`}/>
                   </Box>
                   <Box style={{width: "75%", margin: "0 auto"}}>
@@ -259,7 +259,7 @@ function PreviousResultsContainer() {
                       return (
                         <TabPanel key={card.id}>
                             { card.status !== "pending" ? <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
-                              <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>
+                              { state.selected_card.score >= 3 ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
                             </Box> : null }
                           { card.round?.matchups?.map((matchup) => {
                             return (

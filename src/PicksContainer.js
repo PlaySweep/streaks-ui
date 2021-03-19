@@ -302,7 +302,7 @@ function PicksContainer({history}) {
                 <SimpleGrid columns={2} spacing={5} style={{padding: "0 1.5rem", alignItems: "center", height: "75vh", margin: "2.5rem auto"}}>
                   <Box style={{textAlign: "left"}}>
                     { round.matchups.map((matchup) => {
-                      return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started"}/>
+                      return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started" || current_card_for_round?.round?.status === "ready"}/>
                     })}
                   </Box> 
                   <Box style={{textAlign: "center"}}>
@@ -341,7 +341,7 @@ function PicksContainer({history}) {
                     </InputGroup>
                     </Box>
                     <Box mt={10} style={{margin: "1rem auto", width: "55%"}}>
-                    { current_card_for_round?.round?.status === "started" ? 
+                    { current_card_for_round?.round?.status === "started" || current_card_for_round?.round?.status === "ready" ? 
                     <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
                       <FiLock color="white" style={{marginRight: "5px"}}/> <Text color="white">Picks locked</Text>
                     </Button> : !current_card_for_round && state.selections.length < 5 ? 
@@ -457,7 +457,7 @@ function PicksContainer({history}) {
                 </GridItem>
               </Grid>
               { round.matchups.map((matchup) => {
-                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started"}/>
+                return <MatchupShow key={matchup.id} {...matchup} addPickFunc={handleAddPick} disabled={current_card_for_round?.round?.status === "started" || current_card_for_round?.round?.status === "ready"}/>
               })}
               <Grid templateColumns="repeat(6, 1fr)" mt={5} style={{display: "flex", alignItems: "center"}}>
                 <GridItem colSpan={1} p={2}>
@@ -490,7 +490,7 @@ function PicksContainer({history}) {
                 </InputRightElement>
               </InputGroup>
               <Box mt={10} style={{margin: "0.75rem auto", textAlign: "center"}}>
-                { current_card_for_round?.round?.status === "started" ? 
+                { current_card_for_round?.round?.status === "started" || current_card_for_round?.round?.status === "ready" ? 
                 <Button disabled={true} _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" style={primaryButtonStyle} isFullWidth>
                   <FiLock color="white" style={{marginRight: "5px"}}/> <Text color="white">Picks locked</Text>
                 </Button> : !current_card_for_round && state.selections.length < 5 ? 
