@@ -77,6 +77,13 @@ const selectedButtonStyle = {
   backgroundColor: "#0D40A0"
 }
 
+const correctButtonStyle = {
+  border: "2.5px solid rgb(46, 204, 113)",
+  boxShadow: "0 0 5px rgb(46, 204, 113)",
+  textTransform: "uppercase",
+  backgroundColor: "rgba(46,204,113, 0.9)"
+}
+
 const incorrectButtonStyle = {
   border: "2.5px solid rgb(235, 88, 87)",
   boxShadow: "0 0 5px rgb(235, 88, 87)",
@@ -122,7 +129,7 @@ function PreviousResultsContainer() {
   useEffect(() => {
     apiUrl.get(`v1/users/${contextValue.user.id}/cards`).then((response) => {
       const played_cards = response.data.cards
-      setState({...state, loading: false, played_cards: played_cards})
+      setState({...state, loading: false, played_cards: played_cards, selected_card: played_cards[0]})
     })
   }, [])
 
@@ -148,7 +155,7 @@ function PreviousResultsContainer() {
                 <Heading mt={3} color="white" size="lg" style={{textTransform: "uppercase", fontWeight: "800"}}>Previous Rounds</Heading>
               </Box>
             </SimpleGrid>
-            <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index})}>
+            <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index, selected_card: state.played_cards[index]})}>
               <SimpleGrid columns={1} style={{margin: "0 auto"}}>
                 <Box height={`40px`}>
                   <TabList style={{border: "none"}}>
@@ -160,6 +167,7 @@ function PreviousResultsContainer() {
                 <Box >
                   <TabPanels>
                     { state.played_cards?.map((card) => {
+                      
                       return (
                         <TabPanel key={card.id}>
                             
@@ -183,7 +191,7 @@ function PreviousResultsContainer() {
                                   { matchup.selections.map((selection) => {
                                     return (
                                       <WrapItem key={selection.id} style={{flex: "1"}}>
-                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? selectedButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
+                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? correctButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
                                           <Text color="white" style={{fontSize: "0.5rem"}}>{selection.description}</Text>
                                         </Button>
                                       </WrapItem>
@@ -201,7 +209,7 @@ function PreviousResultsContainer() {
                 </Box>
                 <Box>
                   <Box style={{margin: "0 auto", textAlign: "center", justifyContent: "center"}}>
-                    <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> 5 out of 5 correct</Heading>
+                    <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/>{state.selected_card.score} out of 5 correct</Heading>
                     <SvgWidget userId={user.id} round={round} width={`332`} height={`280`}/>
                   </Box>
                   <Box style={{width: "75%", margin: "0 auto"}}>
@@ -241,7 +249,7 @@ function PreviousResultsContainer() {
                     </Box>
                   </GridItem>
                 </Grid>
-                <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index})}>
+                <Tabs isLazy colorScheme={`white`} size={`sm`} onChange={(index) => setState({...state, selected_index: index, selected_card: state.played_cards[index]})}>
                   <TabList style={{border: "none"}}>
                     { cardTabs?.map((card, index) => <Tab key={index} style={state.selected_index === index ? { color: "rgba(255, 255, 255, 1)", borderColor: "#DD6937", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem" } : {color: "rgba(255, 255, 255, 0.5)", textTransform: "uppercase", fontWeight: "700", fontSize: "0.75rem"}}>{card.round?.name}</Tab> )}
                   </TabList>
@@ -251,7 +259,7 @@ function PreviousResultsContainer() {
                       return (
                         <TabPanel key={card.id}>
                             { card.status !== "pending" ? <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
-                              <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {card.score} out of 5 correct</Heading>
+                              <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>
                             </Box> : null }
                           { card.round?.matchups?.map((matchup) => {
                             return (
@@ -270,10 +278,10 @@ function PreviousResultsContainer() {
                                 <Text color={`#fff`} mb={2} fontSize={`sm`}>{matchup.description}</Text>
                                 <Wrap>
                                   { matchup.selections.map((selection) => {
-                                    console.log('sel', selection)
+                                    
                                     return (
                                       <WrapItem key={selection.id} style={{flex: "1"}}>
-                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? selectedButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
+                                        <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={selection.selected ? selection.status === "winner" ? correctButtonStyle : selection.status === "loser" ? incorrectButtonStyle : secondaryButtonStyle : secondaryButtonStyle} isFullWidth>
                                           <Text color="white" style={{fontSize: "0.5rem"}}>{selection.description}</Text>
                                         </Button>
                                       </WrapItem>

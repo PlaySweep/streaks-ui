@@ -173,7 +173,7 @@ function SvgWidget({height, width}) {
             return (
             <Fragment key={index}>
              <path d={svg.text} fill="white"/>
-             <path d={svg.path} stroke={contextValue.user.played_cards && contextValue.user.played_cards.find(card => card.round.id === svg.id)?.round.status === "pending" ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={contextValue.user.played_cards && contextValue.user.played_cards[index]?.round.status === "complete" ? contextValue.user.played_cards && contextValue.user.played_cards[index].status !== "pending" && contextValue.user.played_cards && contextValue.user.played_cards[index].status === "win" ? "#398FD6" : "#EB5757" : null }/> 
+             <path d={svg.path} stroke={contextValue.user.played_cards && contextValue.user.played_cards.find(card => card.round.id === svg.id)?.round.status === "pending" || contextValue.user.played_cards.find(card => card.round.id === svg.id)?.round.status === "started" || contextValue.user.played_cards.find(card => card.round.id === svg.id)?.round.status === "ready" ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={contextValue.user.played_cards && contextValue.user.played_cards[index]?.round.status === "complete" ? contextValue.user.played_cards && contextValue.user.played_cards[index].status !== "pending" && contextValue.user.played_cards && contextValue.user.played_cards[index].status === "win" ? "#398FD6" : "#EB5757" : null }/> 
             </Fragment>
           )
           }

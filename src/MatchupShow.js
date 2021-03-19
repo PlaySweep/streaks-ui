@@ -40,6 +40,20 @@ const selectedButtonStyle = {
   backgroundColor: "#0D40A0"
 }
 
+const correctButtonStyle = {
+  border: "2.5px solid rgb(46, 204, 113)",
+  boxShadow: "0 0 5px rgb(46, 204, 113)",
+  textTransform: "uppercase",
+  backgroundColor: "rgba(46,204,113, 0.9)"
+}
+
+const incorrectButtonStyle = {
+  border: "2.5px solid rgb(235, 88, 87)",
+  boxShadow: "0 0 5px rgb(235, 88, 87)",
+  textTransform: "uppercase",
+  backgroundColor: "rgba(235, 88, 87, 0.9)"
+}
+
 function MatchupShow({id, order, description, selections, addPickFunc, disabled}) {
   const [state, setState] = useState({ matchup_id: id, selected_id: selections.find(selection => selection.selected)?.id })
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
@@ -48,6 +62,8 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
     setState({...state, selected_id: selectedId })
     addPickFunc({...state, selected_id: selectedId})
   }
+
+  console.log('selected', selections)
 
   return (
     <Grid
@@ -66,7 +82,7 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
           { selections.map((selection, index) => {
             return (
               <WrapItem key={selection.id} style={{width: "46%"}}>
-                <Button 
+                { selection.status === "pending" ? <Button 
                   _active={{bg: "none"}} 
                   _hover={{background: "none"}} 
                   size={`md`} 
@@ -77,7 +93,29 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
                   onClick={!disabled ? () => handleSelected(selection.id) : null}
                 >
                   <Text color="white" style={{fontSize: "0.75rem"}}>{selection.description}</Text>
-                </Button>
+                </Button> : selection.status === "winner" ? <Button 
+                  _active={{bg: "none"}} 
+                  _hover={{background: "none"}} 
+                  size={`md`} 
+                  variant="outline" 
+                  mb={5} 
+                  style={state.selected_id === selection.id ? correctButtonStyle : secondaryButtonStyle} 
+                  isFullWidth
+                  onClick={!disabled ? () => handleSelected(selection.id) : null}
+                >
+                  <Text color="white" style={{fontSize: "0.75rem"}}>{selection.description}</Text>
+                </Button> : <Button 
+                  _active={{bg: "none"}} 
+                  _hover={{background: "none"}} 
+                  size={`md`} 
+                  variant="outline" 
+                  mb={5} 
+                  style={state.selected_id === selection.id ? incorrectButtonStyle : secondaryButtonStyle} 
+                  isFullWidth
+                  onClick={!disabled ? () => handleSelected(selection.id) : null}
+                >
+                  <Text color="white" style={{fontSize: "0.75rem"}}>{selection.description}</Text>
+                </Button> }
               </WrapItem>
             )
           })}

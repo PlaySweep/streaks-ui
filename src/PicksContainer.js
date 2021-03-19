@@ -241,6 +241,10 @@ function PicksContainer({history}) {
     })
   }
 
+  const started_and_played = current_card_for_round && contextValue.round.status !== "pending"
+  const started_and_unplayed = !current_card_for_round && contextValue.round.status === "started"
+
+
   const renderCountdown = ({ days, hours, minutes, seconds, completed }) => {
     let timesRunningOut = false
   
@@ -268,8 +272,8 @@ function PicksContainer({history}) {
       <DashboardContext.Consumer>
         {({user, round})=> (
           <>
-          <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
-            { current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
+          <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={started_and_unplayed ? null : onOpen}>
+            { started_and_played ? <Text color="white" fontSize={`xs`}>View my picks</Text> : current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : started_and_unplayed ? <Text color="white" fontSize={`xs`}>{round.name} is locked</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
           </Button>
           <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={true} size={`md`} >
             
@@ -412,8 +416,8 @@ function PicksContainer({history}) {
     <DashboardContext.Consumer>
       {({user, round})=> (
         <>
-        <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={onOpen}>
-          { current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
+        <Button size={`md`} variant="outline" style={buttonStyle} isFullWidth onClick={started_and_unplayed ? null : onOpen}>
+          { started_and_played ? <Text color="white" fontSize={`xs`}>View my picks</Text> : current_card_for_round ? <Text color="white" fontSize={`xs`}>Update my picks</Text> : started_and_unplayed ? <Text color="white" fontSize={`xs`}>{round.name} is locked</Text> : <Text color="white" fontSize={`xs`}>Select my picks</Text>}
         </Button>
         <Drawer placement={`bottom`} onClose={() => window.location.reload()} isOpen={isOpen} isFullHeight={false} size={`md`} >
           <DrawerOverlay>

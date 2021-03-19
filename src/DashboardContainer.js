@@ -85,9 +85,9 @@ function DashboardContainer() {
   useEffect(() => {
     apiUrl.get(`v1/users/${jwt_decode(authToken).user_id}`).then((response) => {
       const user = response.data.user
-      apiUrl.get(`v1/rounds?pending=true`).then((response) => {
+      apiUrl.get(`v1/rounds?active=true`).then((response) => {
         let rounds = response.data.rounds
-        let round = rounds.filter(round => round.status === "pending")[0]
+        let round = rounds[0]
         setState({
           ...state, 
           updatePlayedCards: updatePlayedCards, 
