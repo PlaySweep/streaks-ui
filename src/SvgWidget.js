@@ -176,7 +176,7 @@ function SvgWidget({height, width}) {
             return (
             <Fragment key={index}>
              <path d={svg.text} fill="white"/>
-             <path d={svg.path} stroke={played_and_waiting ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={played_and_waiting ? null : played_and_won ? "#398FD6" : "#EB5757" }/> 
+             <path d={svg.path} stroke={played_and_waiting ? svg.active_outline : svg.inactive_outline} strokeLinejoin="round" fill={played_and_waiting ? null : played_and_won ? "rgb(46, 204, 113)" : "#EB5757" }/> 
             </Fragment>
           )
           }

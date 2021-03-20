@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { withRouter } from 'react-router';
 import {
+  Alert,
+  AlertTitle,
   Button,
   Container,
   GridItem,
@@ -111,7 +114,7 @@ const modalContentStyle = {
   maxWidth: "1000px",
 }
 
-function PreviousResultsContainer() {
+function PreviousResultsContainer({history}) {
   let authToken = store.get('auth_token')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
@@ -209,7 +212,10 @@ function PreviousResultsContainer() {
                 </Box>
                 <Box>
                   <Box style={{margin: "0 auto", textAlign: "center", justifyContent: "center"}}>
-                    { state.selected_card.score >= 3 ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
+                  { state.selected_card.bonus ? <Tag m={2} size={`md`} variant="solid" style={{background: "rgb(13, 64, 160, 0.9)"}}>
+                    Bonus Point Activated!
+                  </Tag> : null }
+                    { state.selected_card.score >= 2 && state.selected_card.bonus ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
                     <SvgWidget userId={user.id} round={round} width={`332`} height={`280`}/>
                   </Box>
                   <Box style={{width: "75%", margin: "0 auto"}}>
@@ -258,8 +264,11 @@ function PreviousResultsContainer() {
                     { state.played_cards?.map((card) => {
                       return (
                         <TabPanel key={card.id}>
-                            { card.status !== "pending" ? <Box mb={10} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
-                              { state.selected_card.score >= 3 ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
+                        { state.selected_card.bonus ? <Tag mt={1} mb={5} size={`md`} variant="solid" style={{display: "flex", justifyContent: "center", background: "rgb(13, 64, 160, 0.9)"}}>
+                          Bonus Point Activated!
+                        </Tag> : null }
+                            { card.status !== "pending" ? <Box mb={5} style={{display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center"}}>
+                              { state.selected_card.score >= 2 && state.selected_card.bonus ? <Heading color="#398FD6" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FaCheckCircle style={{ borderRadius: "50px", border: "2px solid #90D5FB", boxShadow: "0 0 5px #90d5fb", color: "#398FD6", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading> : <Heading color="rgb(235, 88, 87)" size="md" style={{textTransform: "uppercase", fontWeight: "800"}}><FiX style={{ backgroundColor: "rgb(235, 88, 87)", borderRadius: "50px", border: "2px solid rgb(235, 88, 87)", boxShadow: "0 0 5px rgb(235, 88, 87)", color: "#333", display: "inline-flex", marginRight: "10px"}}/> {state.selected_card.score} out of 5 correct</Heading>}
                             </Box> : null }
                           { card.round?.matchups?.map((matchup) => {
                             return (
@@ -298,8 +307,11 @@ function PreviousResultsContainer() {
                   </TabPanels>
                 </Tabs>
               
-                <Box mt={10}>
+                <Box m={2}>
                   <PopupWidget type={`share`} textSize={`md`} buttonText={`Share with friends`} />
+                </Box>
+                <Box m={5}>
+                  <Text color={`white`} fontSize={`md`} style={{display: "flex", justifyContent: "center", fontWeight: "600", textTransform: "uppercase", textDecoration: "underline"}} onClick={onClose}>Back to Dashboard</Text>
                 </Box>
               </Container>
               </DrawerBody>
@@ -312,4 +324,4 @@ function PreviousResultsContainer() {
   );
 }
 
-export default PreviousResultsContainer;
+export default withRouter(PreviousResultsContainer);

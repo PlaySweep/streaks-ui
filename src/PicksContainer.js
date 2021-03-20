@@ -183,26 +183,27 @@ function PicksContainer({history}) {
         selection_id: selection.selected_id
       }).then((response) => {
         console.log("✅ Pick Success!")
-        if (state.selections.length === index + 1) {
-          apiUrl.post(`v1/users/${contextValue.user.id}/cards`, {
-            user_id: contextValue.user.id,
-            round_id: contextValue.round.id
-          }).then((response) => {
-            console.log("✅ Round Successfully Played!")
-            contextValue.updatePlayedCards(response.data.card)
-            setTimeout(() => {
-              setState({...state, locked: true, complete: true})
-            }, 1500);
-            setTimeout(() => {
-              setState({...state, submitting: false, complete: false, finished: true, selections: []})
-            }, 1500)
-          }).catch((error) => {
-            console.log("❌ Something went wrong with your round.")
-          })
-        }
       }).catch((error) => {
         console.log("❌ Something went wrong with your picks.")
       })
+    })
+    apiUrl.post(`v1/users/${contextValue.user.id}/cards`, {
+      user_id: contextValue.user.id,
+      round_id: contextValue.round.id
+    }).then((response) => {
+      console.log("✅ Round Successfully Played!")
+      contextValue.updatePlayedCards(response.data.card)
+      setTimeout(() => {
+        setState({...state, locked: true, complete: true})
+      }, 1500);
+      setTimeout(() => {
+        setState({...state, submitting: false, complete: false, finished: true, selections: []})
+      }, 1500)
+    }).catch((error) => {
+      setTimeout(() => {
+        setState({...state, submitting: false, complete: false, finished: true, selections: []})
+      }, 1500)
+      console.log("❌ Something went wrong with your round.")
     })
   }
 
