@@ -190,30 +190,32 @@ function PicksContainer({history}) {
     }).catch((error) => {
       setTimeout(() => {
         setState({...state, submitting: false, complete: false, finished: true, selections: []})
-      }, 1500)
+      }, 750)
       console.log("❌ Something went wrong with your round.")
     })
   }
 
   function createPicks() {
     state.selections.forEach((selection, index) => {
-      apiUrl.post(`v1/users/${contextValue.user.id}/picks`, {
-        user_id: contextValue.user.id,
-        matchup_id: selection.matchup_id,
-        selection_id: selection.selected_id
-      }).then((response) => {
-        console.log("✅ Pick Success!")
-      if (state.selections.length === index + 1) {
-        setTimeout(() => {
-          setState({...state, locked: true, complete: true})
-        }, 1500);
-        setTimeout(() => {
-          setState({...state, submitting: false, complete: false, finished: true, selections: []})
-        }, 1500)
-      }
-      }).catch((error) => {
-        console.log("❌ Something went wrong with your picks.")
-      })
+      setTimeout(() => {
+        apiUrl.post(`v1/users/${contextValue.user.id}/picks`, {
+          user_id: contextValue.user.id,
+          matchup_id: selection.matchup_id,
+          selection_id: selection.selected_id
+        }).then((response) => {
+          console.log("✅ Pick Success!")
+        if (state.selections.length === index + 1) {
+          setTimeout(() => {
+            setState({...state, locked: true, complete: true})
+          }, 500);
+          setTimeout(() => {
+            setState({...state, submitting: false, complete: false, finished: true, selections: []})
+          }, 500)
+        }
+        }).catch((error) => {
+          console.log("❌ Something went wrong with your picks.")
+        })
+      }, 500)
     })
   }
 
