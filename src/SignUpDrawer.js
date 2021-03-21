@@ -114,7 +114,7 @@ function SignUpDrawer({history}) {
   if (isDesktop) {
     return (
     <>
-    <Button size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={onOpen}>
+    <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`lg`} variant="outline" mb={5} style={buttonStyle} isFullWidth onClick={onOpen}>
       <Text color="white">Sign Up</Text>
     </Button>
     <Modal isCentered onClose={onClose} isOpen={isOpen}>

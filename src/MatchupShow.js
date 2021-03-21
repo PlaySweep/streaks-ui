@@ -63,8 +63,6 @@ function MatchupShow({id, order, description, selections, addPickFunc, disabled}
     addPickFunc({...state, selected_id: selectedId})
   }
 
-  console.log('selected', selections)
-
   return (
     <Grid
       key={id}

@@ -131,6 +131,8 @@ function PrizeContainer({history}) {
   const filterStyles = { color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem" }
   const filteredPrizes = state.prizes?.filter(prize => prize.level === state.filter)
 
+  console.log('state', state.user)
+
   if (state.loading) {
     return <LoadingWidget><Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /></LoadingWidget>
   }
@@ -186,7 +188,7 @@ function PrizeContainer({history}) {
                       <VStack>
                         <Heading color="#fff" size="xs" style={{padding: "1rem", textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
                         <Image height={`75px`} width={`auto`} src={prize.image_url} />
-                        { state.user.streak >= state.filter ? <CashOutDrawer /> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
+                        { state.user.streak_score >= state.filter ? <CashOutDrawer selectedPrize={prize}/> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
                       </VStack>
                     </Box>
                   )
@@ -278,7 +280,7 @@ function PrizeContainer({history}) {
                       <VStack>
                         <Image src={prize.image_url} alt="Streak" height={`75px`} width={`auto`}/>
                         <Heading color="#fff" size="xs" style={{textAlign: "center", fontWeight: "700"}}>{prize.name}</Heading>
-                      { state.user.streak >= state.filter ? <CashOutDrawer /> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
+                      { state.user.streak_score >= state.filter ? <CashOutDrawer selectedPrize={prize} /> : <Tag style={{color: "rgba(255, 255, 255, 0.5)", border: "1px solid #398FD6", background: "rgba(17, 30, 75, 0.25)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} >Redeem</Tag>}
                       </VStack>
                     </Box>
                   </div>
