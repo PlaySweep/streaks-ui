@@ -62,7 +62,7 @@ function SignInDrawer({history}) {
 
   const handleSignIn = () => {
     setState({...state, submitting: true})
-    auth.authenticate(state.email, state.password).then(() => {
+    auth.authenticate(state.email.toLowerCase(), state.password).then(() => {
       setState({...state, submitting: false})
       history.push(`/dashboard`)
     }).catch((error) => {

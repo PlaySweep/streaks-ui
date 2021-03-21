@@ -92,7 +92,7 @@ function SignUpDrawer({history}) {
       username: state.username,
       first_name: state.name.split(' ')[0],
       last_name: state.name.split(' ')[1],
-      email: state.email,
+      email: state.email.toLowerCase(),
       password: state.password,
       password_confirmation: state.password_confirmation,
       dob: moment(store.get(`dob`))._d,
