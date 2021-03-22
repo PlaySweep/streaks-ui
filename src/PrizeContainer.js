@@ -100,10 +100,17 @@ function PrizeContainer({history}) {
       const user = response.data.user
       apiUrl.get(`v1/prizes`).then((response) => {
         const rewards = [{ title: "Perfect Streaks (6 Streaks)", description: "Year’s Worth of Free Beer", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/beer_case.png" }, { title: "Most Points", description: "2022 March Hoops Experience", image_url: "https://streaks-challenge.s3.amazonaws.com/prizes/basketball_logo.png" }]
-        setState({...state, loading: false, apiUrl: apiUrl, user: user, prizes: response.data.prizes, rewards: rewards})
+        setState({...state, loading: false, apiUrl: apiUrl, user: user, updateUser: updateUser, prizes: response.data.prizes, rewards: rewards})
       })
     })
   }, [])
+
+  function updateUser(updatedUser) {
+    setState(state => ({ 
+      ...state, 
+      user: updatedUser
+    }))
+  }
 
   function handleFilter(e) {
     const selectedFilter = e.target.dataset.tag
