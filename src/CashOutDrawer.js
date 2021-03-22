@@ -115,23 +115,28 @@ function CashOutDrawer({history, selectedPrize}) {
       prize_id: selectedPrize.id,
       email: state.email
     }).then((response) => {
-      contextValue.updateUser(response.data.order.user)
-      setTimeout(() => {
-        const toast = createStandaloneToast()
-        toast({
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
-              <Text fontSize={`xs`} style={{textAlign: "center"}}>🎉🏀 You successfully cashed out!</Text>
-            </Box>
-          ),
-        })
-        setState({...state, submitting: false})
-        onClose()
-      }, 2000)
+      const order = response.data.order
+      contextValue.updateUser(order.user)
+      if (selectedPrize.is_type === "physical") { 
+        addToSheet(order) 
+      } else {
+        setTimeout(() => {
+          setState({...state, submitting: false})
+          const toast = createStandaloneToast()
+          toast({
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            render: () => (
+              <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+                <Text fontSize={`xs`} style={{textAlign: "center"}}>🎉🏀 Success! Check your email for your code.</Text>
+              </Box>
+            ),
+          })
+          onClose()
+        }, 1000)
+      }
     }).catch((error) => {
       console.log("You do not have enough streaks to cash out")
     })
@@ -152,6 +157,39 @@ function CashOutDrawer({history, selectedPrize}) {
       console.log("address updated!")
     }).catch((error) => {
       alert('error has occurred')
+    })
+  }
+
+  function addToSheet(order) {
+    axios.post(`https://sheet2api.com/v1/gnOukYlLQX6x/drizly-streaks-order-ids/Purchases`, { 
+      "Order Number": order.id, 
+      "Recipient Name": state.name,
+      "Email": state.email,
+      "Street Line 1": order.user.address.line1,
+      "Street Line 2": order.user.address.line2,
+      "City": order.user.address.city,
+      "State/Province": order.user.address.state,
+      "Zip/Postal Code": order.user.address.zipcode,
+      "Country": "United States",
+      "Item Title": order.prize.name,
+      "SKU": `AB${order.size ? `${order.size}` : `NA`}${order.prize.id}00`,
+      "Item Quantity": "1",
+      "Shipping Service": "IDK"
+    }).then(() => {
+      setState({...state, submitting: false})
+      const toast = createStandaloneToast()
+      toast({
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Box color="white" p={3} bg="rgb(57, 143, 214)" style={{borderRadius: "25px"}}>
+            <Text fontSize={`xs`} style={{textAlign: "center"}}>🎉🏀 You successfully cashed out!</Text>
+          </Box>
+        ),
+      })
+      onClose()
     })
   }
 
