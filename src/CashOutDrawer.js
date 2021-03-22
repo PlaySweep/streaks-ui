@@ -174,7 +174,7 @@ function CashOutDrawer({history, selectedPrize}) {
       "Item Title": order.prize.name,
       "SKU": `AB${order.size ? `${order.size}` : `NA`}${order.prize.id}00`,
       "Item Quantity": "1",
-      "Shipping Service": "IDK"
+      "Shipping Service": "Moon Optics - Streaks"
     }).then(() => {
       setState({...state, submitting: false})
       const toast = createStandaloneToast()
