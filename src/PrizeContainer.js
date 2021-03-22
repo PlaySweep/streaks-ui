@@ -138,8 +138,6 @@ function PrizeContainer({history}) {
   const filterStyles = { color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "700", fontSize: "0.5rem", height: "10px", padding: "0.5rem 0.5rem", margin: "0 0.25rem" }
   const filteredPrizes = state.prizes?.filter(prize => prize.level === state.filter)
 
-  console.log('state', state.user)
-
   if (state.loading) {
     return <LoadingWidget><Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} /></LoadingWidget>
   }
