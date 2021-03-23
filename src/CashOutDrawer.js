@@ -31,7 +31,6 @@ import { useDisclosure, createStandaloneToast, useMediaQuery } from "@chakra-ui/
 import { CalendarIcon } from '@chakra-ui/icons';
 import { IoMdPerson } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
-import { FaLock, FaCheckCircle } from "react-icons/fa";
 
 import LoadingWidget from './LoadingWidget';
 
@@ -193,8 +192,13 @@ function CashOutDrawer({history, selectedPrize}) {
     })
   }
 
-  let physicalFormValidation = state.name && state.line1 && state.line2 && state.city && state.state && state.zipcode
-  let digitalFormValidation = state.email
+  function isValidEmail(email) {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  let physicalFormValidation = state.name && state.line1 && state.line2 && state.city && state.state && state.zipcode && state.zipcode.length === 5
+  let digitalFormValidation = isValidEmail(state.email)
   let form_completed = selectedPrize.is_type === "physical" ? physicalFormValidation : digitalFormValidation
   
   const physicalForm = (
@@ -207,38 +211,23 @@ function CashOutDrawer({history, selectedPrize}) {
         <Input disabled={state.submitting} type="text" value={state.name} name="name" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Name" size="md" onChange={handleOnChange}/>
       </InputGroup>
       <InputGroup mt={5} mb={5}>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<FaLock color="white" />}
-        />
+        
         <Input disabled={state.submitting} type="text" value={state.line1} name="line1" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Street Address" size="md" onChange={handleOnChange}/>
       </InputGroup>
       <InputGroup mt={5} mb={5}>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<FaLock color="white" />}
-        />
+        
         <Input disabled={state.submitting} type="text" value={state.line2} name="line2" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Apt/Unit" size="md" onChange={handleOnChange}/>
       </InputGroup>
       <InputGroup mt={5} mb={5}>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<FaLock color="white" />}
-        />
+        
         <Input disabled={state.submitting} type="text" value={state.city} name="city" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="City" size="md" onChange={handleOnChange}/>
       </InputGroup>
       <InputGroup mt={5} mb={5}>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<FaLock color="white" />}
-        />
+        
         <Input disabled={state.submitting} type="text" value={state.state} name="state" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="State" size="md" onChange={handleOnChange}/>
       </InputGroup>
       <InputGroup mt={5} mb={5}>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<FaLock color="white" />}
-        />
+        
         <Input disabled={state.submitting} type="text" value={state.zipcode} name="zipcode" variant="filled" style={{color: "white", background: "rgba(16, 40, 100, 0.95)"}} placeholder="Zipcode" size="md" onChange={handleOnChange}/>
       </InputGroup>
     </>
@@ -269,7 +258,7 @@ function CashOutDrawer({history, selectedPrize}) {
                 <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} />
               </LoadingWidget> : null }
               <Box p={5} style={{width: "75%", margin: "0 auto"}}>
-              <Heading mt={0} style={{textAlign: "center"}} color="white">Confirm Address</Heading>
+              <Heading mt={0} style={{textAlign: "center"}} color="white">{ selectedPrize.is_type === "physical" ? `Shipping Address` : `Confirm Email` }</Heading>
               <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "90%", textAlign: "center", margin: "1rem auto", fontWeight: "500"}}>Your streak will reset to {contextValue.user.streak_score - selectedPrize.level} when you cash out for the {selectedPrize.name}.</Text>
               { selectedPrize.is_type === "physical" ? physicalForm : digitalForm }
               <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={buttonStyle} isFullWidth disabled={state.submitting || !form_completed} onClick={handleCashOut}>
@@ -287,7 +276,7 @@ function CashOutDrawer({history, selectedPrize}) {
   return (
     <>
     <Tag style={{color: "#fff", border: "1px solid #398FD6", background: "rgb(17, 30, 75)", fontWeight: "800", fontSize: "0.55rem", textTransform: "uppercase", height: "10px", padding: "1rem", margin: "0.75rem 0.25rem 0 0.25rem"}} onClick={onOpen}>Redeem</Tag>
-    <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen}>
+    <Drawer placement={`bottom`} onClose={onClose} isOpen={isOpen} isFullHeight={false}>
       <DrawerOverlay>
         <DrawerContent style={drawerContentStyle}>
           <DrawerCloseButton color={"#fff"}/>
@@ -296,7 +285,7 @@ function CashOutDrawer({history, selectedPrize}) {
               <Spinner size={`lg`} color={`rgba(255, 255, 255, 0.25)`} />
             </LoadingWidget> : null }
             <Box p={5}>
-            <Heading mt={0} style={{textAlign: "center"}} color="white">Confirm Address</Heading>
+            <Heading mt={0} style={{textAlign: "center"}} color="white">{ selectedPrize.is_type === "physical" ? `Shipping Address` : `Confirm Email` }</Heading>
             <Text mt={3} mb={3} color="white" fontSize={`sm`} style={{width: "90%", textAlign: "center", margin: "1rem auto", fontWeight: "500"}}>Your streak will reset to {contextValue.user.streak_score - selectedPrize.level} when you cash out for the {selectedPrize.name}.</Text> 
             { selectedPrize.is_type === "physical" ? physicalForm : digitalForm }
             <Button _active={{bg: "none"}} _hover={{background: "none"}} size={`md`} variant="outline" mb={5} style={buttonStyle} isFullWidth disabled={state.submitting || !form_completed} onClick={handleCashOut}>
