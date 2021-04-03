@@ -197,7 +197,7 @@ function CashOutDrawer({history, selectedPrize}) {
     return re.test(String(email).toLowerCase());
   }
 
-  let physicalFormValidation = state.name && state.line1 && state.line2 && state.city && state.state && state.zipcode && state.zipcode.length === 5
+  let physicalFormValidation = state.name && state.line1 && state.city && state.state && state.zipcode && state.zipcode.length === 5
   let digitalFormValidation = isValidEmail(state.email)
   let form_completed = selectedPrize.is_type === "physical" ? physicalFormValidation : digitalFormValidation
   
