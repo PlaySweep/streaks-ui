@@ -82,7 +82,7 @@ function PopupWidget({type, buttonText, buttonSize, textSize}) {
   const referralUrl = `${process.env.REACT_APP_WEB_URL}/ref_${contextValue.user?.referral_code}`
   const { hasCopied, onCopy } = useClipboard(referralUrl)
 
-  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round.id)
+  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round?.id)
 
   function handleOrderConfirmation() {
     apiUrl.patch(`v1/users/${contextValue.user.id}/cards/${current_card_for_round.id}`, { bonus: true }).then((response) => {

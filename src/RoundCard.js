@@ -68,10 +68,35 @@ function RoundCard() {
   const [isDesktop] = useMediaQuery("(min-width: 775px)")
   const contextValue = useContext(DashboardContext)
 
-  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round.id)
+  const current_card_for_round = contextValue.user.played_cards?.find(card => card.round.id === contextValue.round?.id)
   const played = current_card_for_round
   const unplayed = !current_card_for_round
-  const started = contextValue.round.status === "started" || contextValue.round.status === "ready"
+  const started = contextValue.round?.status === "started" || contextValue.round?.status === "ready"
+
+  if (isDesktop && !contextValue.round) {
+    return (
+    <DashboardContext.Consumer>
+    
+      {({user}) => (
+        <Box maxW="sm" borderWidth="1px" borderRadius="lg" style={desktopCardStyle}>
+          <Box >
+         
+          <Box p="1">
+            <Heading mt={0} style={{textAlign: "center"}} color="white" size="md">Thanks for playing, {user.first_name}!</Heading>
+            <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ></Text>
+            
+            { user.played_cards?.filter(card => card.round.status === "complete").length > 0 ? <PreviousResultsContainer /> : null }
+            
+          </Box>
+          </Box>
+          <Box>
+            <SvgWidget width={`266`} height={`214`} />
+          </Box>
+        </Box>
+      )}
+    </DashboardContext.Consumer>
+    );
+  }
 
   if (isDesktop) {
     return (
@@ -97,6 +122,30 @@ function RoundCard() {
         </Box>
       )}
     </DashboardContext.Consumer>
+    );
+  }
+
+  if (!contextValue.round) {
+    return (
+      <DashboardContext.Consumer>
+        {({user}) => (
+          <Box maxW="sm" borderWidth="1px" borderRadius="lg" style={cardStyle}>
+            
+            <Box p="6">
+              <Box
+                mt="1"
+                fontWeight="semibold"
+                lineHeight="tight"
+                isTruncated
+              >
+              <Heading mt={0} style={{textAlign: "center"}} color="white" size="md">Thanks for playing, {user.first_name}!</Heading>
+              <Text color="white" fontSize="sm" mt={3} mb={3} style={{textAlign: "center"}} ></Text>
+              { user.played_cards?.filter(card => card.round.status === "complete").length > 0 ? <PreviousResultsContainer /> : null }
+              </Box>
+            </Box>
+          </Box>
+        )}
+      </DashboardContext.Consumer>
     );
   }
   
