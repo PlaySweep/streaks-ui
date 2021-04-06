@@ -141,6 +141,8 @@ function RulesContainer({history}) {
 
             Streaks:  Participants can earn a maximum of one (1) Streak per Entry Period for a total of six (6) Streaks.
 
+            Streaks:  Participants who do not earn a Streak per Entry Period have their ("Streaks") set back to zero (0). 
+
             Points:  Participants can earn a maximum of five (5) points per Entry Period for a total of thirty (30) points.  Participants can earn one (1) Bonus Point per Entry Period for a total of six (6) points.  The maximum amount of points that a participant can earn during the Contest Period is thirty-six (36) points.  
 
             4.	REDEEM STREAKS FOR PRIZES & PERFECT STREAK PRIZE:
