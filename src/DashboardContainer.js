@@ -127,7 +127,7 @@ function DashboardContainer() {
   }
 
   if (state.loading) {
-    return <></>
+    return <Redirect to={`/`} />
   }
 
   if (isDesktop && Object.keys(state.user).length > 0) {

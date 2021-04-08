@@ -81,19 +81,19 @@ function OnboardContainer({history, match}) {
             justify={`center`} 
           >
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
-            <Text color="white" >Make your picks, build your streaks, win legendary rewards</Text>
-            <Container style={{margin: "1rem auto"}}>
+            <Text color="white" >The Bud Light Streaks contest has ended.</Text>
+            {/* <Container style={{margin: "1rem auto"}}>
               <SignUpDrawer />
               <SignInDrawer />
-            </Container>
-            <Box style={{textAlign: "center"}}>
+            </Container> */}
+            {/* <Box style={{textAlign: "center"}}>
               <Text color="white" fontSize="md">In Partnership With</Text>
               <Image boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly" style={{margin: "1rem auto"}}/>
-            </Box>
+            </Box> */}
           </VStack>
         </Grid>
       </Box>
-      { store.get("eligible") ? null: <AgeGateDrawer /> }
+      {/* { store.get("eligible") ? null: <AgeGateDrawer /> } */}
       
     </ChakraProvider>
     );
@@ -113,19 +113,19 @@ function OnboardContainer({history, match}) {
             justify={`center`} 
           >
             <Image src="https://streaks-challenge.s3.amazonaws.com/bud_light_legends_logo.png" alt="Legends Logo" height={`150px`}style={{margin: "0 auto"}}/>
-            <Text color="white" >Make your picks, build your streaks, win legendary rewards</Text>
-            <Container style={{margin: "1rem auto"}}>
+            <Text color="white" >The Bud Light Streaks contest has ended.</Text>
+            {/* <Container style={{margin: "1rem auto"}}>
               <SignUpDrawer />
               <SignInDrawer />
-            </Container>
-            <Box style={{textAlign: "center"}}>
+            </Container> */}
+            {/* <Box style={{textAlign: "center"}}>
               <Text color="white" fontSize="md">In Partnership With</Text>
               <Image boxSize="75px" src="https://streaks-challenge.s3.amazonaws.com/drizly_logo.png" alt="Drizly" style={{margin: "1rem auto"}}/>
-            </Box>
+            </Box> */}
           </VStack>
         </Grid>
       </Box>
-      { store.get("eligible") ? null: <AgeGateDrawer /> }
+      {/* { store.get("eligible") ? null: <AgeGateDrawer /> } */}
       
     </ChakraProvider>
   );
