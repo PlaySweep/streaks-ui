@@ -97,10 +97,10 @@ function DashboardContainer() {
           loading: false
         })
       })
-      loadIntercom()
-      bootIntercom({
-        email: user.email
-      })
+      // loadIntercom()
+      // bootIntercom({
+      //   email: user.email
+      // })
     })
   }, [state.changed])
 
